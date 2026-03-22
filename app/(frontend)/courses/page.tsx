@@ -1,14 +1,17 @@
 import Link from 'next/link'
-import { getPayload } from 'payload'
-import config from '@payload-config'
 
 export default async function CoursesPage() {
-  const payload = await getPayload({ config })
-
-  const { docs: courses } = await payload.find({
-    collection: 'courses',
-    limit: 12,
-  })
+  let courses = []
+  
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/courses?limit=12`, {
+      cache: 'no-store'
+    })
+    const data = await res.json()
+    courses = data.docs || []
+  } catch (e) {
+    courses = []
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -39,17 +42,11 @@ export default async function CoursesPage() {
                 <div className="p-4">
                   <h3 className="text-lg font-bold mb-2">{course.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">
-                    {typeof course.description === 'string'
-                      ? course.description
-                      : 'Профессиональный курс'}
+                    {typeof course.description === 'string' ? course.description : 'Профессиональный курс'}
                   </p>
                   <div className="flex justify-between items-center">
-                    <span className="text-pink-600 font-bold text-xl">
-                      ${course.price || '49'}
-                    </span>
-                    <button className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 text-sm">
-                      Купить
-                    </button>
+                    <span className="text-pink-600 font-bold text-xl">${course.price || '49'}</span>
+                    <button className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 text-sm">Купить</button>
                   </div>
                 </div>
               </div>
