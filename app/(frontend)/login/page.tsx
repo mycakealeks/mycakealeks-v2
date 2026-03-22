@@ -1,0 +1,72 @@
+'use client'
+
+import Link from 'next/link'
+import { useState } from 'react'
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const res = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        window.location.href = '/dashboard'
+      } else {
+        alert(data.message || 'Ошибка входа')
+      }
+    } catch (err) {
+      alert('Ошибка соединения')
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <div className="text-center mb-8">
+          <Link href="/" className="text-2xl font-bold text-pink-600">MyCakeAleks</Link>
+          <h2 className="text-2xl font-bold text-gray-900 mt-4">Вход в аккаунт</h2>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <button type="submit" className="w-full bg-pink-600 text-white py-3 rounded-lg font-semibold hover:bg-pink-700">
+            Войти
+          </button>
+        </form>
+        <p className="text-center text-gray-600 mt-6">
+          Нет аккаунта?{' '}
+          <Link href="/register" className="text-pink-600 font-semibold hover:underline">
+            Зарегистрироваться
+          </Link>
+        </p>
+      </div>
+    </main>
+  )
+}
