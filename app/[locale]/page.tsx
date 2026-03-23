@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import AiChat from './components/AiChat'
 
 export default function HomePage() {
   const t = useTranslations()
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Навигация */}
       <nav className="flex justify-between items-center px-8 py-4 border-b">
         <h1 className="text-2xl font-bold text-pink-600">MyCakeAleks</h1>
         <div className="flex gap-4">
@@ -22,7 +22,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Hero секция */}
       <section className="text-center py-20 px-4">
         <h2 className="text-5xl font-bold text-gray-800 mb-6">
           {t('home.title')}
@@ -39,6 +38,8 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      <AiChat />
     </main>
   )
 }
