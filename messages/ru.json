@@ -4,14 +4,53 @@
     "recipes": "Рецепты",
     "login": "Войти",
     "register": "Регистрация",
-    "dashboard": "Кабинет"
+    "dashboard": "Кабинет",
+    "logout": "Выйти"
   },
   "home": {
     "title": "Профессиональные курсы по выпечке",
     "subtitle": "Учись у экспертов, создавай торты мечты"
   },
+  "login": {
+    "title": "Вход в аккаунт",
+    "emailLabel": "Email",
+    "passwordLabel": "Пароль",
+    "submit": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "registerLink": "Зарегистрироваться",
+    "errorLogin": "Ошибка входа",
+    "errorConnection": "Ошибка соединения"
+  },
+  "register": {
+    "title": "Регистрация",
+    "namePlaceholder": "Имя",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Пароль",
+    "submit": "Зарегистрироваться",
+    "loading": "Загрузка...",
+    "hasAccount": "Уже есть аккаунт?",
+    "loginLink": "Войти",
+    "errorRegistration": "Ошибка регистрации",
+    "errorNetwork": "Ошибка сети"
+  },
   "courses": {
-    "title": "Все курсы",
+    "title": "Курсы",
+    "subtitle": "Профессиональные курсы кондитерского искусства",
+    "empty": "Курсы пока не добавлены",
+    "defaultDescription": "Профессиональный курс",
     "buy": "Купить"
+  },
+  "dashboard": {
+    "title": "Личный кабинет",
+    "welcome": "Добро пожаловать!",
+    "myCourses": "Мои курсы",
+    "myRecipes": "Мои рецепты",
+    "aiAssistant": "AI-помощник",
+    "aiAsk": "Задай вопрос",
+    "noCoursesCount": "0 курсов",
+    "noRecipesCount": "0 рецептов",
+    "noCoursesText": "У вас пока нет курсов",
+    "goToCourses": "Перейти к курсам →",
+    "aiLocked": "Купите курс чтобы получить доступ к AI-помощнику"
   }
 }

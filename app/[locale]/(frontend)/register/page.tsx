@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function RegisterPage() {
+  const t = useTranslations()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,11 +29,10 @@ export default function RegisterPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data?.errors?.[0]?.message || 'Ошибка регистрации')
+        setError(data?.errors?.[0]?.message || t('register.errorRegistration'))
         return
       }
 
-      // После регистрации — сразу логиним
       const loginRes = await fetch('/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -45,7 +46,7 @@ export default function RegisterPage() {
         router.push('/login')
       }
     } catch (err) {
-      setError('Ошибка сети')
+      setError(t('register.errorNetwork'))
     } finally {
       setLoading(false)
     }
@@ -54,7 +55,7 @@ export default function RegisterPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Регистрация</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">{t('register.title')}</h1>
 
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
@@ -65,7 +66,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="Имя"
+            placeholder={t('register.namePlaceholder')}
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -73,7 +74,7 @@ export default function RegisterPage() {
           />
           <input
             type="email"
-            placeholder="Email"
+            placeholder={t('register.emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -81,7 +82,7 @@ export default function RegisterPage() {
           />
           <input
             type="password"
-            placeholder="Пароль"
+            placeholder={t('register.passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -92,14 +93,14 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition disabled:opacity-50"
           >
-            {loading ? 'Загрузка...' : 'Зарегистрироваться'}
+            {loading ? t('register.loading') : t('register.submit')}
           </button>
         </form>
 
         <p className="text-center text-gray-600 mt-4">
-          {'Уже есть аккаунт? '}
+          {t('register.hasAccount')}{' '}
           <Link href="/login" className="text-pink-500 hover:underline">
-            Войти
+            {t('register.loginLink')}
           </Link>
         </p>
       </div>

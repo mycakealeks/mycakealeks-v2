@@ -4,14 +4,53 @@
     "recipes": "Tarifler",
     "login": "Giriş Yap",
     "register": "Kayıt Ol",
-    "dashboard": "Panelim"
+    "dashboard": "Panelim",
+    "logout": "Çıkış Yap"
   },
   "home": {
     "title": "Profesyonel Pasta Kursları",
     "subtitle": "Uzmanlardan öğren, hayalindeki pastayı yap"
   },
+  "login": {
+    "title": "Hesaba Giriş",
+    "emailLabel": "E-posta",
+    "passwordLabel": "Şifre",
+    "submit": "Giriş Yap",
+    "noAccount": "Hesabın yok mu?",
+    "registerLink": "Kayıt Ol",
+    "errorLogin": "Giriş hatası",
+    "errorConnection": "Bağlantı hatası"
+  },
+  "register": {
+    "title": "Kayıt Ol",
+    "namePlaceholder": "Ad",
+    "emailPlaceholder": "E-posta",
+    "passwordPlaceholder": "Şifre",
+    "submit": "Kayıt Ol",
+    "loading": "Yükleniyor...",
+    "hasAccount": "Zaten hesabın var mı?",
+    "loginLink": "Giriş Yap",
+    "errorRegistration": "Kayıt hatası",
+    "errorNetwork": "Ağ hatası"
+  },
   "courses": {
-    "title": "Tüm Kurslar",
+    "title": "Kurslar",
+    "subtitle": "Profesyonel pastacılık kursları",
+    "empty": "Henüz kurs eklenmedi",
+    "defaultDescription": "Profesyonel kurs",
     "buy": "Satın Al"
+  },
+  "dashboard": {
+    "title": "Hesabım",
+    "welcome": "Hoş geldiniz!",
+    "myCourses": "Kurslarım",
+    "myRecipes": "Tariflerim",
+    "aiAssistant": "AI Asistan",
+    "aiAsk": "Soru sor",
+    "noCoursesCount": "0 kurs",
+    "noRecipesCount": "0 tarif",
+    "noCoursesText": "Henüz kursunuz yok",
+    "goToCourses": "Kurslara git →",
+    "aiLocked": "AI asistana erişmek için bir kurs satın alın"
   }
 }
