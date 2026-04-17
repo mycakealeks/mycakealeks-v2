@@ -40,6 +40,13 @@
     "defaultDescription": "Профессиональный курс",
     "buy": "Купить"
   },
+  "aiChat": {
+    "title": "AI Помощник",
+    "placeholder": "Задай вопрос о тортах...",
+    "submit": "Спросить",
+    "loading": "Думаю...",
+    "errorConnection": "Ошибка соединения"
+  },
   "dashboard": {
     "title": "Личный кабинет",
     "welcome": "Добро пожаловать!",

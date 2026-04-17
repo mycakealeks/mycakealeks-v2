@@ -40,6 +40,13 @@
     "defaultDescription": "Profesyonel kurs",
     "buy": "Satın Al"
   },
+  "aiChat": {
+    "title": "AI Asistan",
+    "placeholder": "Pasta hakkında soru sor...",
+    "submit": "Sor",
+    "loading": "Düşünüyorum...",
+    "errorConnection": "Bağlantı hatası"
+  },
   "dashboard": {
     "title": "Hesabım",
     "welcome": "Hoş geldiniz!",

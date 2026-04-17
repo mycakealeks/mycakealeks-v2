@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function AiChat() {
+  const t = useTranslations('aiChat')
   const [message, setMessage] = useState('')
   const [reply, setReply] = useState('')
   const [loading, setLoading] = useState(false)
@@ -18,7 +20,7 @@ export default function AiChat() {
       const data = await res.json()
       setReply(data.reply)
     } catch (e) {
-      setReply('Ошибка соединения')
+      setReply(t('errorConnection'))
     }
     setLoading(false)
   }
@@ -36,7 +38,7 @@ export default function AiChat() {
       zIndex: 9999
     }}>
       <h3 style={{ color: '#db2777', fontWeight: 'bold', marginBottom: '12px' }}>
-        🎂 AI Помощник
+        🎂 {t('title')}
       </h3>
       <textarea
         style={{
@@ -49,7 +51,7 @@ export default function AiChat() {
           resize: 'none',
           boxSizing: 'border-box'
         }}
-        placeholder="Задай вопрос о тортах..."
+        placeholder={t('placeholder')}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
@@ -68,7 +70,7 @@ export default function AiChat() {
           fontSize: '14px'
         }}
       >
-        {loading ? 'Думаю...' : 'Спросить'}
+        {loading ? t('loading') : t('submit')}
       </button>
       {reply && (
         <div style={{
