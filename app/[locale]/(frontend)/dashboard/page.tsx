@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
+import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default async function DashboardPage() {
   const t = await getTranslations()
@@ -14,6 +15,7 @@ export default async function DashboardPage() {
           <button className="border border-pink-600 text-pink-600 px-4 py-2 rounded-lg hover:bg-pink-50">
             {t('nav.logout')}
           </button>
+          <LanguageSwitcher />
         </div>
       </nav>
 

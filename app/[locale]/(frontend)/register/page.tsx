@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
+import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function RegisterPage() {
   const t = useTranslations()
@@ -53,7 +54,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50">
+    <main className="relative min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">{t('register.title')}</h1>
 

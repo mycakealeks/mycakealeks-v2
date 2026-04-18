@@ -1,6 +1,7 @@
 import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import AiChat from './components/AiChat'
+import LanguageSwitcher from './components/LanguageSwitcher'
 
 export default function HomePage() {
   const t = useTranslations()
@@ -19,6 +20,7 @@ export default function HomePage() {
           <Link href="/login" className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
             {t('nav.login')}
           </Link>
+          <LanguageSwitcher />
         </div>
       </nav>
 

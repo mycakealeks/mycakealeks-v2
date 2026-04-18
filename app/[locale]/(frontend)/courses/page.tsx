@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
+import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default async function CoursesPage() {
   const t = await getTranslations()
@@ -23,6 +24,7 @@ export default async function CoursesPage() {
           <Link href="/courses" className="text-pink-600 font-semibold">{t('nav.courses')}</Link>
           <Link href="/recipes" className="text-gray-600 hover:text-pink-600">{t('nav.recipes')}</Link>
           <Link href="/login" className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">{t('nav.login')}</Link>
+          <LanguageSwitcher />
         </div>
       </nav>
 

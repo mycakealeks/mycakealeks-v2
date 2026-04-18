@@ -3,6 +3,7 @@
 import { Link } from '@/i18n/navigation'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function LoginPage() {
   const t = useTranslations()
@@ -29,7 +30,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <main className="relative min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-bold text-pink-600">MyCakeAleks</Link>
