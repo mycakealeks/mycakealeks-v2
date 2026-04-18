@@ -64,7 +64,7 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/users/logout', { method: 'POST' })
+      await fetch('/api/users/logout', { method: 'POST', credentials: 'include' })
     } finally {
       window.location.href = '/'
     }

@@ -1,16 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Sidebar from '@/app/[locale]/components/Sidebar'
-
-interface User {
-  id: string
-  firstName?: string
-  lastName?: string
-  email: string
-  createdAt?: string
-}
+import AuthGuard from '@/app/[locale]/components/AuthGuard'
 
 const COUNTRIES = [
   { value: '', label: '—' },
@@ -28,35 +21,23 @@ const LANGUAGES = [
   { value: 'en', label: 'English' },
 ]
 
-export default function ProfilePage() {
+function ProfileContent({ user }: { user: any }) {
   const t = useTranslations()
-  const [user, setUser] = useState<User | null>(null)
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [firstName, setFirstName] = useState(user.firstName ?? '')
+  const [lastName, setLastName] = useState(user.lastName ?? '')
   const [country, setCountry] = useState('')
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
 
-  const [curPassword, setCurPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [pwStatus, setPwStatus] = useState<'idle' | 'saving' | 'saved' | 'error' | 'mismatch'>('idle')
 
-  useEffect(() => {
-    fetch('/api/users/me', { credentials: 'include' })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (!data) { window.location.href = '/login'; return }
-        const u = data.user ?? data
-        setUser(u)
-        setFirstName(u.firstName ?? '')
-        setLastName(u.lastName ?? '')
-      })
-      .catch(() => { window.location.href = '/login' })
-  }, [])
+  const userName = [firstName, lastName].filter(Boolean).join(' ') || user.email
+  const initials = userName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || '?'
+  const memberSince = user.createdAt ? new Date(user.createdAt).toLocaleDateString() : ''
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!user) return
     setSaveStatus('saving')
     try {
       const res = await fetch(`/api/users/${user.id}`, {
@@ -75,7 +56,6 @@ export default function ProfilePage() {
   const handlePasswordUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (newPassword !== confirmPassword) { setPwStatus('mismatch'); return }
-    if (!user) return
     setPwStatus('saving')
     try {
       const res = await fetch(`/api/users/${user.id}`, {
@@ -86,7 +66,8 @@ export default function ProfilePage() {
       })
       if (res.ok) {
         setPwStatus('saved')
-        setCurPassword(''); setNewPassword(''); setConfirmPassword('')
+        setNewPassword('')
+        setConfirmPassword('')
         setTimeout(() => setPwStatus('idle'), 2500)
       } else {
         setPwStatus('error')
@@ -96,13 +77,9 @@ export default function ProfilePage() {
     }
   }
 
-  const userName = user ? [user.firstName, user.lastName].filter(Boolean).join(' ') || user?.email : ''
-  const initials = userName ? userName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) : '?'
-  const memberSince = user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : ''
-
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar userName={userName} userEmail={user?.email} />
+      <Sidebar userName={userName} userEmail={user.email} />
 
       <main className="flex-1 overflow-auto">
         <div className="max-w-2xl mx-auto px-8 py-10">
@@ -117,8 +94,8 @@ export default function ProfilePage() {
               {initials}
             </div>
             <div>
-              <p className="font-bold text-gray-900 text-lg">{userName || '—'}</p>
-              <p className="text-sm text-gray-400">{user?.email}</p>
+              <p className="font-bold text-gray-900 text-lg">{userName}</p>
+              <p className="text-sm text-gray-400">{user.email}</p>
               {memberSince && (
                 <p className="text-xs text-gray-400 mt-1">{t('profile.memberSince')}: {memberSince}</p>
               )}
@@ -140,18 +117,18 @@ export default function ProfilePage() {
                     onChange={(e) => setFirstName(e.target.value)}
                     className="input-field"
                     placeholder="First name"
+                    autoComplete="given-name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    &nbsp;
-                  </label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">&nbsp;</label>
                   <input
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="input-field"
                     placeholder="Last name"
+                    autoComplete="family-name"
                   />
                 </div>
               </div>
@@ -161,7 +138,7 @@ export default function ProfilePage() {
                 </label>
                 <input
                   type="email"
-                  value={user?.email ?? ''}
+                  value={user.email}
                   disabled
                   className="input-field opacity-50 cursor-not-allowed"
                 />
@@ -170,14 +147,8 @@ export default function ProfilePage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                   {t('profile.country')}
                 </label>
-                <select
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className="input-field"
-                >
-                  {COUNTRIES.map((c) => (
-                    <option key={c.value} value={c.value}>{c.label}</option>
-                  ))}
+                <select value={country} onChange={(e) => setCountry(e.target.value)} className="input-field">
+                  {COUNTRIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
               <div>
@@ -185,9 +156,7 @@ export default function ProfilePage() {
                   {t('profile.language')}
                 </label>
                 <select className="input-field">
-                  {LANGUAGES.map((l) => (
-                    <option key={l.value} value={l.value}>{l.label}</option>
-                  ))}
+                  {LANGUAGES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
                 </select>
               </div>
               <div className="flex items-center gap-3 pt-2">
@@ -222,6 +191,7 @@ export default function ProfilePage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="input-field"
                   placeholder="••••••••"
+                  autoComplete="new-password"
                   required
                   minLength={8}
                 />
@@ -236,6 +206,7 @@ export default function ProfilePage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="input-field"
                   placeholder="••••••••"
+                  autoComplete="new-password"
                   required
                 />
               </div>
@@ -247,15 +218,9 @@ export default function ProfilePage() {
                 >
                   {pwStatus === 'saving' ? t('profile.saving') : t('profile.updatePassword')}
                 </button>
-                {pwStatus === 'mismatch' && (
-                  <span className="text-sm text-red-500">{t('profile.passwordMismatch')}</span>
-                )}
-                {pwStatus === 'saved' && (
-                  <span className="text-sm font-medium" style={{ color: '#16a34a' }}>✓ {t('profile.passwordUpdated')}</span>
-                )}
-                {pwStatus === 'error' && (
-                  <span className="text-sm text-red-500">{t('profile.saveError')}</span>
-                )}
+                {pwStatus === 'mismatch' && <span className="text-sm text-red-500">{t('profile.passwordMismatch')}</span>}
+                {pwStatus === 'saved' && <span className="text-sm font-medium" style={{ color: '#16a34a' }}>✓ {t('profile.passwordUpdated')}</span>}
+                {pwStatus === 'error' && <span className="text-sm text-red-500">{t('profile.saveError')}</span>}
               </div>
             </form>
           </div>
@@ -263,4 +228,8 @@ export default function ProfilePage() {
       </main>
     </div>
   )
+}
+
+export default function ProfilePage() {
+  return <AuthGuard>{(user) => <ProfileContent user={user} />}</AuthGuard>
 }

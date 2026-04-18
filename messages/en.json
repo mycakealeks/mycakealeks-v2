@@ -79,6 +79,7 @@
     "emailLabel": "Email",
     "passwordLabel": "Password",
     "submit": "Log In",
+    "loading": "Loading...",
     "noAccount": "Don't have an account?",
     "registerLink": "Sign Up",
     "errorLogin": "Login failed",

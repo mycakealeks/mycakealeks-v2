@@ -79,6 +79,7 @@
     "emailLabel": "Email",
     "passwordLabel": "Пароль",
     "submit": "Войти",
+    "loading": "Загрузка...",
     "noAccount": "Нет аккаунта?",
     "registerLink": "Зарегистрироваться",
     "errorLogin": "Ошибка входа",

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Sidebar from '@/app/[locale]/components/Sidebar'
+import AuthGuard from '@/app/[locale]/components/AuthGuard'
 
 type FilterType = 'all' | 'inProgress' | 'completed'
 
@@ -17,69 +18,53 @@ interface CourseCard {
   pct: number
 }
 
-export default function MyCoursesPage() {
+function MyCoursesContent({ user }: { user: any }) {
   const t = useTranslations()
-  const [user, setUser] = useState<any>(null)
   const [cards, setCards] = useState<CourseCard[]>([])
   const [filter, setFilter] = useState<FilterType>('all')
   const [loading, setLoading] = useState(true)
 
+  const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const meRes = await fetch('/api/users/me', { credentials: 'include' })
-        if (!meRes.ok) { window.location.href = '/login'; return }
-        const meData = await meRes.json()
-        const userData = meData.user ?? meData
-        setUser(userData)
+    const courses: any[] = user.purchasedCourses || []
+    if (courses.length === 0) { setLoading(false); return }
 
-        const courses: any[] = userData.purchasedCourses || []
-        if (courses.length === 0) { setLoading(false); return }
+    Promise.all(
+      courses.map(async (course: any) => {
+        const courseId = typeof course === 'object' ? course.id : course
+        const courseTitle = typeof course === 'object' ? (course.title ?? '') : ''
+        const courseSlug = typeof course === 'object' ? (course.slug ?? course.id) : course
 
-        const result: CourseCard[] = await Promise.all(
-          courses.map(async (course: any) => {
-            const courseId = typeof course === 'object' ? course.id : course
-            const courseTitle = typeof course === 'object' ? (course.title ?? '') : ''
-            const courseSlug = typeof course === 'object' ? (course.slug ?? course.id) : course
+        const [lRes, pRes] = await Promise.all([
+          fetch(`/api/lessons?where[course][equals]=${courseId}&limit=100`),
+          fetch(`/api/progress?userId=${user.id}&courseId=${courseId}`),
+        ])
+        const [lData, pData] = await Promise.all([lRes.json(), pRes.json()])
 
-            const [lessonsRes, progressRes] = await Promise.all([
-              fetch(`/api/lessons?where[course][equals]=${courseId}&limit=100`),
-              fetch(`/api/progress?userId=${userData.id}&courseId=${courseId}`),
-            ])
-            const lessonsData = await lessonsRes.json()
-            const progressData = await progressRes.json()
-
-            const totalLessons = lessonsData.docs?.length ?? 0
-            const completedIds = new Set(
-              (progressData.docs ?? [])
-                .filter((p: any) => p.completed)
-                .map((p: any) => (typeof p.lesson === 'object' ? p.lesson.id : p.lesson))
-            )
-            const completedLessons = completedIds.size
-
-            const sorted = (lessonsData.docs ?? []).sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-            const nextLesson = sorted.find((l: any) => !completedIds.has(l.id))
-
-            return {
-              courseId,
-              title: courseTitle,
-              slug: courseSlug,
-              totalLessons,
-              completedLessons,
-              nextLessonId: nextLesson?.id,
-              pct: totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0,
-            }
-          })
+        const sorted = (lData.docs ?? []).sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+        const completedIds = new Set(
+          (pData.docs ?? [])
+            .filter((p: any) => p.completed)
+            .map((p: any) => (typeof p.lesson === 'object' ? p.lesson.id : p.lesson))
         )
-        setCards(result)
-      } catch {
-        // ignore
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [])
+        const nextLesson = sorted.find((l: any) => !completedIds.has(l.id))
+
+        return {
+          courseId,
+          title: courseTitle,
+          slug: courseSlug,
+          totalLessons: lData.docs?.length ?? 0,
+          completedLessons: completedIds.size,
+          nextLessonId: nextLesson?.id,
+          pct: lData.docs?.length > 0 ? Math.round((completedIds.size / lData.docs.length) * 100) : 0,
+        }
+      })
+    )
+      .then(setCards)
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [user])
 
   const filtered = cards.filter((c) => {
     if (filter === 'completed') return c.pct === 100
@@ -87,11 +72,9 @@ export default function MyCoursesPage() {
     return true
   })
 
-  const userName = user ? [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email : ''
-
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar userName={userName} userEmail={user?.email} />
+      <Sidebar userName={userName} userEmail={user.email} />
 
       <main className="flex-1 overflow-auto">
         <div className="max-w-5xl mx-auto px-8 py-10">
@@ -121,7 +104,7 @@ export default function MyCoursesPage() {
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-4 border-pink-300 border-t-pink-600 rounded-full animate-spin" />
+              <div className="w-8 h-8 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin" />
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
@@ -135,10 +118,7 @@ export default function MyCoursesPage() {
             <div className="grid md:grid-cols-2 gap-5">
               {filtered.map((c) => (
                 <div key={c.courseId} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden card-hover">
-                  <div
-                    className="h-36 flex items-center justify-center text-6xl"
-                    style={{ background: '#fbeaf0' }}
-                  >
+                  <div className="h-36 flex items-center justify-center text-6xl" style={{ background: '#fbeaf0' }}>
                     🎂
                   </div>
                   <div className="p-5">
@@ -154,7 +134,6 @@ export default function MyCoursesPage() {
                       )}
                     </div>
 
-                    {/* Progress */}
                     <div className="mb-4">
                       <div className="flex justify-between text-xs text-gray-400 mb-1.5">
                         <span>
@@ -215,4 +194,8 @@ export default function MyCoursesPage() {
       </main>
     </div>
   )
+}
+
+export default function MyCoursesPage() {
+  return <AuthGuard>{(user) => <MyCoursesContent user={user} />}</AuthGuard>
 }

@@ -79,6 +79,7 @@
     "emailLabel": "E-posta",
     "passwordLabel": "Şifre",
     "submit": "Giriş Yap",
+    "loading": "Yükleniyor...",
     "noAccount": "Hesabın yok mu?",
     "registerLink": "Kayıt Ol",
     "errorLogin": "Giriş hatası",

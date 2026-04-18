@@ -1,19 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function RegisterPage() {
   const t = useTranslations()
-  const [name, setName] = useState('')
+  const router = useRouter()
+  const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,10 +20,12 @@ export default function RegisterPage() {
     setError('')
 
     try {
+      // Step 1: create user — Payload Users collection uses firstName, not name
       const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        credentials: 'include',
+        body: JSON.stringify({ firstName, email, password }),
       })
 
       const data = await res.json()
@@ -34,6 +35,7 @@ export default function RegisterPage() {
         return
       }
 
+      // Step 2: auto-login after registration
       const loginRes = await fetch('/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,9 +44,10 @@ export default function RegisterPage() {
       })
 
       if (loginRes.ok) {
-        router.push('/dashboard')
+        // Full page reload so middleware picks up the new cookie
+        window.location.href = '/dashboard'
       } else {
-        router.push('/login')
+        router.push('/login' as any)
       }
     } catch {
       setError(t('register.errorNetwork'))
@@ -55,7 +58,7 @@ export default function RegisterPage() {
 
   return (
     <main
-      className="min-h-screen flex items-center justify-center px-4 py-12"
+      className="min-h-screen flex items-center justify-center px-4 py-12 relative"
       style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 60%)' }}
     >
       <div className="absolute top-4 right-4">
@@ -63,9 +66,8 @@ export default function RegisterPage() {
       </div>
 
       <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
-        {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block text-2xl font-extrabold tracking-tight mb-6">
+          <Link href="/" className="inline-block text-2xl font-extrabold tracking-tight mb-4">
             My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">{t('register.title')}</h1>
@@ -87,10 +89,11 @@ export default function RegisterPage() {
             </label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className="input-field"
               placeholder={t('register.namePlaceholder')}
+              autoComplete="given-name"
               required
             />
           </div>
@@ -104,6 +107,7 @@ export default function RegisterPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
               placeholder="your@email.com"
+              autoComplete="email"
               required
             />
           </div>
@@ -117,6 +121,8 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="input-field"
               placeholder="••••••••"
+              autoComplete="new-password"
+              minLength={8}
               required
             />
           </div>
