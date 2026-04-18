@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
+import { routing } from '@/i18n/routing'
 import './styles.css'
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
 
 export const metadata: Metadata = {
   title: 'MyCakeAleks',

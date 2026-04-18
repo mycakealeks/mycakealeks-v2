@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "courses": "Courses",
+    "recipes": "Recipes",
+    "login": "Log In",
+    "register": "Sign Up",
+    "dashboard": "Dashboard",
+    "logout": "Log Out"
+  },
+  "home": {
+    "title": "Professional Cake Courses",
+    "subtitle": "Learn from experts, create your dream cake"
+  },
+  "login": {
+    "title": "Sign In",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "submit": "Log In",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Sign Up",
+    "errorLogin": "Login failed",
+    "errorConnection": "Connection error"
+  },
+  "register": {
+    "title": "Create Account",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "submit": "Sign Up",
+    "loading": "Loading...",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log In",
+    "errorRegistration": "Registration failed",
+    "errorNetwork": "Network error"
+  },
+  "courses": {
+    "title": "Courses",
+    "subtitle": "Professional cake and pastry courses",
+    "empty": "No courses available yet",
+    "defaultDescription": "Professional course",
+    "buy": "Buy"
+  },
+  "aiChat": {
+    "title": "AI Assistant",
+    "placeholder": "Ask a question about cakes...",
+    "submit": "Ask",
+    "loading": "Thinking...",
+    "errorConnection": "Connection error"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "comingSoon": "Recipes coming soon"
+  },
+  "dashboard": {
+    "title": "My Account",
+    "welcome": "Welcome!",
+    "myCourses": "My Courses",
+    "myRecipes": "My Recipes",
+    "aiAssistant": "AI Assistant",
+    "aiAsk": "Ask a question",
+    "noCoursesCount": "0 courses",
+    "noRecipesCount": "0 recipes",
+    "noCoursesText": "You don't have any courses yet",
+    "goToCourses": "Browse courses →",
+    "aiLocked": "Purchase a course to get access to the AI assistant"
+  }
+}

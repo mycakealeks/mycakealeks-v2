@@ -47,6 +47,10 @@
     "loading": "Думаю...",
     "errorConnection": "Ошибка соединения"
   },
+  "recipes": {
+    "title": "Рецепты",
+    "comingSoon": "Скоро здесь появятся рецепты"
+  },
   "dashboard": {
     "title": "Личный кабинет",
     "welcome": "Добро пожаловать!",

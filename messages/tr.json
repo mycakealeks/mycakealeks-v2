@@ -47,6 +47,10 @@
     "loading": "Düşünüyorum...",
     "errorConnection": "Bağlantı hatası"
   },
+  "recipes": {
+    "title": "Tarifler",
+    "comingSoon": "Yakında tarifler eklenecek"
+  },
   "dashboard": {
     "title": "Hesabım",
     "welcome": "Hoş geldiniz!",
