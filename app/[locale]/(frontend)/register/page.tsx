@@ -46,7 +46,7 @@ export default function RegisterPage() {
       } else {
         router.push('/login')
       }
-    } catch (err) {
+    } catch {
       setError(t('register.errorNetwork'))
     } finally {
       setLoading(false)
@@ -54,56 +54,84 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="relative min-h-screen flex items-center justify-center bg-gray-50">
+    <main
+      className="min-h-screen flex items-center justify-center px-4 py-12"
+      style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 60%)' }}
+    >
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">{t('register.title')}</h1>
+
+      <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-block text-2xl font-extrabold tracking-tight mb-6">
+            My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-900">{t('register.title')}</h1>
+        </div>
 
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
+          <div
+            className="text-sm px-4 py-3 rounded-xl mb-5"
+            style={{ background: '#fbeaf0', color: '#b8436c' }}
+          >
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder={t('register.namePlaceholder')}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-          />
-          <input
-            type="email"
-            placeholder={t('register.emailPlaceholder')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-          />
-          <input
-            type="password"
-            placeholder={t('register.passwordPlaceholder')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400"
-          />
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {t('register.namePlaceholder')}
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field"
+              placeholder={t('register.namePlaceholder')}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {t('register.emailPlaceholder')}
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              {t('register.passwordPlaceholder')}
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field"
+              placeholder="••••••••"
+              required
+            />
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition disabled:opacity-50"
+            className="btn-primary w-full justify-center py-3 text-base mt-2 disabled:opacity-60"
           >
             {loading ? t('register.loading') : t('register.submit')}
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-4">
+        <p className="text-center text-sm text-gray-500 mt-6">
           {t('register.hasAccount')}{' '}
-          <Link href="/login" className="text-pink-500 hover:underline">
+          <Link href="/login" className="font-semibold" style={{ color: '#d4537e' }}>
             {t('register.loginLink')}
           </Link>
         </p>
