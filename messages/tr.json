@@ -51,6 +51,27 @@
     "title": "Tarifler",
     "comingSoon": "Yakında tarifler eklenecek"
   },
+  "payment": {
+    "checkout": "Ödeme",
+    "selectMethod": "Ödeme yöntemini seçin",
+    "oneTime": "Tek seferlik satın alma",
+    "subscription": "Abonelik",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "total": "Toplam",
+    "pay": "Öde",
+    "processing": "İşleniyor...",
+    "viaStripe": "Kart ile (Stripe)",
+    "viaYukassa": "ЮKassa ile",
+    "cancel": "İptal et",
+    "success": "Ödeme başarılı!",
+    "successDesc": "Kurs hesabınıza eklendi",
+    "goToDashboard": "Hesabıma git",
+    "failed": "Ödeme başarısız",
+    "failedDesc": "Ödeme işlenirken bir hata oluştu",
+    "tryAgain": "Tekrar dene",
+    "backToCourses": "Kurslara dön"
+  },
   "dashboard": {
     "title": "Hesabım",
     "welcome": "Hoş geldiniz!",

@@ -51,6 +51,27 @@
     "title": "Recipes",
     "comingSoon": "Recipes coming soon"
   },
+  "payment": {
+    "checkout": "Checkout",
+    "selectMethod": "Select payment method",
+    "oneTime": "One-time purchase",
+    "subscription": "Subscription",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "total": "Total",
+    "pay": "Pay",
+    "processing": "Processing...",
+    "viaStripe": "Card (Stripe)",
+    "viaYukassa": "Via YuKassa",
+    "cancel": "Cancel",
+    "success": "Payment successful!",
+    "successDesc": "The course has been added to your account",
+    "goToDashboard": "Go to dashboard",
+    "failed": "Payment failed",
+    "failedDesc": "We couldn't process your payment",
+    "tryAgain": "Try again",
+    "backToCourses": "Back to courses"
+  },
   "dashboard": {
     "title": "My Account",
     "welcome": "Welcome!",

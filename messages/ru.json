@@ -51,6 +51,27 @@
     "title": "Рецепты",
     "comingSoon": "Скоро здесь появятся рецепты"
   },
+  "payment": {
+    "checkout": "Оформление заказа",
+    "selectMethod": "Выберите способ оплаты",
+    "oneTime": "Разовая покупка",
+    "subscription": "Подписка",
+    "monthly": "Месяц",
+    "yearly": "Год",
+    "total": "Итого",
+    "pay": "Оплатить",
+    "processing": "Обработка...",
+    "viaStripe": "Картой (Stripe)",
+    "viaYukassa": "Через ЮKassa",
+    "cancel": "Отменить",
+    "success": "Оплата прошла успешно!",
+    "successDesc": "Курс добавлен в ваш аккаунт",
+    "goToDashboard": "Перейти в кабинет",
+    "failed": "Ошибка оплаты",
+    "failedDesc": "Не удалось обработать платёж",
+    "tryAgain": "Попробовать снова",
+    "backToCourses": "Вернуться к курсам"
+  },
   "dashboard": {
     "title": "Личный кабинет",
     "welcome": "Добро пожаловать!",

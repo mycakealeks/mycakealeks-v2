@@ -11,6 +11,8 @@ import { Courses } from "./collections/Courses"
 import { Recipes } from "./collections/Recipes"
 import { Orders } from "./collections/Orders"
 import { Categories } from "./collections/Categories"
+import { Subscriptions } from "./collections/Subscriptions"
+import { Payments } from "./collections/Payments"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Recipes, Orders, Categories],
+  collections: [Users, Media, Courses, Recipes, Orders, Categories, Subscriptions, Payments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

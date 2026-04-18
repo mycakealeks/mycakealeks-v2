@@ -64,9 +64,30 @@ export const Orders: CollectionConfig = {
       ],
     },
     {
+      name: 'currency',
+      type: 'text',
+      label: 'Валюта',
+      defaultValue: 'TRY',
+    },
+    {
+      name: 'paymentMethod',
+      type: 'select',
+      label: 'Способ оплаты',
+      options: [
+        { label: 'Stripe', value: 'stripe' },
+        { label: 'ЮKassa', value: 'yukassa' },
+      ],
+    },
+    {
+      name: 'paymentId',
+      type: 'text',
+      label: 'ID платежа',
+    },
+    {
       name: 'stripePaymentId',
       type: 'text',
-      label: 'Stripe Payment ID',
+      label: 'Stripe Payment ID (legacy)',
+      admin: { condition: () => false },
     },
   ],
 }
