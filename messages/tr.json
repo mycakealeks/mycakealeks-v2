@@ -72,6 +72,19 @@
     "tryAgain": "Tekrar dene",
     "backToCourses": "Kurslara dön"
   },
+  "lessons": {
+    "title": "Dersler",
+    "free": "Ücretsiz",
+    "locked": "Bu dersi izlemek için kursu satın alın",
+    "buy": "Satın Al",
+    "errorLoading": "Video yüklenemedi",
+    "noVideo": "Video henüz eklenmedi",
+    "backToCourse": "Kursa dön",
+    "materials": "Ders materyalleri",
+    "empty": "Henüz ders eklenmedi",
+    "count": "{count} ders",
+    "duration": "{minutes} dk"
+  },
   "dashboard": {
     "title": "Hesabım",
     "welcome": "Hoş geldiniz!",

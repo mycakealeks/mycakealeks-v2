@@ -72,6 +72,19 @@
     "tryAgain": "Try again",
     "backToCourses": "Back to courses"
   },
+  "lessons": {
+    "title": "Lessons",
+    "free": "Free",
+    "locked": "Purchase this course to watch the lesson",
+    "buy": "Buy Course",
+    "errorLoading": "Failed to load video",
+    "noVideo": "No video added yet",
+    "backToCourse": "Back to course",
+    "materials": "Lesson materials",
+    "empty": "No lessons added yet",
+    "count": "{count} lessons",
+    "duration": "{minutes} min"
+  },
   "dashboard": {
     "title": "My Account",
     "welcome": "Welcome!",
