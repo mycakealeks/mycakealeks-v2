@@ -28,7 +28,9 @@ export default function middleware(req: NextRequest) {
   if (needsAuth) {
     const token = req.cookies.get('payload-token')?.value
     if (!token) {
-      const loginUrl = new URL(`/${locale}/login`, req.url)
+      // With as-needed prefix, default locale (tr) has no prefix
+      const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
+      const loginUrl = new URL(`${prefix}/login`, req.url)
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }
@@ -38,5 +40,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|admin|.*\\..*).*) '],
+  matcher: ['/((?!api|_next|_vercel|admin|.*\\..*).*)',],
 }
