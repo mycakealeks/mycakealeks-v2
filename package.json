@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "node scripts/seed-rest.mjs",
+    "migrate": "NODE_OPTIONS='--import tsx/esm' payload migrate",
     "postinstall": "patch-package"
   },
   "dependencies": {
