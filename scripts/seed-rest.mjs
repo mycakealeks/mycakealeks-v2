@@ -57,9 +57,10 @@ const COURSES = [
 ]
 
 async function api(path, options = {}) {
+  const { headers: optHeaders, ...restOptions } = options
   const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
-    ...options,
+    ...restOptions,
+    headers: { 'Content-Type': 'application/json', ...(optHeaders || {}) },
   })
   const data = await res.json()
   if (!res.ok) throw new Error(`API ${path} failed: ${JSON.stringify(data)}`)
