@@ -118,7 +118,7 @@ export default async function CourseDetailPage({ params }: Props) {
                       className="text-xs font-semibold px-3 py-1 rounded-full"
                       style={{ background: '#eff6ff', color: '#2563eb' }}
                     >
-                      {freeLessons} бесплатных
+                      {t('course.freeLessonsCount', { count: freeLessons })}
                     </span>
                   )}
                 </div>
@@ -132,7 +132,7 @@ export default async function CourseDetailPage({ params }: Props) {
             {/* Free lessons preview */}
             {freeLessons > 0 && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 className="font-bold text-gray-900 text-lg mb-4">Бесплатные уроки</h2>
+                <h2 className="font-bold text-gray-900 text-lg mb-4">{t('course.freeLessons')}</h2>
                 <div className="space-y-3">
                   {lessons.filter((l) => l.isFree).map((lesson, i) => (
                     <Link
@@ -148,7 +148,7 @@ export default async function CourseDetailPage({ params }: Props) {
                       </div>
                       <span className="text-sm font-medium text-gray-700">{lesson.title}</span>
                       <span className="ml-auto text-xs font-semibold" style={{ color: '#16a34a' }}>
-                        Бесплатно
+                        {t('course.free')}
                       </span>
                     </Link>
                   ))}
@@ -171,20 +171,19 @@ export default async function CourseDetailPage({ params }: Props) {
               </div>
               {course.oldPrice && (
                 <p className="text-xs font-semibold mb-4" style={{ color: '#16a34a' }}>
-                  Скидка {Math.round((1 - course.price / course.oldPrice) * 100)}%
+                  {t('course.discount', { percent: Math.round((1 - course.price / course.oldPrice) * 100) })}
                 </p>
               )}
 
               <PaymentButton
-                courseId={course.id}
-                courseTitle={course.title}
-                price={course.price}
+                courseId={String(course.id)}
+                amount={course.price}
               />
 
               <div className="mt-5 space-y-2 text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <span>📹</span>
-                  <span>{lessons.length} видеоуроков</span>
+                  <span>{t('course.videoLessons', { count: lessons.length })}</span>
                 </div>
                 {course.level && (
                   <div className="flex items-center gap-2">
@@ -194,11 +193,11 @@ export default async function CourseDetailPage({ params }: Props) {
                 )}
                 <div className="flex items-center gap-2">
                   <span>♾️</span>
-                  <span>Пожизненный доступ</span>
+                  <span>{t('course.lifetimeAccess')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span>🏆</span>
-                  <span>Сертификат по окончании</span>
+                  <span>{t('course.certificate')}</span>
                 </div>
               </div>
             </div>

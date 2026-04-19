@@ -203,6 +203,15 @@
     "passwordUpdated": "Şifre güncellendi",
     "memberSince": "Üyelik tarihi"
   },
+  "course": {
+    "freeLessons": "Ücretsiz Dersler",
+    "freeLessonsCount": "{count} ücretsiz",
+    "free": "Ücretsiz",
+    "lifetimeAccess": "Ömür boyu erişim",
+    "certificate": "Tamamlanma sertifikası",
+    "discount": "%{percent} indirim",
+    "videoLessons": "{count} video ders"
+  },
   "myCourses": {
     "title": "Kurslarım",
     "filterAll": "Tümü",

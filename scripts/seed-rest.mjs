@@ -46,7 +46,7 @@ const COURSES = [
     price: 1190,
     oldPrice: 1890,
     level: 'advanced',
-    emoji: '💒',
+    emoji: '💍',
     status: 'published',
     lessons: [
       { title: 'Düğün Pastası Tasarım Temelleri', order: 1, isFree: true, videoDuration: 15 },

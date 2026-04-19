@@ -203,6 +203,15 @@
     "passwordUpdated": "Password updated",
     "memberSince": "Member since"
   },
+  "course": {
+    "freeLessons": "Free Lessons",
+    "freeLessonsCount": "{count} free",
+    "free": "Free",
+    "lifetimeAccess": "Lifetime access",
+    "certificate": "Certificate on completion",
+    "discount": "{percent}% off",
+    "videoLessons": "{count} video lessons"
+  },
   "myCourses": {
     "title": "My Courses",
     "filterAll": "All",

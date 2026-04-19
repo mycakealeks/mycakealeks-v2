@@ -203,6 +203,15 @@
     "passwordUpdated": "Пароль обновлён",
     "memberSince": "Участник с"
   },
+  "course": {
+    "freeLessons": "Бесплатные уроки",
+    "freeLessonsCount": "{count} бесплатных",
+    "free": "Бесплатно",
+    "lifetimeAccess": "Пожизненный доступ",
+    "certificate": "Сертификат по окончании",
+    "discount": "Скидка {percent}%",
+    "videoLessons": "{count} видеоуроков"
+  },
   "myCourses": {
     "title": "Мои курсы",
     "filterAll": "Все",

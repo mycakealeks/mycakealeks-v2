@@ -6,7 +6,7 @@ import type { PurchaseType, SubscriptionPlan } from '@/types/payments'
 
 interface PaymentButtonProps {
   courseId?: string
-  userId: string
+  userId?: string
   amount: number
   currency?: string
   purchaseType?: PurchaseType
