@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "node scripts/seed-rest.mjs",
+    "seed": "NEXT_PUBLIC_SERVER_URL=http://localhost:3000 node scripts/seed-rest.mjs",
     "migrate": "NODE_OPTIONS='--import tsx/esm' payload migrate",
     "postinstall": "patch-package"
   },
