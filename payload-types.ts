@@ -69,6 +69,14 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    courses: Course;
+    recipes: Recipe;
+    orders: Order;
+    categories: Category;
+    subscriptions: Subscription;
+    payments: Payment;
+    lessons: Lesson;
+    progress: Progress;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,13 +86,21 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    courses: CoursesSelect<false> | CoursesSelect<true>;
+    recipes: RecipesSelect<false> | RecipesSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    subscriptions: SubscriptionsSelect<false> | SubscriptionsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    lessons: LessonsSelect<false> | LessonsSelect<true>;
+    progress: ProgressSelect<false> | ProgressSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {};
@@ -122,7 +138,13 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  role?: ('customer' | 'admin') | null;
+  purchasedCourses?: (number | Course)[] | null;
+  purchasedRecipes?: (number | Recipe)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,10 +166,43 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses".
+ */
+export interface Course {
+  id: number;
+  title: string;
+  slug: string;
+  emoji?: string | null;
+  level?: ('beginner' | 'intermediate' | 'advanced') | null;
+  oldPrice?: number | null;
+  description?: string | null;
+  price: number;
+  thumbnail?: (number | null) | Media;
+  category?: (number | null) | Category;
+  status?: ('draft' | 'published') | null;
+  modules?:
+    | {
+        title?: string | null;
+        lessons?:
+          | {
+              title?: string | null;
+              videoUrl?: string | null;
+              duration?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +218,178 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  type?: ('courses' | 'recipes') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes".
+ */
+export interface Recipe {
+  id: number;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  price: number;
+  thumbnail?: (number | null) | Media;
+  category?: (number | null) | Category;
+  status?: ('draft' | 'published') | null;
+  ingredients?:
+    | {
+        name?: string | null;
+        amount?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  pdfFile?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  user: number | User;
+  items?:
+    | {
+        itemType?: ('course' | 'recipe') | null;
+        course?: (number | null) | Course;
+        recipe?: (number | null) | Recipe;
+        price?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  total: number;
+  status?: ('pending' | 'paid' | 'cancelled') | null;
+  currency?: string | null;
+  paymentMethod?: ('stripe' | 'yukassa') | null;
+  paymentId?: string | null;
+  stripePaymentId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscriptions".
+ */
+export interface Subscription {
+  id: number;
+  user: number | User;
+  plan: 'monthly' | 'yearly';
+  status?: ('active' | 'cancelled' | 'expired' | 'trialing') | null;
+  startDate: string;
+  endDate: string;
+  paymentMethod?: ('stripe' | 'yukassa') | null;
+  providerSubscriptionId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  order?: (number | null) | Order;
+  subscription?: (number | null) | Subscription;
+  provider: 'stripe' | 'yukassa';
+  amount: number;
+  currency: string;
+  status?: ('pending' | 'succeeded' | 'failed' | 'refunded') | null;
+  providerPaymentId?: string | null;
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lessons".
+ */
+export interface Lesson {
+  id: number;
+  title: string;
+  course: number | Course;
+  order?: number | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  videoId?: string | null;
+  videoDuration?: number | null;
+  videoStatus?: ('pending' | 'processing' | 'ready' | 'error') | null;
+  isFree?: boolean | null;
+  attachments?:
+    | {
+        title?: string | null;
+        file?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progress".
+ */
+export interface Progress {
+  id: number;
+  user: number | User;
+  course: number | Course;
+  lesson: number | Lesson;
+  completed?: boolean | null;
+  completedAt?: string | null;
+  watchedSeconds?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +406,52 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'courses';
+        value: number | Course;
+      } | null)
+    | ({
+        relationTo: 'recipes';
+        value: number | Recipe;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'subscriptions';
+        value: number | Subscription;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
+      } | null)
+    | ({
+        relationTo: 'lessons';
+        value: number | Lesson;
+      } | null)
+    | ({
+        relationTo: 'progress';
+        value: number | Progress;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +461,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +484,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -240,6 +495,12 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  phone?: T;
+  role?: T;
+  purchasedCourses?: T;
+  purchasedRecipes?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -274,6 +535,163 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses_select".
+ */
+export interface CoursesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  emoji?: T;
+  level?: T;
+  oldPrice?: T;
+  description?: T;
+  price?: T;
+  thumbnail?: T;
+  category?: T;
+  status?: T;
+  modules?:
+    | T
+    | {
+        title?: T;
+        lessons?:
+          | T
+          | {
+              title?: T;
+              videoUrl?: T;
+              duration?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes_select".
+ */
+export interface RecipesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  price?: T;
+  thumbnail?: T;
+  category?: T;
+  status?: T;
+  ingredients?:
+    | T
+    | {
+        name?: T;
+        amount?: T;
+        id?: T;
+      };
+  pdfFile?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  user?: T;
+  items?:
+    | T
+    | {
+        itemType?: T;
+        course?: T;
+        recipe?: T;
+        price?: T;
+        id?: T;
+      };
+  total?: T;
+  status?: T;
+  currency?: T;
+  paymentMethod?: T;
+  paymentId?: T;
+  stripePaymentId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  type?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscriptions_select".
+ */
+export interface SubscriptionsSelect<T extends boolean = true> {
+  user?: T;
+  plan?: T;
+  status?: T;
+  startDate?: T;
+  endDate?: T;
+  paymentMethod?: T;
+  providerSubscriptionId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  order?: T;
+  subscription?: T;
+  provider?: T;
+  amount?: T;
+  currency?: T;
+  status?: T;
+  providerPaymentId?: T;
+  metadata?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lessons_select".
+ */
+export interface LessonsSelect<T extends boolean = true> {
+  title?: T;
+  course?: T;
+  order?: T;
+  description?: T;
+  videoId?: T;
+  videoDuration?: T;
+  videoStatus?: T;
+  isFree?: T;
+  attachments?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "progress_select".
+ */
+export interface ProgressSelect<T extends boolean = true> {
+  user?: T;
+  course?: T;
+  lesson?: T;
+  completed?: T;
+  completedAt?: T;
+  watchedSeconds?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

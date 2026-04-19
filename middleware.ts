@@ -28,9 +28,7 @@ export default function middleware(req: NextRequest) {
   if (needsAuth) {
     const token = req.cookies.get('payload-token')?.value
     if (!token) {
-      // locale prefix: default locale (tr) has no prefix due to 'as-needed'
-      const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
-      const loginUrl = new URL(`${prefix}/login`, req.url)
+      const loginUrl = new URL(`/${locale}/login`, req.url)
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }

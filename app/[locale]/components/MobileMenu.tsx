@@ -30,17 +30,17 @@ export default function MobileMenu() {
       </button>
 
       {/* Backdrop */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
-          onClick={close}
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/40 z-[45] md:hidden transition-opacity duration-300 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={close}
+      />
 
       {/* Bottom sheet drawer */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl md:hidden transition-transform duration-300 ease-out ${
-          open ? 'translate-y-0' : 'translate-y-full'
+          open ? 'translate-y-0 pointer-events-auto' : 'translate-y-full pointer-events-none'
         }`}
         style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}
       >

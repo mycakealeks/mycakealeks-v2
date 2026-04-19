@@ -2,17 +2,18 @@
 
 import { Link, useRouter } from '@/i18n/navigation'
 import { useState, useEffect } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function LoginPage() {
   const t = useTranslations()
   const router = useRouter()
+  const locale = useLocale()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [callbackUrl, setCallbackUrl] = useState('/dashboard')
+  const [callbackUrl, setCallbackUrl] = useState(`/${locale}/dashboard`)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)

@@ -2,12 +2,13 @@
 
 import { useState } from 'react'
 import { Link, useRouter } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function RegisterPage() {
   const t = useTranslations()
   const router = useRouter()
+  const locale = useLocale()
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -45,7 +46,7 @@ export default function RegisterPage() {
 
       if (loginRes.ok) {
         // Full page reload so middleware picks up the new cookie
-        window.location.href = '/dashboard'
+        window.location.href = `/${locale}/dashboard`
       } else {
         router.push('/login' as any)
       }
