@@ -10,7 +10,12 @@ export function generateStaticParams() {
 export const metadata: Metadata = {
   title: 'MyCakeAleks',
   description: 'Профессиональные курсы и рецепты',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default async function RootLayout({
