@@ -1,11 +1,18 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>
+}
+
+const LEVEL_LABELS: Record<string, string> = {
+  beginner: 'Başlangıç',
+  intermediate: 'Orta',
+  advanced: 'İleri',
 }
 
 export default async function CourseDetailPage({ params }: Props) {
@@ -38,54 +45,171 @@ export default async function CourseDetailPage({ params }: Props) {
   if (!course) {
     return (
       <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-gray-500">Course not found</p>
+        <div className="text-center">
+          <p className="text-5xl mb-4">🎂</p>
+          <p className="text-gray-500 mb-4">Course not found</p>
+          <Link href="/courses" className="btn-primary px-6 py-2.5 text-sm">{t('nav.courses')}</Link>
+        </div>
       </main>
     )
   }
 
+  const freeLessons = lessons.filter((l) => l.isFree).length
+  const currency = process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'
+
   return (
-    <main className="min-h-screen bg-white">
-      <nav className="flex justify-between items-center px-8 py-4 border-b">
-        <Link href="/" className="text-2xl font-bold text-pink-600">MyCakeAleks</Link>
-        <div className="flex gap-4 items-center">
-          <Link href="/courses" className="text-pink-600 font-semibold">{t('nav.courses')}</Link>
-          <Link href="/login" className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">{t('nav.login')}</Link>
-          <LanguageSwitcher />
+    <div className="min-h-screen bg-gray-50">
+      {/* Nav */}
+      <nav className="sticky top-0 z-40 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+          <Link href="/" className="text-xl font-extrabold" style={{ color: '#d4537e' }}>
+            MyCakeAleks
+          </Link>
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
+            <Link href="/login" className="btn-outline text-sm px-5 py-2">{t('nav.login')}</Link>
+            <Link href="/register" className="btn-primary text-sm px-5 py-2">{t('nav.start')}</Link>
+            <LanguageSwitcher />
+          </div>
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageSwitcher />
+            <MobileMenu />
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-5xl mx-auto px-8 py-12">
-        <div className="grid grid-cols-3 gap-8">
-          <div className="col-span-2">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{course.title}</h1>
-            {course.description && (
-              <p className="text-gray-600 text-lg mb-6">{course.description}</p>
-            )}
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 md:py-12">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+          <Link href="/courses" className="hover:text-pink-600 transition-colors">{t('nav.courses')}</Link>
+          <span>/</span>
+          <span className="text-gray-600 truncate">{course.title}</span>
+        </div>
 
-            <div className="bg-pink-50 rounded-xl p-6 mb-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-600 text-sm">{t('lessons.count', { count: lessons.length })}</p>
-                  <p className="text-3xl font-bold text-pink-600 mt-1">
-                    {course.price} {process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'}
-                  </p>
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Main content */}
+          <div className="md:col-span-2">
+            {/* Hero card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+              <div
+                className="h-48 md:h-64 flex items-center justify-center text-8xl"
+                style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 100%)' }}
+              >
+                {course.emoji || '🎂'}
+              </div>
+              <div className="p-6 md:p-8">
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  {course.level && (
+                    <span
+                      className="text-xs font-semibold px-3 py-1 rounded-full"
+                      style={{ background: '#fbeaf0', color: '#d4537e' }}
+                    >
+                      {LEVEL_LABELS[course.level] ?? course.level}
+                    </span>
+                  )}
+                  <span
+                    className="text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{ background: '#f0fdf4', color: '#16a34a' }}
+                  >
+                    {lessons.length} {t('courses.lessons')}
+                  </span>
+                  {freeLessons > 0 && (
+                    <span
+                      className="text-xs font-semibold px-3 py-1 rounded-full"
+                      style={{ background: '#eff6ff', color: '#2563eb' }}
+                    >
+                      {freeLessons} бесплатных
+                    </span>
+                  )}
                 </div>
-                <PaymentButton
-                  courseId={course.id}
-                  courseTitle={course.title}
-                  price={course.price}
-                />
+                <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">{course.title}</h1>
+                {course.description && (
+                  <p className="text-gray-600 leading-relaxed">{course.description}</p>
+                )}
               </div>
             </div>
+
+            {/* Free lessons preview */}
+            {freeLessons > 0 && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 className="font-bold text-gray-900 text-lg mb-4">Бесплатные уроки</h2>
+                <div className="space-y-3">
+                  {lessons.filter((l) => l.isFree).map((lesson, i) => (
+                    <Link
+                      key={lesson.id}
+                      href={`/courses/${slug}/lessons/${lesson.id}` as any}
+                      className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-pink-200 hover:bg-pink-50 transition-colors"
+                    >
+                      <div
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                        style={{ background: '#fbeaf0', color: '#d4537e' }}
+                      >
+                        {i + 1}
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{lesson.title}</span>
+                      <span className="ml-auto text-xs font-semibold" style={{ color: '#16a34a' }}>
+                        Бесплатно
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="col-span-1">
-            <div className="border rounded-xl overflow-hidden">
-              <div className="bg-gray-50 px-4 py-3 border-b">
-                <h2 className="font-semibold text-gray-800">{t('lessons.title')}</h2>
+          {/* Sidebar */}
+          <div className="md:col-span-1">
+            {/* Purchase card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-3xl font-extrabold text-gray-900">
+                  {course.price} {currency}
+                </span>
+                {course.oldPrice && (
+                  <span className="text-lg text-gray-400 line-through">{course.oldPrice} {currency}</span>
+                )}
+              </div>
+              {course.oldPrice && (
+                <p className="text-xs font-semibold mb-4" style={{ color: '#16a34a' }}>
+                  Скидка {Math.round((1 - course.price / course.oldPrice) * 100)}%
+                </p>
+              )}
+
+              <PaymentButton
+                courseId={course.id}
+                courseTitle={course.title}
+                price={course.price}
+              />
+
+              <div className="mt-5 space-y-2 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <span>📹</span>
+                  <span>{lessons.length} видеоуроков</span>
+                </div>
+                {course.level && (
+                  <div className="flex items-center gap-2">
+                    <span>📊</span>
+                    <span>{LEVEL_LABELS[course.level] ?? course.level}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <span>♾️</span>
+                  <span>Пожизненный доступ</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>🏆</span>
+                  <span>Сертификат по окончании</span>
+                </div>
+              </div>
+            </div>
+
+            {/* All lessons */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mt-4">
+              <div className="px-5 py-4 border-b border-gray-100">
+                <h2 className="font-bold text-gray-800">{t('lessons.title')}</h2>
               </div>
               {lessons.length === 0 ? (
-                <p className="text-gray-400 text-sm px-4 py-6 text-center">{t('lessons.empty')}</p>
+                <p className="text-gray-400 text-sm px-5 py-6 text-center">{t('lessons.empty')}</p>
               ) : (
                 <LessonList
                   lessons={lessons}
@@ -97,6 +221,6 @@ export default async function CourseDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

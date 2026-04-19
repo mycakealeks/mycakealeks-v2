@@ -13,6 +13,36 @@ export const Courses: CollectionConfig = {
       required: true,
     },
     {
+      name: 'slug',
+      type: 'text',
+      label: 'Slug (URL)',
+      required: true,
+      unique: true,
+      index: true,
+    },
+    {
+      name: 'emoji',
+      type: 'text',
+      label: 'Эмодзи',
+      defaultValue: '🎂',
+    },
+    {
+      name: 'level',
+      type: 'select',
+      label: 'Уровень',
+      defaultValue: 'beginner',
+      options: [
+        { label: 'Başlangıç / Başlangıç', value: 'beginner' },
+        { label: 'Orta / Средний', value: 'intermediate' },
+        { label: 'İleri / Продвинутый', value: 'advanced' },
+      ],
+    },
+    {
+      name: 'oldPrice',
+      type: 'number',
+      label: 'Старая цена (зачёркнутая)',
+    },
+    {
       name: 'description',
       type: 'textarea',
       label: 'Описание',
