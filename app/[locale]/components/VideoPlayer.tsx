@@ -16,7 +16,11 @@ export default function VideoPlayer({ videoId, isFree = false, userId, courseId 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const isDemo = !videoId || videoId === 'demo-video-id'
+
   useEffect(() => {
+    if (isDemo) { setLoading(false); return }
+
     const fetchUrl = async () => {
       try {
         const params = new URLSearchParams({ isFree: String(isFree) })
@@ -39,6 +43,18 @@ export default function VideoPlayer({ videoId, isFree = false, userId, courseId 
 
     fetchUrl()
   }, [videoId, isFree, userId])
+
+  if (isDemo) {
+    return (
+      <div
+        className="w-full aspect-video rounded-xl flex flex-col items-center justify-center gap-4"
+        style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff5f8 100%)' }}
+      >
+        <span className="text-6xl">🎬</span>
+        <p className="text-lg font-semibold" style={{ color: '#d4537e' }}>{t('videoComingSoon')}</p>
+      </div>
+    )
+  }
 
   if (loading) {
     return (
