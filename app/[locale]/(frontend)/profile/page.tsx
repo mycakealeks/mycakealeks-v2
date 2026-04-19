@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Sidebar from '@/app/[locale]/components/Sidebar'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
+import BottomNav from '@/app/[locale]/components/BottomNav'
 
 const COUNTRIES = [
   { value: '', label: '—' },
@@ -80,8 +81,9 @@ function ProfileContent({ user }: { user: any }) {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar userName={userName} userEmail={user.email} />
+      <BottomNav />
 
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto pb-20 md:pb-0">
         <div className="max-w-2xl mx-auto px-8 py-10">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-8">{t('profile.editTitle')}</h1>
 

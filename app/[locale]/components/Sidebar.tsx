@@ -72,7 +72,7 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
 
   return (
     <aside
-      className="w-64 min-h-screen flex flex-col border-r"
+      className="hidden md:flex w-64 min-h-screen flex-col border-r"
       style={{ background: '#fff', borderColor: '#f0e0e8' }}
     >
       {/* Logo */}

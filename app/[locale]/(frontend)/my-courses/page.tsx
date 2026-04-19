@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Sidebar from '@/app/[locale]/components/Sidebar'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
+import BottomNav from '@/app/[locale]/components/BottomNav'
 
 type FilterType = 'all' | 'inProgress' | 'completed'
 
@@ -75,8 +76,9 @@ function MyCoursesContent({ user }: { user: any }) {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar userName={userName} userEmail={user.email} />
+      <BottomNav />
 
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto pb-20 md:pb-0">
         <div className="max-w-5xl mx-auto px-8 py-10">
           <h1 className="text-3xl font-extrabold text-gray-900 mb-6">{t('myCourses.title')}</h1>
 

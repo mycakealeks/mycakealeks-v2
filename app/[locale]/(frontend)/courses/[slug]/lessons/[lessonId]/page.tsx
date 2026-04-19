@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import VideoPlayer from '@/app/[locale]/components/VideoPlayer'
 import LessonList from '@/app/[locale]/components/LessonList'
 
@@ -25,16 +26,11 @@ export default async function LessonPage({ params }: Props) {
 
     if (lesson?.course) {
       const courseId = typeof lesson.course === 'object' ? lesson.course.id : lesson.course
-      const courseRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/courses/${courseId}`,
-        { cache: 'no-store' }
-      )
+      const [courseRes, lessonsRes] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/courses/${courseId}`, { cache: 'no-store' }),
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/lessons?where[course][equals]=${courseId}&limit=100&sort=order`, { cache: 'no-store' }),
+      ])
       course = await courseRes.json()
-
-      const lessonsRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/lessons?where[course][equals]=${courseId}&limit=100&sort=order`,
-        { cache: 'no-store' }
-      )
       const lessonsData = await lessonsRes.json()
       lessons = lessonsData.docs ?? []
     }
@@ -52,25 +48,37 @@ export default async function LessonPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-white">
-      <nav className="flex justify-between items-center px-8 py-4 border-b">
-        <Link href="/" className="text-2xl font-bold text-pink-600">MyCakeAleks</Link>
-        <div className="flex gap-4 items-center">
-          <Link href="/courses" className="text-gray-600 hover:text-pink-600">{t('nav.courses')}</Link>
-          <Link href="/dashboard" className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">{t('nav.dashboard')}</Link>
-          <LanguageSwitcher />
+      {/* NAV */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold tracking-tight">
+            My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
+          </Link>
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
+            <Link href="/dashboard" className="btn-primary text-sm py-2 px-4">{t('nav.dashboard')}</Link>
+          </div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="hidden md:block"><LanguageSwitcher /></div>
+            <MobileMenu />
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-8 py-8">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
+        {/* Back link */}
         <div className="mb-4">
-          <Link href={`/courses/${slug}`} className="text-pink-600 hover:underline text-sm">
+          <Link href={`/courses/${slug}`} className="text-sm font-medium" style={{ color: '#d4537e' }}>
             ← {course?.title ?? t('lessons.backToCourse')}
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-8">
-          <div className="col-span-2">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">{lesson.title}</h1>
+        {/* Mobile: stacked. Desktop: 2/3 + 1/3 grid */}
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-6 md:gap-8">
+
+          {/* Video + info — full width mobile, 2/3 desktop */}
+          <div className="md:col-span-2">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">{lesson.title}</h1>
 
             {lesson.videoId ? (
               <VideoPlayer
@@ -91,12 +99,8 @@ export default async function LessonPage({ params }: Props) {
                   {lesson.attachments.map((att: any) => (
                     <li key={att.id}>
                       {att.file?.url ? (
-                        <a
-                          href={att.file.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-pink-600 hover:underline text-sm"
-                        >
+                        <a href={att.file.url} target="_blank" rel="noopener noreferrer"
+                          className="text-sm hover:underline" style={{ color: '#d4537e' }}>
                           📎 {att.title || att.file.filename}
                         </a>
                       ) : (
@@ -109,9 +113,10 @@ export default async function LessonPage({ params }: Props) {
             )}
           </div>
 
-          <div className="col-span-1">
-            <div className="border rounded-xl overflow-hidden sticky top-8">
-              <div className="bg-gray-50 px-4 py-3 border-b">
+          {/* Lesson list — under video on mobile, sidebar on desktop */}
+          <div className="md:col-span-1">
+            <div className="border border-gray-100 rounded-xl overflow-hidden md:sticky md:top-24">
+              <div className="bg-gray-50 px-4 py-3 border-b border-gray-100">
                 <h2 className="font-semibold text-gray-800">{t('lessons.title')}</h2>
               </div>
               <LessonList
