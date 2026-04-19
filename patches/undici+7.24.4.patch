@@ -1,0 +1,15 @@
+diff --git a/node_modules/undici/lib/web/cache/cachestorage.js b/node_modules/undici/lib/web/cache/cachestorage.js
+index c49b1e8..6afc94f 100644
+--- a/node_modules/undici/lib/web/cache/cachestorage.js
++++ b/node_modules/undici/lib/web/cache/cachestorage.js
+@@ -13,10 +13,6 @@ class CacheStorage {
+   #caches = new Map()
+ 
+   constructor () {
+-    if (arguments[0] !== kConstruct) {
+-      webidl.illegalConstructor()
+-    }
+-
+     webidl.util.markAsUncloneable(this)
+   }
+ 
