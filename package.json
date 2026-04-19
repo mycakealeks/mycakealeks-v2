@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "node --import=tsx/esm --no-warnings scripts/seed.mts"
+    "seed": "payload run scripts/seed.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
