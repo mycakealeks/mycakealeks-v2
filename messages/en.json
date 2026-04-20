@@ -1,6 +1,7 @@
 {
   "nav": {
     "courses": "Courses",
+    "news": "News",
     "recipes": "Recipes",
     "login": "Log In",
     "register": "Sign Up",
@@ -224,6 +225,19 @@
     "certificate": "Certificate on completion",
     "discount": "{percent}% off",
     "videoLessons": "{count} video lessons"
+  },
+  "news": {
+    "title": "Bakery News",
+    "subtitle": "The latest news, trends and inspiration from the world of cakes and pastry",
+    "readMore": "Read More",
+    "noNews": "No news yet",
+    "otherNews": "Other News",
+    "catAll": "All",
+    "cat_trends": "Trends",
+    "cat_recipes": "Recipes",
+    "cat_techniques": "Techniques",
+    "cat_business": "Business",
+    "cat_inspiration": "Inspiration"
   },
   "myCourses": {
     "title": "My Courses",

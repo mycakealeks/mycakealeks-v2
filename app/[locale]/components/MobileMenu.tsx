@@ -68,6 +68,7 @@ export default function MobileMenu() {
         <nav className="px-4 py-2">
           {[
             { href: '/courses' as const, emoji: '📚', label: t('nav.courses') },
+            { href: '/news' as const, emoji: '📰', label: t('nav.news') },
             { href: '/recipes' as const, emoji: '🍰', label: t('nav.recipes') },
             { href: '/dashboard' as const, emoji: '📊', label: t('nav.dashboard') },
           ].map((item) => (

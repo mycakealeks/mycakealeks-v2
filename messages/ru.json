@@ -1,6 +1,7 @@
 {
   "nav": {
     "courses": "Курсы",
+    "news": "Новости",
     "recipes": "Рецепты",
     "login": "Войти",
     "register": "Регистрация",
@@ -224,6 +225,19 @@
     "certificate": "Сертификат по окончании",
     "discount": "Скидка {percent}%",
     "videoLessons": "{count} видеоуроков"
+  },
+  "news": {
+    "title": "Кондитерские новости",
+    "subtitle": "Последние новости, тренды и вдохновение из мира тортов и выпечки",
+    "readMore": "Читать далее",
+    "noNews": "Новостей пока нет",
+    "otherNews": "Другие новости",
+    "catAll": "Все",
+    "cat_trends": "Тренды",
+    "cat_recipes": "Рецепты",
+    "cat_techniques": "Техники",
+    "cat_business": "Бизнес",
+    "cat_inspiration": "Вдохновение"
   },
   "myCourses": {
     "title": "Мои курсы",

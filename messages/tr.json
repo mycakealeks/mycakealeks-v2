@@ -1,6 +1,7 @@
 {
   "nav": {
     "courses": "Kurslar",
+    "news": "Haberler",
     "recipes": "Tarifler",
     "login": "Giriş",
     "register": "Kayıt Ol",
@@ -224,6 +225,19 @@
     "certificate": "Tamamlanma sertifikası",
     "discount": "%{percent} indirim",
     "videoLessons": "{count} video ders"
+  },
+  "news": {
+    "title": "Pastacılık Haberleri",
+    "subtitle": "Kek ve pasta dünyasından en güncel haberler, trendler ve ilhamlar",
+    "readMore": "Devamını Oku",
+    "noNews": "Henüz haber yok",
+    "otherNews": "Diğer Haberler",
+    "catAll": "Tümü",
+    "cat_trends": "Trendler",
+    "cat_recipes": "Tarifler",
+    "cat_techniques": "Teknikler",
+    "cat_business": "İş Dünyası",
+    "cat_inspiration": "İlham"
   },
   "myCourses": {
     "title": "Kurslarım",
