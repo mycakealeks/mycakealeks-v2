@@ -74,6 +74,18 @@
     "ctaSubtitle": "Bugün başla, hayalindeki tarifleri gerçeğe dönüştür",
     "ctaBtn": "Hemen Başla"
   },
+  "auth": {
+    "forgotPassword": "Şifremi Unuttum",
+    "forgotPasswordLink": "Şifremi unuttum?",
+    "forgotPasswordDesc": "E-posta adresinizi girin, şifre sıfırlama bağlantısı gönderelim.",
+    "sendResetLink": "Sıfırlama Bağlantısı Gönder",
+    "checkEmail": "E-postanızı Kontrol Edin",
+    "checkEmailDesc": "Şifre sıfırlama bağlantısı gönderildi. Spam klasörünü de kontrol edin.",
+    "resetPassword": "Şifreyi Sıfırla",
+    "resetSuccess": "Şifreniz başarıyla güncellendi!",
+    "resetTokenInvalid": "Bağlantı geçersiz veya süresi dolmuş.",
+    "passwordTooShort": "Şifre en az 8 karakter olmalıdır."
+  },
   "login": {
     "title": "Hesaba Giriş",
     "emailLabel": "E-posta",

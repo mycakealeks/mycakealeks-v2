@@ -74,6 +74,18 @@
     "ctaSubtitle": "Начни сегодня и воплоти рецепты своей мечты в реальность",
     "ctaBtn": "Начать сейчас"
   },
+  "auth": {
+    "forgotPassword": "Забыли пароль",
+    "forgotPasswordLink": "Забыли пароль?",
+    "forgotPasswordDesc": "Введите email, и мы отправим ссылку для сброса пароля.",
+    "sendResetLink": "Отправить ссылку",
+    "checkEmail": "Проверьте почту",
+    "checkEmailDesc": "Ссылка для сброса пароля отправлена. Проверьте папку «Спам».",
+    "resetPassword": "Сбросить пароль",
+    "resetSuccess": "Пароль успешно обновлён!",
+    "resetTokenInvalid": "Ссылка недействительна или истекла.",
+    "passwordTooShort": "Пароль должен содержать не менее 8 символов."
+  },
   "login": {
     "title": "Вход в аккаунт",
     "emailLabel": "Email",

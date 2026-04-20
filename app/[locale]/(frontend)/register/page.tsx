@@ -45,7 +45,12 @@ export default function RegisterPage() {
       })
 
       if (loginRes.ok) {
-        // Full page reload so middleware picks up the new cookie
+        // Fire welcome email (non-blocking)
+        fetch('/api/email/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, firstName }),
+        }).catch(() => {})
         window.location.href = `/${locale}/dashboard`
       } else {
         router.push('/login' as any)

@@ -74,6 +74,18 @@
     "ctaSubtitle": "Begin today and bring your dream recipes to life",
     "ctaBtn": "Get Started Now"
   },
+  "auth": {
+    "forgotPassword": "Forgot Password",
+    "forgotPasswordLink": "Forgot password?",
+    "forgotPasswordDesc": "Enter your email and we'll send you a reset link.",
+    "sendResetLink": "Send Reset Link",
+    "checkEmail": "Check Your Email",
+    "checkEmailDesc": "A password reset link has been sent. Check your spam folder too.",
+    "resetPassword": "Reset Password",
+    "resetSuccess": "Password updated successfully!",
+    "resetTokenInvalid": "Link is invalid or expired.",
+    "passwordTooShort": "Password must be at least 8 characters."
+  },
   "login": {
     "title": "Sign In",
     "emailLabel": "Email",

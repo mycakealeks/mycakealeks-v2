@@ -1,5 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type { YuKassaWebhookEvent } from '@/types/payments'
+import { sendPurchaseConfirmation, sendCourseAccess } from '@/app/lib/email'
+
+async function notifyPurchase(userId: string, courseId: string, amount = 0) {
+  try {
+    const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+    const [userRes, courseRes] = await Promise.all([
+      fetch(`${base}/api/users/${userId}`),
+      fetch(`${base}/api/courses/${courseId}`),
+    ])
+    if (!userRes.ok || !courseRes.ok) return
+    const user = await userRes.json()
+    const course = await courseRes.json()
+    const email: string = user.email
+    const firstName: string = user.firstName || ''
+    const courseName: string = course.title || ''
+    const courseSlug: string = course.slug || courseId
+    await Promise.all([
+      sendPurchaseConfirmation(email, firstName, courseName, amount),
+      sendCourseAccess(email, firstName, courseName, courseSlug),
+    ])
+  } catch (err) {
+    console.error('notifyPurchase error:', err)
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,22 +33,20 @@ export async function POST(req: NextRequest) {
 
     switch (event.type) {
       case 'payment.succeeded': {
-        const { id: paymentId, metadata } = event.object
+        const { id: paymentId, metadata, amount } = event.object
         const { userId, courseId } = metadata || {}
-        // TODO: create order in Payload, grant course access
-        // await grantCourseAccess(userId, courseId)
+        const amountValue = parseFloat(amount?.value ?? '0')
         console.log('YuKassa payment succeeded:', { paymentId, userId, courseId })
+        if (userId && courseId) await notifyPurchase(userId, courseId, amountValue)
         break
       }
       case 'payment.canceled': {
         const { id: paymentId } = event.object
-        // TODO: mark order as cancelled in Payload
         console.log('YuKassa payment cancelled:', paymentId)
         break
       }
       case 'refund.succeeded': {
         const { id: refundId } = event.object
-        // TODO: handle refund — revoke access, update payment record
         console.log('YuKassa refund succeeded:', refundId)
         break
       }
