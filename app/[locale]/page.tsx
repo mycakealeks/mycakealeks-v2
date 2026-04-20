@@ -18,6 +18,7 @@ export default async function HomePage() {
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-6">
             <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
+            <Link href="/news" className="nav-link">{t('nav.news')}</Link>
             <Link href="/recipes" className="nav-link">{t('nav.recipes')}</Link>
           </div>
           {/* Desktop right */}
@@ -248,6 +249,7 @@ export default async function HomePage() {
           </p>
           <div className="flex gap-5">
             <Link href="/courses" className="nav-link text-sm">{t('nav.courses')}</Link>
+            <Link href="/news" className="nav-link text-sm">{t('nav.news')}</Link>
             <Link href="/recipes" className="nav-link text-sm">{t('nav.recipes')}</Link>
             <Link href="/login" className="nav-link text-sm">{t('nav.login')}</Link>
           </div>
