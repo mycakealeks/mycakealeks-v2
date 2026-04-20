@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
@@ -9,20 +9,25 @@ interface Props {
 
 const CATEGORIES = ['trends', 'recipes', 'techniques', 'business', 'inspiration'] as const
 
-function formatDate(dateStr: string) {
+const DATE_LOCALES: Record<string, string> = { tr: 'tr-TR', ru: 'ru-RU', en: 'en-US' }
+
+function formatDate(dateStr: string, locale: string) {
   if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })
+  return new Date(dateStr).toLocaleDateString(DATE_LOCALES[locale] || 'tr-TR', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  })
 }
 
 export default async function NewsPage({ searchParams }: Props) {
   const { category } = await searchParams
   const t = await getTranslations()
+  const locale = await getLocale()
 
   let news: any[] = []
   try {
     const catParam = category ? `&where[category][equals]=${category}` : ''
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[status][equals]=published&sort=-publishedAt&limit=30${catParam}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[status][equals]=published&where[locale][equals]=${locale}&sort=-publishedAt&limit=30${catParam}`,
       { cache: 'no-store' },
     )
     const data = await res.json()
@@ -97,12 +102,10 @@ export default async function NewsPage({ searchParams }: Props) {
                 href={`/news/${item.slug}`}
                 className="group bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
               >
-                {/* Cover */}
                 <div className="h-40 flex items-center justify-center text-6xl" style={{ background: '#fbeaf0' }}>
                   {item.coverEmoji || '🎂'}
                 </div>
                 <div className="p-5">
-                  {/* Category tag */}
                   <span
                     className="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block"
                     style={{ background: '#fbeaf0', color: '#d4537e' }}
@@ -116,7 +119,7 @@ export default async function NewsPage({ searchParams }: Props) {
                     <p className="text-gray-500 text-sm mb-3 line-clamp-2">{item.excerpt}</p>
                   )}
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs text-gray-400">{formatDate(item.publishedAt)}</span>
+                    <span className="text-xs text-gray-400">{formatDate(item.publishedAt, locale)}</span>
                     <span className="text-xs font-semibold" style={{ color: '#d4537e' }}>{t('news.readMore')} →</span>
                   </div>
                 </div>

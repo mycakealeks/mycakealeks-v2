@@ -6,7 +6,7 @@ export const News: CollectionConfig = {
   slug: 'news',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'status', 'publishedAt'],
+    defaultColumns: ['title', 'locale', 'category', 'status', 'publishedAt'],
   },
   access: {
     read: ({ req }) => {
@@ -48,6 +48,19 @@ export const News: CollectionConfig = {
       admin: { description: 'Boş bırakırsanız başlıktan otomatik oluşturulur.' },
     },
     {
+      name: 'locale',
+      type: 'select',
+      label: 'Locale',
+      required: true,
+      defaultValue: 'tr',
+      options: [
+        { label: 'Türkçe (TR)', value: 'tr' },
+        { label: 'Русский (RU)', value: 'ru' },
+        { label: 'English (EN)', value: 'en' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
       name: 'excerpt',
       type: 'textarea',
       label: 'Kısa Açıklama',
@@ -63,11 +76,11 @@ export const News: CollectionConfig = {
       label: 'Kategori',
       defaultValue: 'trends',
       options: [
-        { label: 'Trendler', value: 'trends' },
-        { label: 'Tarifler', value: 'recipes' },
-        { label: 'Teknikler', value: 'techniques' },
-        { label: 'İş Dünyası', value: 'business' },
-        { label: 'İlham', value: 'inspiration' },
+        { label: 'Trendler / Тренды / Trends', value: 'trends' },
+        { label: 'Tarifler / Рецепты / Recipes', value: 'recipes' },
+        { label: 'Teknikler / Техники / Techniques', value: 'techniques' },
+        { label: 'İş Dünyası / Бизнес / Business', value: 'business' },
+        { label: 'İlham / Вдохновение / Inspiration', value: 'inspiration' },
       ],
     },
     {

@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
@@ -39,6 +39,7 @@ function LexicalContent({ content }: { content: any }) {
 export default async function NewsDetailPage({ params }: Props) {
   const { slug } = await params
   const t = await getTranslations()
+  const locale = await getLocale()
 
   let news: any = null
   let related: any[] = []
@@ -46,7 +47,7 @@ export default async function NewsDetailPage({ params }: Props) {
   try {
     const [newsRes, relatedRes] = await Promise.all([
       fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[slug][equals]=${slug}&where[status][equals]=published&limit=1`, { cache: 'no-store' }),
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[status][equals]=published&sort=-publishedAt&limit=4`, { cache: 'no-store' }),
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[status][equals]=published&where[locale][equals]=${locale}&sort=-publishedAt&limit=4`, { cache: 'no-store' }),
     ])
     const newsData = await newsRes.json()
     news = newsData.docs?.[0] ?? null

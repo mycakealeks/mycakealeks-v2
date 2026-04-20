@@ -41,10 +41,12 @@ function slugify(text: string): string {
     .slice(0, 80)
 }
 
-const PROMPT = `Sen bir pastacılık ve kek dünyası dergisinin editörüsün. Bugün için 5 adet özgün haber taslağı yaz. Türkçe yaz.
+const PROMPTS: Record<string, string> = {
+  tr: `Sen bir pastacılık ve kek dünyası dergisinin editörüsün. Türk pasta ve tatlı sektörüne yönelik 5 özgün haber yaz. Türkçe yaz.
 
-Kategoriler: trends (trendler), recipes (tarifler), techniques (teknikler), business (iş dünyası), inspiration (ilham)
-Her kategoriden en az bir haber olsun.
+Türkiye'deki trendler, yerel tatlar, Türk pastacılar, bayram tatlıları (baklava, künefe, lokum), yerel malzemeler, İstanbul/Ankara pastane kültürü hakkında olsun.
+
+Kategoriler: trends, recipes, techniques, business, inspiration — Her kategoriden en az bir haber olsun.
 
 Her haberin şu alanları olmalı:
 - title: ilgi çekici başlık
@@ -54,7 +56,54 @@ Her haberin şu alanları olmalı:
 - emoji: konuya uygun bir emoji
 
 SADECE geçerli bir JSON dizisi döndür, başka hiçbir şey yazma, markdown kullanma:
-[{"title":"...","excerpt":"...","content":"...","category":"...","emoji":"..."}]`
+[{"title":"...","excerpt":"...","content":"...","category":"...","emoji":"..."}]`,
+
+  ru: `Ты редактор кондитерского журнала. Напиши 5 новостей о кондитерском деле для русскоязычной аудитории. Пиши на русском языке.
+
+Темы: тренды в России и СНГ, популярные рецепты (наполеон, медовик, птичье молоко), советские классические торты, современные техники, бизнес кондитера, московские и петербургские кондитерские.
+
+Категории: trends, recipes, techniques, business, inspiration — минимум по одной новости в каждой категории.
+
+Каждая новость должна содержать:
+- title: привлекательный заголовок
+- excerpt: краткое описание в 2 предложения
+- content: 3-4 абзаца полного текста (абзацы разделяй \\n\\n)
+- category: trends | recipes | techniques | business | inspiration
+- emoji: подходящий эмодзи
+
+Верни ТОЛЬКО валидный JSON-массив, без пояснений и markdown:
+[{"title":"...","excerpt":"...","content":"...","category":"...","emoji":"..."}]`,
+
+  en: `You are an editor of a professional pastry and cake magazine. Write 5 original news articles for an international audience. Write in English.
+
+Topics: global pastry trends, French/Italian/Japanese techniques, international cake competitions, celebrity cakes, business tips for pastry chefs, innovative ingredients, award-winning bakeries worldwide.
+
+Categories: trends, recipes, techniques, business, inspiration — at least one article per category.
+
+Each article must have:
+- title: compelling headline
+- excerpt: 2-sentence summary
+- content: 3-4 paragraphs of full text (separate paragraphs with \\n\\n)
+- category: trends | recipes | techniques | business | inspiration
+- emoji: relevant emoji
+
+Return ONLY a valid JSON array, no explanation, no markdown:
+[{"title":"...","excerpt":"...","content":"...","category":"...","emoji":"..."}]`,
+}
+
+type NewsItem = { title: string; excerpt: string; content: string; category: string; emoji: string }
+
+async function generateForLocale(locale: string): Promise<NewsItem[]> {
+  const message = await client.messages.create({
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 4096,
+    messages: [{ role: 'user', content: PROMPTS[locale] }],
+  })
+  const raw = (message.content[0] as any).text as string
+  const jsonStart = raw.indexOf('[')
+  const jsonEnd = raw.lastIndexOf(']') + 1
+  return JSON.parse(raw.slice(jsonStart, jsonEnd))
+}
 
 export async function POST(req: NextRequest) {
   const secret = req.headers.get('x-cron-secret')
@@ -63,50 +112,42 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const message = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4096,
-      messages: [{ role: 'user', content: PROMPT }],
-    })
-
-    const raw = (message.content[0] as any).text as string
-    const jsonStart = raw.indexOf('[')
-    const jsonEnd = raw.lastIndexOf(']') + 1
-    const jsonStr = raw.slice(jsonStart, jsonEnd)
-    const items: Array<{
-      title: string
-      excerpt: string
-      content: string
-      category: string
-      emoji: string
-    }> = JSON.parse(jsonStr)
+    // Generate all three locales in parallel
+    const [trItems, ruItems, enItems] = await Promise.all([
+      generateForLocale('tr'),
+      generateForLocale('ru'),
+      generateForLocale('en'),
+    ])
 
     const payload = await getPayload({ config })
     const today = new Date().toISOString().slice(0, 10)
-    const created: string[] = []
+    const created: Record<string, string[]> = { tr: [], ru: [], en: [] }
 
-    for (const item of items) {
-      const baseSlug = slugify(item.title)
-      const slug = `${baseSlug}-${Date.now().toString(36)}`
-      await payload.create({
-        collection: 'news',
-        data: {
-          title: item.title,
-          slug,
-          excerpt: item.excerpt,
-          content: textToLexical(item.content),
-          category: item.category as any,
-          coverEmoji: item.emoji || '🎂',
-          publishedAt: today,
-          status: 'draft',
-          featured: false,
-        },
-        overrideAccess: true,
-      })
-      created.push(item.title)
+    for (const [locale, items] of [['tr', trItems], ['ru', ruItems], ['en', enItems]] as const) {
+      for (const item of items) {
+        const baseSlug = slugify(item.title)
+        const slug = `${locale}-${baseSlug}-${Date.now().toString(36)}`
+        await payload.create({
+          collection: 'news',
+          data: {
+            title: item.title,
+            slug,
+            excerpt: item.excerpt,
+            content: textToLexical(item.content),
+            category: item.category as any,
+            coverEmoji: item.emoji || '🎂',
+            publishedAt: today,
+            locale,
+            status: 'draft',
+            featured: false,
+          },
+          overrideAccess: true,
+        })
+        created[locale].push(item.title)
+      }
     }
 
-    return NextResponse.json({ ok: true, created })
+    return NextResponse.json({ ok: true, created, total: 15 })
   } catch (err: any) {
     console.error('News generate error:', err)
     return NextResponse.json({ error: err.message }, { status: 500 })
