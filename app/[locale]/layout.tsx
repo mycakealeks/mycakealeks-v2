@@ -37,6 +37,7 @@ export async function generateMetadata({
     verification: {
       other: {
         'msvalidate.01': 'E9110B5F43309068CDD97BC070157F7A',
+        'yandex-verification': 'b316fca111f6c421',
       },
     },
   }
