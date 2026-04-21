@@ -3,13 +3,38 @@ import { NextIntlClientProvider } from 'next-intl'
 import { routing } from '@/i18n/routing'
 import './styles.css'
 
+const SITE = 'https://mycakealeks.com.tr'
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export const metadata: Metadata = {
-  title: 'MyCakeAleks',
-  description: 'Профессиональные курсы и рецепты',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  return {
+    metadataBase: new URL(SITE),
+    alternates: {
+      canonical: locale === 'tr' ? SITE : `${SITE}/${locale}`,
+      languages: {
+        tr: SITE,
+        ru: `${SITE}/ru`,
+        en: `${SITE}/en`,
+      },
+    },
+    openGraph: {
+      siteName: 'MyCakeAleks',
+      images: [{ url: '/og-image.svg', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/og-image.svg'],
+    },
+  }
 }
 
 export const viewport = {

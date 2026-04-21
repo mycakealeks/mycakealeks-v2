@@ -1,10 +1,42 @@
+import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
+const SITE = 'https://mycakealeks.com.tr'
+
 interface Props {
   params: Promise<{ locale: string; slug: string }>
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale, slug } = await params
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/news?where[slug][equals]=${slug}&where[status][equals]=published&limit=1`,
+      { cache: 'no-store' },
+    )
+    const data = await res.json()
+    const article = data.docs?.[0]
+    if (!article) return { title: 'MyCakeAleks' }
+    const title = `${article.title} | MyCakeAleks`
+    const description = article.excerpt || article.title
+    const url = `${locale === 'tr' ? SITE : `${SITE}/${locale}`}/news/${slug}`
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url,
+        type: 'article',
+        publishedTime: article.publishedAt,
+      },
+    }
+  } catch {
+    return { title: 'MyCakeAleks' }
+  }
 }
 
 function formatDate(dateStr: string) {

@@ -1,13 +1,74 @@
+import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
 
-export default async function HomePage() {
+const SITE = 'https://mycakealeks.com.tr'
+
+const HOME_META: Record<string, { title: string; description: string; ogLocale: string }> = {
+  tr: {
+    title: 'MyCakeAleks - Profesyonel Pasta Kursları | Online Konditerlik Eğitimi',
+    description: "Türkiye'nin en iyi online pasta kursları. Sıfırdan uzmana: fondant, düğün pastası, Fransız pastacılık. HD video, AI asistan, sertifika.",
+    ogLocale: 'tr_TR',
+  },
+  ru: {
+    title: 'MyCakeAleks - Профессиональные курсы кондитерского мастерства',
+    description: 'Лучшие онлайн курсы по кондитерскому делу. От нуля до профессионала: фондан, свадебные торты, французская выпечка. HD видео, AI ассистент, сертификат.',
+    ogLocale: 'ru_RU',
+  },
+  en: {
+    title: 'MyCakeAleks - Professional Cake & Pastry Courses Online',
+    description: 'Best online pastry courses. From beginner to pro: fondant, wedding cakes, French pastry. HD video lessons, AI assistant, certificate.',
+    ogLocale: 'en_US',
+  },
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const m = HOME_META[locale] ?? HOME_META.tr
+  const url = locale === 'tr' ? SITE : `${SITE}/${locale}`
+  return {
+    title: m.title,
+    description: m.description,
+    openGraph: {
+      title: m.title,
+      description: m.description,
+      url,
+      type: 'website',
+      locale: m.ogLocale,
+    },
+  }
+}
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
   const t = await getTranslations()
+  const m = HOME_META[locale] ?? HOME_META.tr
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'MyCakeAleks',
+    url: SITE,
+    description: m.description,
+    sameAs: [],
+  }
 
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* ── NAV ── */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">

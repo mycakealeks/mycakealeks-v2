@@ -1,7 +1,27 @@
+import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+
+const SITE = 'https://mycakealeks.com.tr'
+
+const NEWS_META: Record<string, { title: string; description: string; ogLocale: string }> = {
+  tr: { title: 'Pasta Haberleri | MyCakeAleks', description: 'Pastacılık dünyasından güncel haberler, trendler ve ilham.', ogLocale: 'tr_TR' },
+  ru: { title: 'Новости кондитерского мира | MyCakeAleks', description: 'Актуальные новости, тренды и вдохновение из мира кондитерского искусства.', ogLocale: 'ru_RU' },
+  en: { title: 'Pastry News | MyCakeAleks', description: 'Latest news, trends and inspiration from the world of pastry and cake.', ogLocale: 'en_US' },
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const m = NEWS_META[locale] ?? NEWS_META.tr
+  const url = `${locale === 'tr' ? SITE : `${SITE}/${locale}`}/news`
+  return {
+    title: m.title,
+    description: m.description,
+    openGraph: { title: m.title, description: m.description, url, type: 'website', locale: m.ogLocale },
+  }
+}
 
 interface Props {
   searchParams: Promise<{ category?: string }>

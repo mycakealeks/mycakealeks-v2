@@ -1,7 +1,27 @@
+import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
+
+const SITE = 'https://mycakealeks.com.tr'
+
+const COURSES_META: Record<string, { title: string; description: string; ogLocale: string }> = {
+  tr: { title: 'Pasta Kursları | MyCakeAleks', description: 'Profesyonel online pasta ve konditerlik kursları. Başlangıçtan ileri seviyeye, her kurs sertifikalı.', ogLocale: 'tr_TR' },
+  ru: { title: 'Курсы кондитерского мастерства | MyCakeAleks', description: 'Профессиональные онлайн курсы по кондитерскому делу. От начинающего до профессионала, с сертификатом.', ogLocale: 'ru_RU' },
+  en: { title: 'Cake & Pastry Courses | MyCakeAleks', description: 'Professional online cake and pastry courses. From beginner to advanced, all courses include a certificate.', ogLocale: 'en_US' },
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const m = COURSES_META[locale] ?? COURSES_META.tr
+  const url = `${locale === 'tr' ? SITE : `${SITE}/${locale}`}/courses`
+  return {
+    title: m.title,
+    description: m.description,
+    openGraph: { title: m.title, description: m.description, url, type: 'website', locale: m.ogLocale },
+  }
+}
 
 export default async function CoursesPage() {
   const t = await getTranslations()

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
@@ -5,8 +6,38 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 
+const SITE = 'https://mycakealeks.com.tr'
+
 interface Props {
   params: Promise<{ locale: string; slug: string }>
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale, slug } = await params
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/courses?where[slug][equals]=${slug}&limit=1`,
+      { cache: 'no-store' },
+    )
+    const data = await res.json()
+    const course = data.docs?.[0]
+    if (!course) return { title: 'MyCakeAleks' }
+    const title = `${course.title} | MyCakeAleks`
+    const description = course.description || `${course.title} - MyCakeAleks`
+    const url = `${locale === 'tr' ? SITE : `${SITE}/${locale}`}/courses/${slug}`
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url,
+        type: 'website',
+      },
+    }
+  } catch {
+    return { title: 'MyCakeAleks' }
+  }
 }
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -57,8 +88,21 @@ export default async function CourseDetailPage({ params }: Props) {
   const freeLessons = lessons.filter((l) => l.isFree).length
   const currency = process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.title,
+    description: course.description || course.title,
+    provider: { '@type': 'Organization', name: 'MyCakeAleks', url: SITE },
+    offers: { '@type': 'Offer', price: course.price, priceCurrency: 'TRY' },
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Nav */}
       <nav className="sticky top-0 z-40 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
