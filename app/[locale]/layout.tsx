@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { routing } from '@/i18n/routing'
+import YandexMetrika from '@/app/components/YandexMetrika'
+import GoogleAnalytics from '@/app/components/GoogleAnalytics'
 import './styles.css'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -65,6 +67,8 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <YandexMetrika />
+        <GoogleAnalytics />
       </body>
     </html>
   )
