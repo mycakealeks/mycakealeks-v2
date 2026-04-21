@@ -34,6 +34,11 @@ export async function generateMetadata({
       card: 'summary_large_image',
       images: ['/og-image.svg'],
     },
+    verification: {
+      other: {
+        'msvalidate.01': 'E9110B5F43309068CDD97BC070157F7A',
+      },
+    },
   }
 }
 
