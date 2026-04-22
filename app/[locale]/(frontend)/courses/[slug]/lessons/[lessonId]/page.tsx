@@ -4,14 +4,18 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import VideoPlayer from '@/app/[locale]/components/VideoPlayer'
 import LessonList from '@/app/[locale]/components/LessonList'
+import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 
 interface Props {
   params: Promise<{ locale: string; slug: string; lessonId: string }>
 }
 
+const SITE = 'https://mycakealeks.com.tr'
+
 export default async function LessonPage({ params }: Props) {
-  const { slug, lessonId } = await params
+  const { locale, slug, lessonId } = await params
   const t = await getTranslations()
+  const base = locale === 'tr' ? SITE : `${SITE}/${locale}`
 
   let lesson: any = null
   let course: any = null
@@ -46,8 +50,16 @@ export default async function LessonPage({ params }: Props) {
     )
   }
 
+  const breadcrumbs = [
+    { name: 'MyCakeAleks', url: base },
+    { name: t('nav.courses'), url: `${base}/courses` },
+    ...(course?.title ? [{ name: course.title, url: `${base}/courses/${slug}` }] : []),
+    ...(lesson?.title ? [{ name: lesson.title, url: `${base}/courses/${slug}/lessons/${lessonId}` }] : []),
+  ]
+
   return (
     <main className="min-h-screen bg-white">
+      <BreadcrumbJsonLd items={breadcrumbs} />
       {/* NAV */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">

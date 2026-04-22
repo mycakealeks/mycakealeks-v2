@@ -5,6 +5,7 @@ import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
+import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -47,8 +48,9 @@ const LEVEL_LABELS: Record<string, string> = {
 }
 
 export default async function CourseDetailPage({ params }: Props) {
-  const { slug } = await params
+  const { locale, slug } = await params
   const t = await getTranslations()
+  const base = locale === 'tr' ? SITE : `${SITE}/${locale}`
 
   let course: any = null
   let lessons: any[] = []
@@ -88,6 +90,12 @@ export default async function CourseDetailPage({ params }: Props) {
   const freeLessons = lessons.filter((l) => l.isFree).length
   const currency = process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'
 
+  const breadcrumbs = [
+    { name: 'MyCakeAleks', url: base },
+    { name: t('nav.courses'), url: `${base}/courses` },
+    { name: course.title, url: `${base}/courses/${slug}` },
+  ]
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Course',
@@ -99,10 +107,8 @@ export default async function CourseDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <BreadcrumbJsonLd items={breadcrumbs} />
       {/* Nav */}
       <nav className="sticky top-0 z-40 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">

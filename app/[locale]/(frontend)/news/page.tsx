@@ -3,6 +3,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -43,6 +44,13 @@ export default async function NewsPage({ searchParams }: Props) {
   const t = await getTranslations()
   const locale = await getLocale()
 
+  const SITE = 'https://mycakealeks.com.tr'
+  const base = locale === 'tr' ? SITE : `${SITE}/${locale}`
+  const breadcrumbs = [
+    { name: 'MyCakeAleks', url: base },
+    { name: t('nav.news'), url: `${base}/news` },
+  ]
+
   let news: any[] = []
   try {
     const catParam = category ? `&where[category][equals]=${category}` : ''
@@ -58,6 +66,7 @@ export default async function NewsPage({ searchParams }: Props) {
 
   return (
     <main className="min-h-screen bg-white">
+      <BreadcrumbJsonLd items={breadcrumbs} />
       {/* NAV */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">

@@ -7,7 +7,8 @@
     "register": "Sign Up",
     "dashboard": "Dashboard",
     "logout": "Log Out",
-    "start": "Get Started"
+    "start": "Get Started",
+    "faq": "FAQ"
   },
   "home": {
     "badge": "Professional Cake Education",
@@ -225,6 +226,12 @@
     "certificate": "Certificate on completion",
     "discount": "{percent}% off",
     "videoLessons": "{count} video lessons"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about MyCakeAleks",
+    "stillHaveQuestions": "Still have questions?",
+    "contactUs": "Browse our courses or reach us at support@mycakealeks.com.tr"
   },
   "news": {
     "title": "Bakery News",

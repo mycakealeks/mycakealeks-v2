@@ -70,6 +70,7 @@ export default function MobileMenu() {
             { href: '/courses' as const, emoji: '📚', label: t('nav.courses') },
             { href: '/news' as const, emoji: '📰', label: t('nav.news') },
             { href: '/recipes' as const, emoji: '🍰', label: t('nav.recipes') },
+            { href: '/faq' as const, emoji: '❓', label: t('nav.faq') },
             { href: '/dashboard' as const, emoji: '📊', label: t('nav.dashboard') },
           ].map((item) => (
             <Link

@@ -7,7 +7,8 @@
     "register": "Kayıt Ol",
     "dashboard": "Panelim",
     "logout": "Çıkış Yap",
-    "start": "Başla"
+    "start": "Başla",
+    "faq": "SSS"
   },
   "home": {
     "badge": "Profesyonel Pasta Eğitimi",
@@ -225,6 +226,12 @@
     "certificate": "Tamamlanma sertifikası",
     "discount": "%{percent} indirim",
     "videoLessons": "{count} video ders"
+  },
+  "faq": {
+    "title": "Sık Sorulan Sorular",
+    "subtitle": "MyCakeAleks hakkında merak ettikleriniz",
+    "stillHaveQuestions": "Hâlâ sorunuz mu var?",
+    "contactUs": "Kurslara göz atın veya destek@mycakealeks.com.tr adresinden bize yazın"
   },
   "news": {
     "title": "Pastacılık Haberleri",

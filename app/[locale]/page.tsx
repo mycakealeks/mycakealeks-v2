@@ -312,6 +312,7 @@ export default async function HomePage({
             <Link href="/courses" className="nav-link text-sm">{t('nav.courses')}</Link>
             <Link href="/news" className="nav-link text-sm">{t('nav.news')}</Link>
             <Link href="/recipes" className="nav-link text-sm">{t('nav.recipes')}</Link>
+            <Link href="/faq" className="nav-link text-sm">{t('nav.faq')}</Link>
             <Link href="/login" className="nav-link text-sm">{t('nav.login')}</Link>
           </div>
           <p className="text-xs text-gray-400">© 2025 MyCakeAleks</p>

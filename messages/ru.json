@@ -7,7 +7,8 @@
     "register": "Регистрация",
     "dashboard": "Кабинет",
     "logout": "Выйти",
-    "start": "Начать"
+    "start": "Начать",
+    "faq": "FAQ"
   },
   "home": {
     "badge": "Профессиональное обучение",
@@ -225,6 +226,12 @@
     "certificate": "Сертификат по окончании",
     "discount": "Скидка {percent}%",
     "videoLessons": "{count} видеоуроков"
+  },
+  "faq": {
+    "title": "Часто задаваемые вопросы",
+    "subtitle": "Ответы на популярные вопросы о MyCakeAleks",
+    "stillHaveQuestions": "Остались вопросы?",
+    "contactUs": "Посмотрите курсы или напишите нам на support@mycakealeks.com.tr"
   },
   "news": {
     "title": "Кондитерские новости",
