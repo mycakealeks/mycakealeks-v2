@@ -77,6 +77,11 @@ export interface Config {
     payments: Payment;
     lessons: Lesson;
     progress: Progress;
+    news: News;
+    coupons: Coupon;
+    points: Point;
+    achievements: Achievement;
+    reviews: Review;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +99,11 @@ export interface Config {
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     lessons: LessonsSelect<false> | LessonsSelect<true>;
     progress: ProgressSelect<false> | ProgressSelect<true>;
+    news: NewsSelect<false> | NewsSelect<true>;
+    coupons: CouponsSelect<false> | CouponsSelect<true>;
+    points: PointsSelect<false> | PointsSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -386,6 +396,109 @@ export interface Progress {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  title: string;
+  /**
+   * Boş bırakırsanız başlıktan otomatik oluşturulur.
+   */
+  slug?: string | null;
+  locale: 'tr' | 'ru' | 'en';
+  excerpt?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  category?: ('trends' | 'recipes' | 'techniques' | 'business' | 'inspiration') | null;
+  coverEmoji?: string | null;
+  publishedAt?: string | null;
+  status?: ('draft' | 'published') | null;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons".
+ */
+export interface Coupon {
+  id: number;
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrderAmount?: number | null;
+  maxUses?: number | null;
+  usedCount?: number | null;
+  expiresAt?: string | null;
+  isActive?: boolean | null;
+  /**
+   * Оставьте пустым для применения ко всем курсам
+   */
+  applicableCourses?: (number | Course)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "points".
+ */
+export interface Point {
+  id: number;
+  user: number | User;
+  points: number;
+  type: 'earned' | 'spent';
+  reason: 'course_purchase' | 'recipe_purchase' | 'referral' | 'promotion' | 'bonus' | 'spend';
+  orderId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: number;
+  user: number | User;
+  type: 'first_lesson' | 'first_course' | 'streak_7days' | 'streak_30days' | 'vip_student' | 'all_courses';
+  earnedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  user: number | User;
+  course: number | Course;
+  /**
+   * 1–5 stars
+   */
+  rating: number;
+  text: string;
+  /**
+   * Approve to show publicly
+   */
+  isApproved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -447,6 +560,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'progress';
         value: number | Progress;
+      } | null)
+    | ({
+        relationTo: 'news';
+        value: number | News;
+      } | null)
+    | ({
+        relationTo: 'coupons';
+        value: number | Coupon;
+      } | null)
+    | ({
+        relationTo: 'points';
+        value: number | Point;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: number | Achievement;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -690,6 +823,78 @@ export interface ProgressSelect<T extends boolean = true> {
   completed?: T;
   completedAt?: T;
   watchedSeconds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news_select".
+ */
+export interface NewsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  locale?: T;
+  excerpt?: T;
+  content?: T;
+  category?: T;
+  coverEmoji?: T;
+  publishedAt?: T;
+  status?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coupons_select".
+ */
+export interface CouponsSelect<T extends boolean = true> {
+  code?: T;
+  type?: T;
+  value?: T;
+  minOrderAmount?: T;
+  maxUses?: T;
+  usedCount?: T;
+  expiresAt?: T;
+  isActive?: T;
+  applicableCourses?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "points_select".
+ */
+export interface PointsSelect<T extends boolean = true> {
+  user?: T;
+  points?: T;
+  type?: T;
+  reason?: T;
+  orderId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  user?: T;
+  type?: T;
+  earnedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  user?: T;
+  course?: T;
+  rating?: T;
+  text?: T;
+  isApproved?: T;
   updatedAt?: T;
   createdAt?: T;
 }
