@@ -49,6 +49,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  themeColor: '#d4537e',
 }
 
 export default async function RootLayout({
@@ -63,12 +64,26 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="MyCakeAleks" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
         <YandexMetrika />
         <GoogleAnalytics />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js').catch(function(){});
+            });
+          }
+        `}} />
       </body>
     </html>
   )

@@ -20,6 +20,8 @@ import { Coupons } from "./collections/Coupons"
 import { Points } from "./collections/Points"
 import { Achievements } from "./collections/Achievements"
 import { Reviews } from "./collections/Reviews"
+import { Referrals } from "./collections/Referrals"
+import { GiftCertificates } from "./collections/GiftCertificates"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Recipes, Orders, Categories, Subscriptions, Payments, Lessons, Progress, News, Coupons, Points, Achievements, Reviews],
+  collections: [Users, Media, Courses, Recipes, Orders, Categories, Subscriptions, Payments, Lessons, Progress, News, Coupons, Points, Achievements, Reviews, Referrals, GiftCertificates],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

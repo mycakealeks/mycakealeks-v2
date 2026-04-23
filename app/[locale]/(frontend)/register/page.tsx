@@ -1,20 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useRouter } from '@/i18n/navigation'
 import { useTranslations, useLocale } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
 export default function RegisterPage() {
   const t = useTranslations()
   const router = useRouter()
   const locale = useLocale()
+  const searchParams = useSearchParams()
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) localStorage.setItem('referral_code', ref)
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,6 +59,17 @@ export default function RegisterPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, firstName }),
         }).catch(() => {})
+        // Apply referral code if present
+        const refCode = localStorage.getItem('referral_code')
+        if (refCode) {
+          fetch('/api/referral/apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ code: refCode }),
+          }).catch(() => {})
+          localStorage.removeItem('referral_code')
+        }
         window.location.href = `/${locale}/dashboard`
       } else {
         router.push('/login' as any)

@@ -38,6 +38,8 @@ function ProfileContent({ user }: { user: any }) {
   const [country, setCountry] = useState('')
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [earnedTypes, setEarnedTypes] = useState<Set<string>>(new Set())
+  const [referral, setReferral] = useState<{ code: string; totalReferred: number; totalPoints: number } | null>(null)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     fetch('/api/achievements', { credentials: 'include' })
@@ -47,7 +49,21 @@ function ProfileContent({ user }: { user: any }) {
         setEarnedTypes(new Set(types))
       })
       .catch(() => {})
+
+    fetch('/api/referral/my', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setReferral(d))
+      .catch(() => {})
   }, [])
+
+  function copyReferralLink() {
+    if (!referral) return
+    const url = `https://mycakealeks.com.tr/register?ref=${referral.code}`
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -197,6 +213,45 @@ function ProfileContent({ user }: { user: any }) {
                 )}
               </div>
             </form>
+          </div>
+
+          {/* Referral */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+            <h2 className="font-bold text-gray-900 text-lg mb-5">{t('referral.title')}</h2>
+            {referral ? (
+              <>
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  <div className="rounded-xl p-4 text-center" style={{ background: '#fbeaf0' }}>
+                    <p className="text-2xl font-extrabold" style={{ color: '#d4537e' }}>{referral.totalReferred}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('referral.invited')}</p>
+                  </div>
+                  <div className="rounded-xl p-4 text-center" style={{ background: '#fbeaf0' }}>
+                    <p className="text-2xl font-extrabold" style={{ color: '#d4537e' }}>{referral.totalPoints}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('referral.earned')}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-500 mb-2">{t('referral.yourLink')}</p>
+                <div className="flex gap-2">
+                  <input
+                    readOnly
+                    value={`https://mycakealeks.com.tr/register?ref=${referral.code}`}
+                    className="input-field text-xs flex-1"
+                  />
+                  <button
+                    onClick={copyReferralLink}
+                    className="px-4 py-2 rounded-xl text-sm font-semibold text-white flex-shrink-0"
+                    style={{ background: copied ? '#16a34a' : '#d4537e' }}
+                  >
+                    {copied ? '✓' : t('referral.copy')}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">{t('referral.rewardDesc')}</p>
+              </>
+            ) : (
+              <div className="flex justify-center py-4">
+                <div className="w-6 h-6 border-2 border-pink-200 border-t-pink-600 rounded-full animate-spin" />
+              </div>
+            )}
           </div>
 
           {/* Achievements */}

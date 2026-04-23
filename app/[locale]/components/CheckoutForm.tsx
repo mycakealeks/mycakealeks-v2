@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import PaymentButton from './PaymentButton'
 import CouponInput from './CouponInput'
+import GiftCertInput from './GiftCertInput'
 
 interface CheckoutFormProps {
   courseId?: string
@@ -26,12 +27,17 @@ export default function CheckoutForm({
   totalLabel,
   currency,
 }: CheckoutFormProps) {
-  const [finalAmount, setFinalAmount] = useState(baseAmount)
-  const [discount, setDiscount] = useState(0)
+  const [couponDiscount, setCouponDiscount] = useState(0)
+  const [giftDiscount, setGiftDiscount] = useState(0)
+  const discount = couponDiscount + giftDiscount
+  const finalAmount = Math.max(0, baseAmount - discount)
 
-  function handleDiscount(disc: number, final: number) {
-    setDiscount(disc)
-    setFinalAmount(final)
+  function handleCouponDiscount(disc: number, _final: number) {
+    setCouponDiscount(disc)
+  }
+
+  function handleGiftDiscount(disc: number, _final: number) {
+    setGiftDiscount(disc)
   }
 
   return (
@@ -50,7 +56,8 @@ export default function CheckoutForm({
         </span>
       </div>
 
-      <CouponInput courseId={courseId} amount={baseAmount} onDiscount={handleDiscount} />
+      <CouponInput courseId={courseId} amount={baseAmount} onDiscount={handleCouponDiscount} />
+      <GiftCertInput amount={baseAmount} onDiscount={handleGiftDiscount} />
 
       <div className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
         <PaymentButton

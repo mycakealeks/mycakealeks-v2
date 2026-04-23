@@ -54,6 +54,16 @@ export default async function HomePage({
   const t = await getTranslations()
   const m = HOME_META[locale] ?? HOME_META.tr
 
+  // Real platform stats
+  let statsData = { users: 0, lessons: 0, courses: 0 }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/stats`,
+      { cache: 'no-store' },
+    )
+    if (res.ok) statsData = await res.json()
+  } catch { /* use defaults */ }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -122,9 +132,9 @@ export default async function HomePage({
         {/* Stats — 2×2 on mobile, 4 cols on md */}
         <div className="mt-12 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-2xl">
           {[
-            { val: t('home.stat1Value'), label: t('home.stat1Label') },
-            { val: t('home.stat2Value'), label: t('home.stat2Label') },
-            { val: t('home.stat3Value'), label: t('home.stat3Label') },
+            { val: statsData.users > 0 ? `${statsData.users}+` : t('home.stat1Value'), label: t('home.stat1Label') },
+            { val: statsData.lessons > 0 ? `${statsData.lessons}+` : t('home.stat2Value'), label: t('home.stat2Label') },
+            { val: statsData.courses > 0 ? `${statsData.courses}` : t('home.stat3Value'), label: t('home.stat3Label') },
             { val: t('home.stat4Value'), label: t('home.stat4Label') },
           ].map((s) => (
             <div key={s.label} className="text-center">

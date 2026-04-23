@@ -61,10 +61,19 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const story = STORY[locale] ?? STORY.tr
   const mission = MISSION[locale] ?? MISSION.tr
 
+  let statsData = { users: 0, lessons: 0, courses: 0 }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/stats`,
+      { cache: 'no-store' },
+    )
+    if (res.ok) statsData = await res.json()
+  } catch { /* use defaults */ }
+
   const stats = [
     { value: '10+', label: t('about.yearsExp'), icon: '⭐' },
-    { value: '2400+', label: t('about.students'), icon: '👩‍🍳' },
-    { value: '50+', label: t('about.courses'), icon: '📚' },
+    { value: statsData.users > 0 ? `${statsData.users}+` : '—', label: t('about.students'), icon: '👩‍🍳' },
+    { value: statsData.lessons > 0 ? `${statsData.lessons}+` : '—', label: t('about.courses'), icon: '📚' },
     { value: '3', label: t('about.countries'), icon: '🌍' },
   ]
 

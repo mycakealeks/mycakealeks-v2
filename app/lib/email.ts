@@ -258,6 +258,44 @@ export async function sendWeeklyProgressEmail(
   })
 }
 
+// ── Gift certificate ──────────────────────────────────────────────────────────
+export async function sendGiftCertificateEmail(
+  recipientEmail: string,
+  recipientName: string,
+  senderName: string,
+  amount: number,
+  code: string,
+  message: string,
+) {
+  const html = layout(`
+    ${title('🎁', `${recipientName}, sana hediye var!`)}
+    ${subtitle(`<strong style="color:#1a1a1a;">${senderName}</strong> sana MyCakeAleks hediye sertifikası gönderdi!`)}
+    ${message ? `<div style="background:#fdf2f6;border-radius:16px;padding:18px 24px;margin-bottom:24px;border-left:4px solid #d4537e;">
+      <p style="margin:0;color:#6b7280;font-size:13px;font-style:italic;">"${message}"</p>
+    </div>` : ''}
+    <div style="background:linear-gradient(135deg,#d4537e 0%,#e8799e 100%);border-radius:20px;padding:32px;margin-bottom:24px;text-align:center;">
+      <p style="margin:0 0 8px;color:rgba(255,255,255,0.8);font-size:13px;letter-spacing:1px;text-transform:uppercase;">Hediye Tutarı</p>
+      <p style="margin:0 0 16px;color:#ffffff;font-size:48px;font-weight:900;">${amount} TRY</p>
+      <div style="background:rgba(255,255,255,0.2);border-radius:12px;padding:12px 20px;display:inline-block;">
+        <p style="margin:0 0 4px;color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:2px;">SERTİFİKA KODU</p>
+        <p style="margin:0;color:#ffffff;font-size:22px;font-weight:900;letter-spacing:4px;">${code}</p>
+      </div>
+    </div>
+    <p style="color:#6b7280;font-size:13px;text-align:center;margin:0 0 20px;">
+      Bu kodu checkout sayfasında "Hediye Sertifikası" alanına girin. Son kullanma: 1 yıl.
+    </p>
+    ${btn(`${SITE}/courses`, 'Kurslara Göz At →')}
+    ${divider()}
+    ${support()}
+  `)
+  return resend.emails.send({
+    from: FROM,
+    to: recipientEmail,
+    subject: `🎁 ${senderName} sana ${amount} TRY hediye gönderdi — MyCakeAleks`,
+    html,
+  })
+}
+
 // ── Password reset ────────────────────────────────────────────────────────────
 export async function sendPasswordReset(
   email: string,
