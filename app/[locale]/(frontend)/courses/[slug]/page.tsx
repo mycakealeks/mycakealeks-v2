@@ -6,6 +6,7 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
+import CourseReviews from '@/app/[locale]/components/CourseReviews'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -269,6 +270,23 @@ export default async function CourseDetailPage({ params }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Reviews */}
+        {course && (
+          <div className="mt-8">
+            <CourseReviews
+              courseId={String(course.id)}
+              reviewsLabel={t('reviews.title')}
+              ratingLabel={t('reviews.rating')}
+              writeLabel={t('reviews.write')}
+              submitLabel={t('reviews.submit')}
+              mustPurchaseLabel={t('reviews.mustPurchase')}
+              loginLabel={t('reviews.loginRequired')}
+              alreadyReviewedLabel={t('reviews.alreadyReviewed')}
+              pendingLabel={t('reviews.pending')}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

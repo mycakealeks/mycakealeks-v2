@@ -164,12 +164,14 @@ function MyCoursesContent({ user }: { user: any }) {
                           >
                             {t('myCourses.viewBtn')}
                           </Link>
-                          <button
+                          <a
+                            href={`/api/certificate/${c.courseId}`}
+                            download
                             className="text-sm font-semibold px-4 py-2 rounded-lg"
                             style={{ background: '#fbeaf0', color: '#d4537e' }}
                           >
                             🏆 {t('myCourses.certificate')}
-                          </button>
+                          </a>
                         </>
                       ) : c.nextLessonId ? (
                         <Link

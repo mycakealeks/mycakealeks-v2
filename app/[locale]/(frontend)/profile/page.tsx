@@ -1,10 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Sidebar from '@/app/[locale]/components/Sidebar'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
 import BottomNav from '@/app/[locale]/components/BottomNav'
+
+const ALL_BADGES = [
+  { type: 'first_lesson',  emoji: '🎯', labelKey: 'achievements.first_lesson',  condKey: 'achievements.cond_first_lesson' },
+  { type: 'first_course',  emoji: '🎓', labelKey: 'achievements.first_course',  condKey: 'achievements.cond_first_course' },
+  { type: 'streak_7days',  emoji: '🔥', labelKey: 'achievements.streak_7days',  condKey: 'achievements.cond_streak_7days' },
+  { type: 'streak_30days', emoji: '💎', labelKey: 'achievements.streak_30days', condKey: 'achievements.cond_streak_30days' },
+  { type: 'vip_student',   emoji: '👑', labelKey: 'achievements.vip_student',   condKey: 'achievements.cond_vip_student' },
+  { type: 'all_courses',   emoji: '🏆', labelKey: 'achievements.all_courses',   condKey: 'achievements.cond_all_courses' },
+]
 
 const COUNTRIES = [
   { value: '', label: '—' },
@@ -28,6 +37,17 @@ function ProfileContent({ user }: { user: any }) {
   const [lastName, setLastName] = useState(user.lastName ?? '')
   const [country, setCountry] = useState('')
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
+  const [earnedTypes, setEarnedTypes] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    fetch('/api/achievements', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => {
+        const types = (d.achievements ?? []).map((a: any) => a.type)
+        setEarnedTypes(new Set(types))
+      })
+      .catch(() => {})
+  }, [])
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -177,6 +197,38 @@ function ProfileContent({ user }: { user: any }) {
                 )}
               </div>
             </form>
+          </div>
+
+          {/* Achievements */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+            <h2 className="font-bold text-gray-900 text-lg mb-5">{t('achievements.title')}</h2>
+            <div className="grid grid-cols-3 gap-3">
+              {ALL_BADGES.map((badge) => {
+                const earned = earnedTypes.has(badge.type)
+                return (
+                  <div
+                    key={badge.type}
+                    className="flex flex-col items-center p-4 rounded-xl border transition-all"
+                    style={
+                      earned
+                        ? { border: '1.5px solid #f0c0d0', background: '#fbeaf0' }
+                        : { border: '1.5px solid #e5e7eb', background: '#f9fafb', opacity: 0.5 }
+                    }
+                    title={t(badge.condKey as any)}
+                  >
+                    <span className="text-3xl mb-2" style={{ filter: earned ? 'none' : 'grayscale(1)' }}>
+                      {badge.emoji}
+                    </span>
+                    <p className="text-xs font-semibold text-center text-gray-700 leading-snug">
+                      {t(badge.labelKey as any)}
+                    </p>
+                    {earned && (
+                      <span className="mt-1 text-xs font-bold" style={{ color: '#d4537e' }}>✓</span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
           {/* Change password */}

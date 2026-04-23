@@ -303,6 +303,44 @@
     "spendDesc": "1 point = 0.5 TRY discount",
     "minSpend": "Minimum 10 points required"
   },
+  "certificate": {
+    "download": "Download Certificate",
+    "title": "Certificate",
+    "notCompleted": "Complete the course to receive your certificate"
+  },
+  "reviews": {
+    "title": "Student Reviews",
+    "rating": "Rating",
+    "write": "Write a Review",
+    "submit": "Submit",
+    "mustPurchase": "Purchase the course to leave a review",
+    "loginRequired": "Log in to leave a review",
+    "alreadyReviewed": "You have already reviewed this course",
+    "pending": "Your review has been submitted for moderation and will appear once approved"
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "No orders yet",
+    "receipt": "Download Receipt",
+    "status_paid": "Paid",
+    "status_pending": "Pending",
+    "status_cancelled": "Cancelled"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "first_lesson": "First Lesson",
+    "first_course": "First Course",
+    "streak_7days": "7-Day Streak",
+    "streak_30days": "30-Day Streak",
+    "vip_student": "VIP Student",
+    "all_courses": "Master",
+    "cond_first_lesson": "Complete your first lesson",
+    "cond_first_course": "Complete your first course",
+    "cond_streak_7days": "Study 7 days in a row",
+    "cond_streak_30days": "Study 30 days in a row",
+    "cond_vip_student": "Purchase 3 courses",
+    "cond_all_courses": "Own all courses"
+  },
   "myCourses": {
     "title": "My Courses",
     "filterAll": "All",

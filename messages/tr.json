@@ -303,6 +303,44 @@
     "spendDesc": "1 puan = 0.5 TRY indirim",
     "minSpend": "Minimum 10 puan gerekli"
   },
+  "certificate": {
+    "download": "Sertifika İndir",
+    "title": "Sertifika",
+    "notCompleted": "Kursu tamamlayarak sertifikanızı alabilirsiniz"
+  },
+  "reviews": {
+    "title": "Öğrenci Yorumları",
+    "rating": "Puan",
+    "write": "Yorum Yaz",
+    "submit": "Gönder",
+    "mustPurchase": "Yorum yazmak için kursu satın alın",
+    "loginRequired": "Yorum yazmak için giriş yapın",
+    "alreadyReviewed": "Bu kursa zaten yorum yaptınız",
+    "pending": "Yorumunuz inceleme için gönderildi, onaylandıktan sonra yayınlanacak"
+  },
+  "orders": {
+    "title": "Siparişlerim",
+    "empty": "Henüz sipariş yok",
+    "receipt": "Çek İndir",
+    "status_paid": "Ödendi",
+    "status_pending": "Bekliyor",
+    "status_cancelled": "İptal"
+  },
+  "achievements": {
+    "title": "Başarılar",
+    "first_lesson": "İlk Ders",
+    "first_course": "İlk Kurs",
+    "streak_7days": "7 Gün Serisi",
+    "streak_30days": "30 Gün Serisi",
+    "vip_student": "VIP Öğrenci",
+    "all_courses": "Usta",
+    "cond_first_lesson": "İlk dersi tamamla",
+    "cond_first_course": "İlk kursu tamamla",
+    "cond_streak_7days": "7 gün üst üste ders yap",
+    "cond_streak_30days": "30 gün üst üste ders yap",
+    "cond_vip_student": "3 kurs satın al",
+    "cond_all_courses": "Tüm kurslara sahip ol"
+  },
   "myCourses": {
     "title": "Kurslarım",
     "filterAll": "Tümü",

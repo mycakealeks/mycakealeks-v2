@@ -303,6 +303,44 @@
     "spendDesc": "1 балл = 0.5 TRY скидка",
     "minSpend": "Минимум 10 баллов"
   },
+  "certificate": {
+    "download": "Скачать сертификат",
+    "title": "Сертификат",
+    "notCompleted": "Завершите курс чтобы получить сертификат"
+  },
+  "reviews": {
+    "title": "Отзывы студентов",
+    "rating": "Оценка",
+    "write": "Написать отзыв",
+    "submit": "Отправить",
+    "mustPurchase": "Купите курс чтобы оставить отзыв",
+    "loginRequired": "Войдите чтобы оставить отзыв",
+    "alreadyReviewed": "Вы уже оставили отзыв на этот курс",
+    "pending": "Ваш отзыв отправлен на модерацию и появится после одобрения"
+  },
+  "orders": {
+    "title": "Мои заказы",
+    "empty": "Заказов пока нет",
+    "receipt": "Скачать чек",
+    "status_paid": "Оплачен",
+    "status_pending": "Ожидает",
+    "status_cancelled": "Отменён"
+  },
+  "achievements": {
+    "title": "Достижения",
+    "first_lesson": "Первый урок",
+    "first_course": "Первый курс",
+    "streak_7days": "7 дней подряд",
+    "streak_30days": "30 дней подряд",
+    "vip_student": "VIP студент",
+    "all_courses": "Мастер",
+    "cond_first_lesson": "Завершите первый урок",
+    "cond_first_course": "Завершите первый курс",
+    "cond_streak_7days": "7 дней подряд занимайтесь",
+    "cond_streak_30days": "30 дней подряд занимайтесь",
+    "cond_vip_student": "Купите 3 курса",
+    "cond_all_courses": "Получите все курсы"
+  },
   "myCourses": {
     "title": "Мои курсы",
     "filterAll": "Все",

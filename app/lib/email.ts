@@ -150,6 +150,114 @@ export async function sendCourseAccess(
   })
 }
 
+// ── Abandoned cart ───────────────────────────────────────────────────────────
+export async function sendAbandonedCartEmail(
+  email: string,
+  firstName: string,
+  courseName: string,
+  courseSlug: string,
+) {
+  const name = firstName || 'Öğrenci'
+  const courseUrl = `${SITE}/courses/${courseSlug}`
+  const html = layout(`
+    ${title('🎂', 'Kursunuz sizi bekliyor!')}
+    ${subtitle(`Merhaba ${name}, <strong style="color:#1a1a1a;">${courseName}</strong> kursuna göz attınız ama satın almayı tamamlamadınız.`)}
+    <div style="background:#fdf2f6;border-radius:16px;padding:20px 24px;margin-bottom:24px;text-align:center;">
+      <p style="margin:0 0 6px;color:#9ca3af;font-size:12px;">Bu kurs ile öğrenecekleriniz:</p>
+      <p style="margin:0;color:#1a1a1a;font-size:14px;line-height:1.8;">
+        🎥 HD video dersler &nbsp;·&nbsp; 🏆 Sertifika &nbsp;·&nbsp; 🤖 AI asistan
+      </p>
+    </div>
+    ${btn(`${courseUrl}`, 'Satın Al →')}
+    ${divider()}
+    ${support()}
+  `)
+  return resend.emails.send({
+    from: FROM,
+    to: email,
+    subject: `🎂 Kursunuz sizi bekliyor — ${courseName}`,
+    html,
+  })
+}
+
+// ── Course completion ─────────────────────────────────────────────────────────
+export async function sendCourseCompletionEmail(
+  email: string,
+  firstName: string,
+  courseName: string,
+) {
+  const name = firstName || 'Öğrenci'
+  const html = layout(`
+    ${title('🏆', `Tebrikler, ${name}!`)}
+    ${subtitle(`<strong style="color:#1a1a1a;">${courseName}</strong> kursunu başarıyla tamamladınız!`)}
+    <div style="background:#f0fdf4;border-radius:16px;padding:16px 20px;margin-bottom:24px;text-align:center;">
+      <p style="margin:0;color:#16a34a;font-size:14px;font-weight:700;">
+        🎓 Sertifikanız hazır — hemen indirin!
+      </p>
+    </div>
+    ${btn(`${SITE}/my-courses`, 'Sertifikamı İndir →')}
+    ${divider()}
+    <p style="color:#6b7280;font-size:14px;text-align:center;margin:0 0 16px;">
+      Bir sonraki kursa göz atmak ister misiniz?
+    </p>
+    ${btn(`${SITE}/courses`, 'Diğer Kurslara Bak →')}
+    ${divider()}
+    ${support()}
+  `)
+  return resend.emails.send({
+    from: FROM,
+    to: email,
+    subject: `🏆 Tebrikler! ${courseName} kursunu tamamladınız`,
+    html,
+  })
+}
+
+// ── Weekly progress ───────────────────────────────────────────────────────────
+export async function sendWeeklyProgressEmail(
+  email: string,
+  firstName: string,
+  stats: { lessonsThisWeek: number; totalLessons: number; coursesInProgress: number },
+) {
+  const name = firstName || 'Öğrenci'
+  const { lessonsThisWeek, totalLessons, coursesInProgress } = stats
+  const html = layout(`
+    ${title('📊', `Bu hafta nasıl geçti, ${name}?`)}
+    ${subtitle('İşte bu haftaki öğrenme istatistikleriniz:')}
+    <div style="background:#fdf2f6;border-radius:16px;padding:24px;margin-bottom:24px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" style="padding:8px;">
+            <p style="margin:0;font-size:32px;font-weight:900;color:#d4537e;">${lessonsThisWeek}</p>
+            <p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">Bu hafta ders</p>
+          </td>
+          <td align="center" style="padding:8px;">
+            <p style="margin:0;font-size:32px;font-weight:900;color:#d4537e;">${totalLessons}</p>
+            <p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">Toplam ders</p>
+          </td>
+          <td align="center" style="padding:8px;">
+            <p style="margin:0;font-size:32px;font-weight:900;color:#d4537e;">${coursesInProgress}</p>
+            <p style="margin:4px 0 0;font-size:12px;color:#9ca3af;">Devam eden kurs</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <p style="color:#6b7280;font-size:14px;text-align:center;margin:0 0 20px;">
+      ${lessonsThisWeek === 0
+        ? 'Bu hafta henüz ders yapmadınız. Bugün başlamak için harika bir gün! 💪'
+        : `Harika gidiyorsunuz! Devam edin 🚀`}
+    </p>
+    ${btn(`${SITE}/dashboard`, 'Öğrenmeye Devam Et →')}
+    ${divider()}
+    ${support()}
+  `)
+  return resend.emails.send({
+    from: FROM,
+    to: email,
+    subject: `📊 Haftalık İlerleme Raporunuz — MyCakeAleks`,
+    html,
+  })
+}
+
 // ── Password reset ────────────────────────────────────────────────────────────
 export async function sendPasswordReset(
   email: string,
