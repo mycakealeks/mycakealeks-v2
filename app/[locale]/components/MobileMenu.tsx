@@ -70,6 +70,9 @@ export default function MobileMenu() {
             { href: '/courses' as const, emoji: '📚', label: t('nav.courses') },
             { href: '/news' as const, emoji: '📰', label: t('nav.news') },
             { href: '/recipes' as const, emoji: '🍰', label: t('nav.recipes') },
+            { href: '/pricing' as const, emoji: '💎', label: t('nav.pricing') },
+            { href: '/about' as const, emoji: '👩‍🍳', label: t('nav.about') },
+            { href: '/search' as const, emoji: '🔍', label: t('nav.search') },
             { href: '/faq' as const, emoji: '❓', label: t('nav.faq') },
             { href: '/dashboard' as const, emoji: '📊', label: t('nav.dashboard') },
           ].map((item) => (

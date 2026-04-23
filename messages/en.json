@@ -8,7 +8,10 @@
     "dashboard": "Dashboard",
     "logout": "Log Out",
     "start": "Get Started",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "about": "About",
+    "pricing": "Pricing",
+    "search": "Search"
   },
   "home": {
     "badge": "Professional Cake Education",
@@ -245,6 +248,60 @@
     "cat_techniques": "Techniques",
     "cat_business": "Business",
     "cat_inspiration": "Inspiration"
+  },
+  "about": {
+    "role": "Professional Pastry Chef & Instructor",
+    "tagline": "Over 10 years of inspiring and teaching the art of cake making.",
+    "yearsExp": "Years Experience",
+    "students": "Students",
+    "courses": "Courses",
+    "countries": "Countries",
+    "ctaCourses": "Browse Courses",
+    "ctaTitle": "Ready to Learn With You",
+    "ctaSubtitle": "Now is the perfect time to create your dream cake."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search courses, news, recipes...",
+    "filterAll": "All",
+    "noResults": "No results found"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that fits you best and start your cake journey.",
+    "planSingle": "Single Course",
+    "planBundle": "3-Course Bundle",
+    "planAllAccess": "All Access",
+    "perCourse": "course",
+    "per3Courses": "3 courses",
+    "perYear": "year",
+    "mostPopular": "Most Popular",
+    "feat1Video": "HD Video Lessons",
+    "feat2Cert": "Completion Certificate",
+    "feat3AI": "AI Cake Assistant",
+    "feat4AllCourses": "All Courses Access",
+    "feat5Support": "Priority Support",
+    "ctaSingle": "Start Course",
+    "ctaBundle": "Get Bundle",
+    "ctaAllAccess": "Get All Access",
+    "guarantee": "30-day money-back guarantee. Not satisfied? We'll refund you.",
+    "faq1q": "How do I pay?",
+    "faq1a": "We accept credit and debit cards via a secure payment gateway.",
+    "faq2q": "Is the certificate valid?",
+    "faq2a": "Yes, a digital certificate is issued upon course completion.",
+    "faq3q": "When can I access lessons?",
+    "faq3a": "Access is granted immediately after payment with no time limit."
+  },
+  "points": {
+    "title": "My Points",
+    "balance": "Points Balance",
+    "history": "Points History",
+    "earned": "Earned",
+    "spent": "Spent",
+    "noHistory": "No transactions yet",
+    "spend": "Spend Points",
+    "spendDesc": "1 point = 0.5 TRY discount",
+    "minSpend": "Minimum 10 points required"
   },
   "myCourses": {
     "title": "My Courses",

@@ -80,7 +80,9 @@ export default async function HomePage({
           <div className="hidden md:flex items-center gap-6">
             <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
             <Link href="/news" className="nav-link">{t('nav.news')}</Link>
-            <Link href="/recipes" className="nav-link">{t('nav.recipes')}</Link>
+            <Link href="/pricing" className="nav-link">{t('nav.pricing')}</Link>
+            <Link href="/about" className="nav-link">{t('nav.about')}</Link>
+            <Link href="/search" className="nav-link text-gray-400 hover:text-gray-600" aria-label="Search">🔍</Link>
           </div>
           {/* Desktop right */}
           <div className="flex items-center gap-2 md:gap-3">
@@ -311,7 +313,8 @@ export default async function HomePage({
           <div className="flex gap-5">
             <Link href="/courses" className="nav-link text-sm">{t('nav.courses')}</Link>
             <Link href="/news" className="nav-link text-sm">{t('nav.news')}</Link>
-            <Link href="/recipes" className="nav-link text-sm">{t('nav.recipes')}</Link>
+            <Link href="/pricing" className="nav-link text-sm">{t('nav.pricing')}</Link>
+            <Link href="/about" className="nav-link text-sm">{t('nav.about')}</Link>
             <Link href="/faq" className="nav-link text-sm">{t('nav.faq')}</Link>
             <Link href="/login" className="nav-link text-sm">{t('nav.login')}</Link>
           </div>

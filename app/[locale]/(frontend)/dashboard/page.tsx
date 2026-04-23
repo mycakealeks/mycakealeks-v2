@@ -22,6 +22,7 @@ function DashboardContent({ user }: { user: any }) {
   const t = useTranslations()
   const [progresses, setProgresses] = useState<CourseProgress[]>([])
   const [loading, setLoading] = useState(true)
+  const [pointsBalance, setPointsBalance] = useState<number | null>(null)
 
   const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
 
@@ -63,6 +64,11 @@ function DashboardContent({ user }: { user: any }) {
       .then(setProgresses)
       .catch(() => {})
       .finally(() => setLoading(false))
+
+    fetch('/api/points/balance')
+      .then((r) => r.json())
+      .then((d) => setPointsBalance(d.balance ?? 0))
+      .catch(() => setPointsBalance(0))
   }, [user])
 
   const totalCompleted = progresses.reduce((s, c) => s + c.completedLessons, 0)
@@ -195,6 +201,29 @@ function DashboardContent({ user }: { user: any }) {
                 })}
               </div>
             )}
+          </div>
+
+          {/* Points card */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-xl font-bold text-gray-900">{t('points.title')}</h2>
+              <Link href="/dashboard/points" className="text-sm font-semibold" style={{ color: '#d4537e' }}>
+                {t('points.history')} →
+              </Link>
+            </div>
+            <div
+              className="rounded-2xl p-6 flex items-center justify-between"
+              style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff5f8 100%)', border: '1.5px solid #f0d0dc' }}
+            >
+              <div>
+                <p className="text-sm text-gray-500">{t('points.balance')}</p>
+                <p className="text-4xl font-extrabold mt-1" style={{ color: '#d4537e' }}>
+                  {pointsBalance === null ? '…' : pointsBalance}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">{t('points.spendDesc')}</p>
+              </div>
+              <span className="text-5xl">⭐</span>
+            </div>
           </div>
 
           {/* AI Chat */}

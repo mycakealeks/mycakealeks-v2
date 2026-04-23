@@ -8,7 +8,10 @@
     "dashboard": "Panelim",
     "logout": "Çıkış Yap",
     "start": "Başla",
-    "faq": "SSS"
+    "faq": "SSS",
+    "about": "Hakkında",
+    "pricing": "Fiyatlar",
+    "search": "Ara"
   },
   "home": {
     "badge": "Profesyonel Pasta Eğitimi",
@@ -245,6 +248,60 @@
     "cat_techniques": "Teknikler",
     "cat_business": "İş Dünyası",
     "cat_inspiration": "İlham"
+  },
+  "about": {
+    "role": "Profesyonel Konditer & Eğitmen",
+    "tagline": "10 yılı aşkın deneyimle pasta sanatını sevdiriyor, ilham veriyor.",
+    "yearsExp": "Yıl Deneyim",
+    "students": "Öğrenci",
+    "courses": "Kurs",
+    "countries": "Ülke Deneyimi",
+    "ctaCourses": "Kurslara Bak",
+    "ctaTitle": "Seninle Öğrenmeye Hazırım",
+    "ctaSubtitle": "Hayalindeki pastayı yapmanın tam zamanı."
+  },
+  "search": {
+    "title": "Ara",
+    "placeholder": "Kurs, haber veya tarif ara...",
+    "filterAll": "Tümü",
+    "noResults": "Sonuç bulunamadı"
+  },
+  "pricing": {
+    "title": "Fiyatlar",
+    "subtitle": "Sana en uygun planı seç, pasta sanatında ilerlemeye başla.",
+    "planSingle": "Tekli Kurs",
+    "planBundle": "3'lü Paket",
+    "planAllAccess": "Tam Erişim",
+    "perCourse": "kurs",
+    "per3Courses": "3 kurs",
+    "perYear": "yıl",
+    "mostPopular": "En Popüler",
+    "feat1Video": "HD Video Dersler",
+    "feat2Cert": "Tamamlanma Sertifikası",
+    "feat3AI": "AI Pasta Asistanı",
+    "feat4AllCourses": "Tüm Kurslara Erişim",
+    "feat5Support": "Öncelikli Destek",
+    "ctaSingle": "Kursa Başla",
+    "ctaBundle": "Paketi Al",
+    "ctaAllAccess": "Hepsine Eriş",
+    "guarantee": "30 gün para iade garantisi. Memnun kalmazsan iade ediyoruz.",
+    "faq1q": "Ödememi nasıl yapabilirim?",
+    "faq1a": "Kredi kartı ve banka kartı ile güvenli ödeme yapabilirsiniz.",
+    "faq2q": "Sertifika geçerli mi?",
+    "faq2a": "Evet, kurs bitiminde dijital sertifika verilir.",
+    "faq3q": "Derslere ne zaman erişebilirim?",
+    "faq3a": "Ödeme sonrası anında erişim sağlanır, süre sınırı yoktur."
+  },
+  "points": {
+    "title": "Puanlarım",
+    "balance": "Mevcut Puan",
+    "history": "Puan Geçmişi",
+    "earned": "Kazanıldı",
+    "spent": "Harcandı",
+    "noHistory": "Henüz puan hareketi yok",
+    "spend": "Puan Harca",
+    "spendDesc": "1 puan = 0.5 TRY indirim",
+    "minSpend": "Minimum 10 puan gerekli"
   },
   "myCourses": {
     "title": "Kurslarım",
