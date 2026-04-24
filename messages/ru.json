@@ -1,4 +1,15 @@
 {
+  "validation": {
+    "emailInvalid": "Введите корректный email",
+    "emailTaken": "Этот email уже зарегистрирован",
+    "emailChecking": "Проверяем...",
+    "emailAvailable": "Email свободен",
+    "passwordWeak": "Слабый",
+    "passwordMedium": "Средний",
+    "passwordStrong": "Сильный",
+    "nameInvalid": "Имя должно содержать минимум 2 символа",
+    "passwordAddDigit": "добавьте цифру для надёжности"
+  },
   "currency": {
     "try": "Турецкая лира",
     "rub": "Российский рубль",

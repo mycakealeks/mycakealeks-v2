@@ -1,4 +1,15 @@
 {
+  "validation": {
+    "emailInvalid": "Enter a valid email address",
+    "emailTaken": "This email is already registered",
+    "emailChecking": "Checking...",
+    "emailAvailable": "Email is available",
+    "passwordWeak": "Weak",
+    "passwordMedium": "Medium",
+    "passwordStrong": "Strong",
+    "nameInvalid": "Name must be at least 2 characters",
+    "passwordAddDigit": "add a digit to make it strong"
+  },
   "currency": {
     "try": "Turkish Lira",
     "rub": "Russian Ruble",

@@ -1,4 +1,15 @@
 {
+  "validation": {
+    "emailInvalid": "Geçerli bir e-posta adresi girin",
+    "emailTaken": "Bu e-posta zaten kayıtlı",
+    "emailChecking": "Kontrol ediliyor...",
+    "emailAvailable": "E-posta kullanılabilir",
+    "passwordWeak": "Zayıf",
+    "passwordMedium": "Orta",
+    "passwordStrong": "Güçlü",
+    "nameInvalid": "Ad en az 2 karakter olmalıdır",
+    "passwordAddDigit": "güçlü yapmak için rakam ekleyin"
+  },
   "currency": {
     "try": "Türk Lirası",
     "rub": "Rus Rublesi",
