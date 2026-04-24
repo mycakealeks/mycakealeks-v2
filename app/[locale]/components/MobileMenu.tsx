@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -14,11 +14,11 @@ export default function MobileMenu() {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  const close = () => setOpen(false)
+  const close = useCallback(() => setOpen(false), [])
 
   return (
     <>
-      {/* Hamburger — mobile only */}
+      {/* Hamburger */}
       <button
         className="md:hidden flex items-center justify-center w-11 h-11 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
         onClick={() => setOpen(true)}
@@ -29,16 +29,21 @@ export default function MobileMenu() {
         </svg>
       </button>
 
-      {/* Backdrop */}
+      {/* Backdrop — cursor-pointer required for iOS click events on divs */}
       <div
         className={`fixed inset-0 bg-black/40 z-[45] md:hidden transition-opacity duration-300 ${
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
+        style={{ cursor: 'pointer' }}
         onClick={close}
+        aria-hidden="true"
       />
 
       {/* Bottom sheet drawer */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
         className={`fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl md:hidden transition-transform duration-300 ease-out ${
           open ? 'translate-y-0 pointer-events-auto' : 'translate-y-full pointer-events-none'
         }`}
@@ -56,9 +61,10 @@ export default function MobileMenu() {
           </span>
           <button
             onClick={close}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            className="w-11 h-11 flex items-center justify-center rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 active:bg-gray-100"
+            aria-label="Close menu"
           >
-            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -89,11 +95,19 @@ export default function MobileMenu() {
         </nav>
 
         {/* Auth buttons */}
-        <div className="px-4 pt-2 pb-2 flex gap-3">
-          <Link href="/login" onClick={close} className="btn-outline flex-1 justify-center py-3 text-base">
+        <div className="px-4 pt-3 pb-2 flex gap-3">
+          <Link
+            href="/login"
+            onClick={close}
+            className="btn-outline flex-1 justify-center text-base"
+          >
             {t('nav.login')}
           </Link>
-          <Link href="/register" onClick={close} className="btn-primary flex-1 justify-center py-3 text-base">
+          <Link
+            href="/register"
+            onClick={close}
+            className="btn-primary flex-1 justify-center text-base"
+          >
             {t('nav.start')}
           </Link>
         </div>

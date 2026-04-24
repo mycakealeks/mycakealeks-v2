@@ -320,7 +320,7 @@ export default async function HomePage({
           <p className="text-xl font-bold">
             My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
           </p>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
             <Link href="/courses" className="nav-link text-sm">{t('nav.courses')}</Link>
             <Link href="/news" className="nav-link text-sm">{t('nav.news')}</Link>
             <Link href="/pricing" className="nav-link text-sm">{t('nav.pricing')}</Link>

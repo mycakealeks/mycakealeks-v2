@@ -81,8 +81,8 @@ function DashboardContent({ user }: { user: any }) {
       <Sidebar userName={userName} userEmail={user.email} />
       <BottomNav />
 
-      <main className="flex-1 overflow-auto pb-20 md:pb-0">
-        <div className="max-w-5xl mx-auto px-8 py-10">
+      <main className="flex-1 overflow-x-hidden overflow-y-auto pb-20 md:pb-0">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-10">
 
           {/* Header */}
           <div className="mb-8">

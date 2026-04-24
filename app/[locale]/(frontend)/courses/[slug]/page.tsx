@@ -129,7 +129,7 @@ export default async function CourseDetailPage({ params }: Props) {
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 md:py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 md:py-12 pb-28 md:pb-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
           <Link href="/courses" className="hover:text-pink-600 transition-colors">{t('nav.courses')}</Link>
@@ -143,7 +143,7 @@ export default async function CourseDetailPage({ params }: Props) {
             {/* Hero card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
               <div
-                className="h-48 md:h-64 flex items-center justify-center text-8xl"
+                className="w-full h-48 md:h-64 flex items-center justify-center text-8xl"
                 style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 100%)' }}
               >
                 {course.emoji || '🎂'}
@@ -208,8 +208,8 @@ export default async function CourseDetailPage({ params }: Props) {
             )}
           </div>
 
-          {/* Sidebar */}
-          <div className="md:col-span-1">
+          {/* Sidebar — hidden on mobile (shown as sticky bottom bar instead) */}
+          <div className="hidden md:block md:col-span-1">
             {/* Purchase card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
               <div className="flex items-baseline gap-2 mb-1">
@@ -271,6 +271,18 @@ export default async function CourseDetailPage({ params }: Props) {
           </div>
         </div>
 
+        {/* Mobile: lesson list (below main content, above reviews) */}
+        <div className="md:hidden mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100">
+            <h2 className="font-bold text-gray-800">{t('lessons.title')}</h2>
+          </div>
+          {lessons.length === 0 ? (
+            <p className="text-gray-400 text-sm px-5 py-6 text-center">{t('lessons.empty')}</p>
+          ) : (
+            <LessonList lessons={lessons} courseSlug={slug} hasAccess={false} />
+          )}
+        </div>
+
         {/* Reviews */}
         {course && (
           <div className="mt-8">
@@ -287,6 +299,22 @@ export default async function CourseDetailPage({ params }: Props) {
             />
           </div>
         )}
+      </div>
+
+      {/* Mobile sticky buy bar */}
+      <div
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 px-4 py-3 flex items-center gap-3"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
+      >
+        <div>
+          <p className="text-xs text-gray-400">{course.title}</p>
+          <p className="text-lg font-extrabold" style={{ color: '#d4537e' }}>
+            {course.price} {process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'}
+          </p>
+        </div>
+        <div className="flex-1">
+          <PaymentButton courseId={String(course.id)} amount={course.price} />
+        </div>
       </div>
     </div>
   )

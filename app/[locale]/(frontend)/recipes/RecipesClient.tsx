@@ -44,25 +44,26 @@ export default function RecipesClient({ recipes, t }: { recipes: any[]; t: Recor
 
   return (
     <div className="max-w-6xl mx-auto px-4 md:px-6 py-8">
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      {/* Category filters — horizontal scroll on mobile */}
+      <div className="flex gap-2 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 mb-2 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
         {(['all', 'cake', 'cream', 'decoration', 'dough', 'other'] as const).map((c) => (
           <button
             key={c}
             onClick={() => setCategory(c)}
-            className="text-sm px-3 py-1.5 rounded-full border font-semibold transition-colors"
+            className="flex-shrink-0 text-sm px-4 py-2 rounded-full border font-semibold transition-colors min-h-[44px]"
             style={pillStyle(category === c)}
           >
             {catLabels[c]}
           </button>
         ))}
       </div>
-      <div className="flex flex-wrap gap-2 mb-8">
+      {/* Difficulty filters */}
+      <div className="flex gap-2 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 mb-6 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
         {(['all', 'easy', 'medium', 'hard'] as const).map((d) => (
           <button
             key={d}
             onClick={() => setDifficulty(d)}
-            className="text-sm px-3 py-1.5 rounded-full border font-semibold transition-colors"
+            className="flex-shrink-0 text-sm px-4 py-2 rounded-full border font-semibold transition-colors min-h-[44px]"
             style={pillStyle(difficulty === d)}
           >
             {d === 'all' ? t.filterAll : diffLabel[d]}

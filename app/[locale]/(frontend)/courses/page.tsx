@@ -87,8 +87,9 @@ export default async function CoursesPage({ params }: { params: Promise<{ locale
         </div>
       </section>
 
-      {/* FILTERS */}
-      <section className="max-w-6xl mx-auto px-4 md:px-6 py-5 flex flex-wrap gap-2">
+      {/* FILTERS — horizontal scroll on mobile */}
+      <section className="max-w-6xl mx-auto py-5">
+        <div className="flex gap-2 overflow-x-auto px-4 md:px-6 pb-1 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
         {[
           { key: 'filterAll', label: t('courses.filterAll') },
           { key: 'filterBeginner', label: t('courses.filterBeginner') },
@@ -97,7 +98,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ locale
         ].map((f, i) => (
           <button
             key={f.key}
-            className="text-sm font-semibold px-4 py-2.5 rounded-full border transition-colors min-h-[44px]"
+            className="flex-shrink-0 text-sm font-semibold px-4 py-2.5 rounded-full border transition-colors min-h-[44px]"
             style={
               i === 0
                 ? { background: '#d4537e', color: 'white', borderColor: '#d4537e' }
@@ -107,6 +108,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ locale
             {f.label}
           </button>
         ))}
+        </div>
       </section>
 
       {/* GRID — 1 col → 2 col → 3 col */}
