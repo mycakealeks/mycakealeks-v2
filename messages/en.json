@@ -95,6 +95,24 @@
     "ctaSubtitle": "Begin today and bring your dream recipes to life",
     "ctaBtn": "Get Started Now"
   },
+  "verifyEmail": {
+    "title": "Verify your email",
+    "subtitle": "We sent a verification link to {email}",
+    "resendBtn": "Didn't receive it? Resend",
+    "resending": "Sending...",
+    "resendSuccess": "Email sent! Check your inbox.",
+    "resendError": "Failed to send email. Try again.",
+    "checking": "Verifying...",
+    "successTitle": "Email verified!",
+    "successDesc": "Redirecting to login...",
+    "expiredTitle": "Link expired",
+    "expiredDesc": "The verification link has expired. Please register again.",
+    "invalidTitle": "Invalid link",
+    "invalidDesc": "This link is invalid or has already been used.",
+    "backToRegister": "Back to registration",
+    "noticeTitle": "Please verify your email",
+    "noticeDesc": "Confirm your email address to access courses and your dashboard."
+  },
   "auth": {
     "forgotPassword": "Forgot Password",
     "forgotPasswordLink": "Forgot password?",

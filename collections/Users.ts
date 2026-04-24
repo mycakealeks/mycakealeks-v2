@@ -60,5 +60,25 @@ export const Users: CollectionConfig = {
       hasMany: true,
       label: 'Купленные рецепты',
     },
+    {
+      name: 'isEmailVerified',
+      type: 'checkbox',
+      defaultValue: false,
+      saveToJWT: true,
+      label: 'Email подтверждён',
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'emailVerificationToken',
+      type: 'text',
+      label: 'Токен верификации',
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'emailVerificationExpires',
+      type: 'date',
+      label: 'Токен истекает',
+      admin: { position: 'sidebar' },
+    },
   ],
 }

@@ -296,6 +296,30 @@ export async function sendGiftCertificateEmail(
   })
 }
 
+// ── Email verification ────────────────────────────────────────────────────────
+export async function sendVerificationEmail(email: string, firstName: string, token: string) {
+  const name = firstName || 'Kullanıcı'
+  const verifyUrl = `${SITE}/verify-email?token=${token}`
+  const html = layout(`
+    ${title('📧', 'E-posta adresinizi doğrulayın')}
+    ${subtitle(`Merhaba ${name}! Kayıt işleminizi tamamlamak için e-posta adresinizi doğrulayın. Bağlantı <strong>24 saat</strong> geçerlidir.`)}
+    ${btn(verifyUrl, 'Doğrula →')}
+    <div style="background:#fdf2f6;border-radius:12px;padding:14px 20px;margin-top:8px;">
+      <p style="margin:0;color:#9ca3af;font-size:12px;text-align:center;">
+        Bu kaydı siz yapmadıysanız bu e-postayı görmezden gelebilirsiniz.
+      </p>
+    </div>
+    ${divider()}
+    ${support()}
+  `)
+  return resend.emails.send({
+    from: FROM,
+    to: email,
+    subject: 'Email adresinizi doğrulayın - MyCakeAleks',
+    html,
+  })
+}
+
 // ── Password reset ────────────────────────────────────────────────────────────
 export async function sendPasswordReset(
   email: string,

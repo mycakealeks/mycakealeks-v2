@@ -95,6 +95,24 @@
     "ctaSubtitle": "Bugün başla, hayalindeki tarifleri gerçeğe dönüştür",
     "ctaBtn": "Hemen Başla"
   },
+  "verifyEmail": {
+    "title": "E-postanızı doğrulayın",
+    "subtitle": "{email} adresine doğrulama linki gönderdik",
+    "resendBtn": "E-posta gelmedi mi? Tekrar gönder",
+    "resending": "Gönderiliyor...",
+    "resendSuccess": "E-posta gönderildi! Gelen kutunuzu kontrol edin.",
+    "resendError": "Gönderme hatası. Tekrar deneyin.",
+    "checking": "Doğrulanıyor...",
+    "successTitle": "E-posta doğrulandı!",
+    "successDesc": "Giriş sayfasına yönlendiriliyorsunuz...",
+    "expiredTitle": "Bağlantı süresi doldu",
+    "expiredDesc": "Doğrulama bağlantısının süresi doldu. Lütfen tekrar kayıt olun.",
+    "invalidTitle": "Geçersiz bağlantı",
+    "invalidDesc": "Bu bağlantı geçersiz veya zaten kullanılmış.",
+    "backToRegister": "Kayıt sayfasına dön",
+    "noticeTitle": "E-postanızı doğrulayın",
+    "noticeDesc": "Kurslara ve panele erişmek için e-posta adresinizi doğrulayın."
+  },
   "auth": {
     "forgotPassword": "Şifremi Unuttum",
     "forgotPasswordLink": "Şifremi unuttum?",

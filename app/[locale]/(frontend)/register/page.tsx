@@ -51,6 +51,9 @@ export default function RegisterPage() {
 
   const [submitError, setSubmitError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resendDone, setResendDone] = useState(false)
 
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -108,6 +111,20 @@ export default function RegisterPage() {
   const pwOk = pwStrength === 'strong'
   const canSubmit = nameOk && emailOk && pwOk && !loading
 
+  const handleResend = async () => {
+    setResending(true)
+    try {
+      await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      })
+      setResendDone(true)
+    } finally {
+      setResending(false)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!canSubmit) return
@@ -127,38 +144,57 @@ export default function RegisterPage() {
         return
       }
 
-      const loginRes = await fetch('/api/users/login', {
+      await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email: email.trim(), password }),
-      })
+        body: JSON.stringify({ email: email.trim() }),
+      }).catch(() => {})
 
-      if (loginRes.ok) {
-        fetch('/api/email/welcome', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName }),
-        }).catch(() => {})
-        const refCode = localStorage.getItem('referral_code')
-        if (refCode) {
-          fetch('/api/referral/apply', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ code: refCode }),
-          }).catch(() => {})
-          localStorage.removeItem('referral_code')
-        }
-        window.location.href = `/${locale}/dashboard`
-      } else {
-        router.push('/login' as any)
-      }
+      setEmailSent(true)
     } catch {
       setSubmitError(t('register.errorNetwork'))
     } finally {
       setLoading(false)
     }
+  }
+
+  if (emailSent) {
+    return (
+      <main
+        className="min-h-screen flex items-center justify-center px-4 py-12 relative"
+        style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 60%)' }}
+      >
+        <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md text-center">
+          <Link href="/" className="inline-block text-2xl font-extrabold tracking-tight mb-6">
+            My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
+          </Link>
+          <div className="text-5xl mb-4">📧</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('verifyEmail.title')}</h1>
+          <p className="text-gray-500 text-sm mb-6">
+            {t('verifyEmail.subtitle', { email: email.trim() })}
+          </p>
+          {resendDone ? (
+            <p className="text-sm font-medium" style={{ color: '#22c55e' }}>
+              ✅ {t('verifyEmail.resendSuccess')}
+            </p>
+          ) : (
+            <button
+              onClick={handleResend}
+              disabled={resending}
+              className="btn-primary w-full justify-center py-3 disabled:opacity-40"
+            >
+              {resending ? t('verifyEmail.resending') : t('verifyEmail.resendBtn')}
+            </button>
+          )}
+          <p className="mt-6 text-sm text-gray-400">
+            {t('register.hasAccount')}{' '}
+            <Link href="/login" className="font-semibold" style={{ color: '#d4537e' }}>
+              {t('register.loginLink')}
+            </Link>
+          </p>
+        </div>
+      </main>
+    )
   }
 
   return (
