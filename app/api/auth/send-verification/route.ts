@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true }) // don't reveal if email exists
     }
 
-    const user = result.docs[0]
+    const user = result.docs[0] as any
     if (user.isEmailVerified) {
       return NextResponse.json({ ok: true })
     }
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const token = crypto.randomUUID()
     const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
-    await payload.update({
+    await (payload as any).update({
       collection: 'users',
       id: user.id,
       data: {

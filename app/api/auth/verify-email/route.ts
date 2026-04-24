@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'invalid_token' }, { status: 400 })
     }
 
-    const user = result.docs[0]
+    const user = result.docs[0] as any
     const expires = user.emailVerificationExpires
       ? new Date(user.emailVerificationExpires as string)
       : null
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'token_expired' }, { status: 400 })
     }
 
-    await payload.update({
+    await (payload as any).update({
       collection: 'users',
       id: user.id,
       data: {
