@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { formatPrice } from '@/app/lib/currency'
 import type { PurchaseType, SubscriptionPlan } from '@/types/payments'
 
 interface PaymentButtonProps {
@@ -18,7 +19,6 @@ export default function PaymentButton({
   courseId,
   userId,
   amount,
-  currency,
   purchaseType = 'one_time',
   plan,
   className,
@@ -27,9 +27,10 @@ export default function PaymentButton({
   const locale = useLocale()
   const [loading, setLoading] = useState(false)
 
-  // ru locale → ЮKassa, all others → Stripe
+  // ru locale → YuKassa, all others → Stripe
   const provider = locale === 'ru' ? 'yukassa' : 'stripe'
-  const paymentCurrency = currency || process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'
+  // Payment always processed in TRY (base currency)
+  const paymentCurrency = process.env.NEXT_PUBLIC_BASE_CURRENCY ?? 'TRY'
 
   const handlePayment = async () => {
     setLoading(true)
@@ -55,7 +56,6 @@ export default function PaymentButton({
         })
         const data = await res.json()
         if (data.url) window.location.href = data.url
-
       } else {
         const res = await fetch('/api/payments/yukassa/create-payment', {
           method: 'POST',
@@ -81,15 +81,16 @@ export default function PaymentButton({
     }
   }
 
+  const displayPrice = formatPrice(amount, locale)
+  const providerLabel = provider === 'yukassa' ? t('viaYukassa') : t('viaStripe')
+
   return (
     <button
       onClick={handlePayment}
       disabled={loading}
       className={className ?? 'w-full bg-pink-600 text-white py-3 rounded-lg font-semibold hover:bg-pink-700 disabled:opacity-50 transition'}
     >
-      {loading
-        ? t('processing')
-        : `${t('pay')} ${amount} ${paymentCurrency} · ${provider === 'yukassa' ? t('viaYukassa') : t('viaStripe')}`}
+      {loading ? t('processing') : `${t('pay')} ${displayPrice} · ${providerLabel}`}
     </button>
   )
 }

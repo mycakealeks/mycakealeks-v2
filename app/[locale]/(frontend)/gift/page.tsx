@@ -1,15 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import { formatPrice } from '@/app/lib/currency'
 
 const PRESET_AMOUNTS = [250, 500, 1000]
 
 export default function GiftPage() {
   const t = useTranslations()
+  const locale = useLocale()
   const [amount, setAmount] = useState<number>(500)
   const [customAmount, setCustomAmount] = useState('')
   const [isCustom, setIsCustom] = useState(false)
@@ -112,7 +114,7 @@ export default function GiftPage() {
                         ? { background: '#d4537e', color: 'white', borderColor: '#d4537e' }
                         : { background: 'white', color: '#374151', borderColor: '#e5e7eb' }}
                     >
-                      {a} TRY
+                      {formatPrice(a, locale)}
                     </button>
                   ))}
                   <button
@@ -174,7 +176,7 @@ export default function GiftPage() {
               <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: '#fbeaf0' }}>
                 <span className="text-sm text-gray-600">{t('gift.total')}</span>
                 <span className="text-2xl font-extrabold" style={{ color: '#d4537e' }}>
-                  {finalAmount || '—'} TRY
+                  {finalAmount ? formatPrice(finalAmount, locale) : '—'}
                 </span>
               </div>
 

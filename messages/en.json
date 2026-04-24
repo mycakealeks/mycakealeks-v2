@@ -1,4 +1,9 @@
 {
+  "currency": {
+    "try": "Turkish Lira",
+    "rub": "Russian Ruble",
+    "usd": "US Dollar"
+  },
   "nav": {
     "courses": "Courses",
     "news": "News",

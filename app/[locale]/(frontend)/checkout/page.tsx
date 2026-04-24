@@ -4,10 +4,12 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import CheckoutForm from '@/app/[locale]/components/CheckoutForm'
 
 interface CheckoutPageProps {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ courseId?: string; plan?: string; type?: string }>
 }
 
-export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
+export default async function CheckoutPage({ params, searchParams }: CheckoutPageProps) {
+  const { locale } = await params
   const t = await getTranslations()
   const { courseId, plan, type = 'one_time' } = await searchParams
 
@@ -17,7 +19,6 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   const isSubscription = type === 'subscription'
   const amount = isSubscription ? (plan === 'yearly' ? 199 : 29) : (course?.price ?? 49)
-  const currency = process.env.NEXT_PUBLIC_PAYMENT_CURRENCY ?? 'TRY'
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -54,7 +55,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
           plan={plan}
           cancelLabel={t('payment.cancel')}
           totalLabel={t('payment.total')}
-          currency={currency}
+          locale={locale}
         />
       </div>
     </main>

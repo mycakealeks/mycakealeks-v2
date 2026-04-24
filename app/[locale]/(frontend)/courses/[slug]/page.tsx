@@ -7,6 +7,7 @@ import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import CourseReviews from '@/app/[locale]/components/CourseReviews'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -89,7 +90,6 @@ export default async function CourseDetailPage({ params }: Props) {
   }
 
   const freeLessons = lessons.filter((l) => l.isFree).length
-  const currency = process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'
 
   const breadcrumbs = [
     { name: 'MyCakeAleks', url: base },
@@ -214,10 +214,10 @@ export default async function CourseDetailPage({ params }: Props) {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
               <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-3xl font-extrabold text-gray-900">
-                  {course.price} {currency}
+                  {formatPrice(course.price, locale)}
                 </span>
                 {course.oldPrice && (
-                  <span className="text-lg text-gray-400 line-through">{course.oldPrice} {currency}</span>
+                  <span className="text-lg text-gray-400 line-through">{formatPrice(course.oldPrice, locale)}</span>
                 )}
               </div>
               {course.oldPrice && (
@@ -309,7 +309,7 @@ export default async function CourseDetailPage({ params }: Props) {
         <div>
           <p className="text-xs text-gray-400">{course.title}</p>
           <p className="text-lg font-extrabold" style={{ color: '#d4537e' }}>
-            {course.price} {process.env.NEXT_PUBLIC_PAYMENT_CURRENCY || 'TRY'}
+            {formatPrice(course.price, locale)}
           </p>
         </div>
         <div className="flex-1">

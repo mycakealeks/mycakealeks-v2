@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Sidebar from '@/app/[locale]/components/Sidebar'
 import BottomNav from '@/app/[locale]/components/BottomNav'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
+import { formatPrice } from '@/app/lib/currency'
 
 interface OrderItem {
   itemType: 'course' | 'recipe'
@@ -32,6 +33,7 @@ const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }>
 
 function OrdersContent({ user }: { user: any }) {
   const t = useTranslations()
+  const locale = useLocale()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
@@ -130,7 +132,7 @@ td{padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px;}.total{font-wei
                     </div>
                     <div className="text-right flex-shrink-0">
                       <p className="font-extrabold text-gray-900">
-                        {order.total} {order.currency || 'TRY'}
+                        {formatPrice(order.total, locale)}
                       </p>
                       <span
                         className="text-xs font-semibold px-2 py-0.5 rounded-full"

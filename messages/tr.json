@@ -1,4 +1,9 @@
 {
+  "currency": {
+    "try": "Türk Lirası",
+    "rub": "Rus Rublesi",
+    "usd": "Amerikan Doları"
+  },
   "nav": {
     "courses": "Kurslar",
     "news": "Haberler",

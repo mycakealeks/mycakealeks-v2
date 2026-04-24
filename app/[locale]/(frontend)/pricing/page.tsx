@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -19,12 +20,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function PricingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const t = await getTranslations()
+  const PLAN_PRICES_TRY = { single: 490, bundle: 990, allaccess: 1990 }
 
   const plans = [
     {
       key: 'single',
       name: t('pricing.planSingle'),
-      price: '490',
+      price: formatPrice(PLAN_PRICES_TRY.single, locale),
       period: t('pricing.perCourse'),
       popular: false,
       features: [
@@ -40,7 +42,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
     {
       key: 'bundle',
       name: t('pricing.planBundle'),
-      price: '990',
+      price: formatPrice(PLAN_PRICES_TRY.bundle, locale),
       period: t('pricing.per3Courses'),
       popular: true,
       features: [
@@ -56,7 +58,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
     {
       key: 'allaccess',
       name: t('pricing.planAllAccess'),
-      price: '1990',
+      price: formatPrice(PLAN_PRICES_TRY.allaccess, locale),
       period: t('pricing.perYear'),
       popular: false,
       features: [
@@ -124,7 +126,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
               <h2 className="text-xl font-bold text-gray-900 mb-1">{plan.name}</h2>
               <div className="mb-4">
                 <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-                <span className="text-sm text-gray-400 ml-1">TRY / {plan.period}</span>
+                <span className="text-sm text-gray-400 ml-1">/ {plan.period}</span>
               </div>
 
               <ul className="space-y-2.5 mb-6 flex-1">

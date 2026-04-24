@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -27,8 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function CoursesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const t = await getTranslations()
-  const SITE = 'https://mycakealeks.com.tr'
-  const base = locale === 'tr' ? SITE : `${SITE}/${locale}`
+  const SITE_URL = 'https://mycakealeks.com.tr'
+  const base = locale === 'tr' ? SITE_URL : `${SITE_URL}/${locale}`
   let courses: any[] = []
 
   try {
@@ -132,7 +133,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ locale
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="font-extrabold text-xl" style={{ color: '#d4537e' }}>
-                      {course.price} ₺
+                      {formatPrice(course.price, locale)}
                     </span>
                     <Link
                       href={`/courses/${course.slug || course.id}`}

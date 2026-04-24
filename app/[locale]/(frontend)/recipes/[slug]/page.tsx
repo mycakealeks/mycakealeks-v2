@@ -5,6 +5,7 @@ import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -130,7 +131,7 @@ export default async function RecipeDetailPage({ params }: Props) {
             <h2 className="text-xl font-bold text-gray-900 mb-2">{t('recipes.premiumRecipe')}</h2>
             <p className="text-gray-500 mb-6 text-sm">{t('recipes.purchaseToUnlock')}</p>
             <div className="flex items-baseline justify-center gap-2 mb-5">
-              <span className="text-3xl font-extrabold" style={{ color: '#d4537e' }}>{recipe.price} TRY</span>
+              <span className="text-3xl font-extrabold" style={{ color: '#d4537e' }}>{formatPrice(recipe.price, locale)}</span>
             </div>
             <PaymentButton courseId={String(recipe.id)} amount={recipe.price} />
           </div>

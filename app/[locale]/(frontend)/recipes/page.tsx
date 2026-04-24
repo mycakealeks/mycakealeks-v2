@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import RecipesClient from './RecipesClient'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default async function RecipesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   const t = await getTranslations()
 
   let recipes: any[] = []
@@ -55,7 +57,7 @@ export default async function RecipesPage({ params }: { params: Promise<{ locale
         <p className="text-gray-500 max-w-xl mx-auto">{t('recipes.subtitle')}</p>
       </section>
 
-      <RecipesClient recipes={recipes} t={{
+      <RecipesClient recipes={recipes} locale={locale} t={{
         filterAll: t('recipes.filterAll'),
         free: t('recipes.free'),
         paid: t('recipes.paid'),

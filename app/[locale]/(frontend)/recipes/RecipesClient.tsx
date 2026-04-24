@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Link } from '@/i18n/navigation'
+import { formatPrice } from '@/app/lib/currency'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type Category = 'all' | 'cake' | 'cream' | 'decoration' | 'dough' | 'other'
@@ -12,7 +13,7 @@ const DIFF_COLOR: Record<Difficulty, { bg: string; color: string }> = {
   hard:   { bg: '#fef2f2', color: '#dc2626' },
 }
 
-export default function RecipesClient({ recipes, t }: { recipes: any[]; t: Record<string, string> }) {
+export default function RecipesClient({ recipes, locale, t }: { recipes: any[]; locale: string; t: Record<string, string> }) {
   const [category, setCategory] = useState<Category>('all')
   const [difficulty, setDifficulty] = useState<'all' | Difficulty>('all')
 
@@ -114,7 +115,7 @@ export default function RecipesClient({ recipes, t }: { recipes: any[]; t: Recor
                     {r.isFree ? (
                       <span className="text-sm font-bold" style={{ color: '#16a34a' }}>✓ {t.free}</span>
                     ) : (
-                      <span className="text-sm font-bold" style={{ color: '#d4537e' }}>{r.price} TRY</span>
+                      <span className="text-sm font-bold" style={{ color: '#d4537e' }}>{formatPrice(r.price, locale)}</span>
                     )}
                     <span className="text-xs font-semibold px-3 py-1.5 rounded-lg" style={{ background: '#fbeaf0', color: '#d4537e' }}>
                       {r.isFree ? t.filterAll : t.buy} →

@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
+import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -193,8 +194,8 @@ export default async function HomePage({
                   <p className="text-xs text-gray-400 mb-4">📹 {c.lessons} &nbsp;·&nbsp; ⏱ {c.hours}</p>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-extrabold text-xl" style={{ color: '#d4537e' }}>{c.price} ₺</span>
-                      <span className="text-xs text-gray-400 line-through ml-2">{c.oldPrice} ₺</span>
+                      <span className="font-extrabold text-xl" style={{ color: '#d4537e' }}>{formatPrice(Number(c.price), locale)}</span>
+                      <span className="text-xs text-gray-400 line-through ml-2">{formatPrice(Number(c.oldPrice), locale)}</span>
                     </div>
                     <Link href="/courses" className="btn-primary text-sm py-2.5 px-4 min-h-[44px] flex items-center">
                       {t('home.buyBtn')}

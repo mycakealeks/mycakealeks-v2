@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import PaymentButton from './PaymentButton'
 import CouponInput from './CouponInput'
 import GiftCertInput from './GiftCertInput'
+import { formatPrice } from '@/app/lib/currency'
 
 interface CheckoutFormProps {
   courseId?: string
@@ -14,7 +16,8 @@ interface CheckoutFormProps {
   plan?: string
   cancelLabel: string
   totalLabel: string
-  currency: string
+  locale?: string
+  currency?: string // kept for backwards compat, ignored
 }
 
 export default function CheckoutForm({
@@ -25,8 +28,11 @@ export default function CheckoutForm({
   plan,
   cancelLabel,
   totalLabel,
-  currency,
+  locale: localeProp,
 }: CheckoutFormProps) {
+  const localeHook = useLocale()
+  const locale = localeProp ?? localeHook
+
   const [couponDiscount, setCouponDiscount] = useState(0)
   const [giftDiscount, setGiftDiscount] = useState(0)
   const discount = couponDiscount + giftDiscount
@@ -45,14 +51,14 @@ export default function CheckoutForm({
       {discount > 0 && (
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-500">İndirim</span>
-          <span className="font-semibold text-green-600">–{discount} {currency}</span>
+          <span className="font-semibold text-green-600">–{formatPrice(discount, locale)}</span>
         </div>
       )}
 
       <div className="flex items-center justify-between py-3 border-t">
         <span className="text-gray-700 font-medium">{totalLabel}</span>
         <span className="text-2xl font-bold" style={{ color: '#d4537e' }}>
-          {finalAmount} {currency}
+          {formatPrice(finalAmount, locale)}
         </span>
       </div>
 
