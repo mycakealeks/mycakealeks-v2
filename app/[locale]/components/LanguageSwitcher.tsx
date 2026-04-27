@@ -5,6 +5,10 @@ import { usePathname } from '@/i18n/navigation'
 
 const locales = ['tr', 'ru', 'en'] as const
 
+function setPreferredLocale(loc: string) {
+  document.cookie = `preferred-locale=${loc}; path=/; max-age=31536000; samesite=lax`
+}
+
 export default function LanguageSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
@@ -19,6 +23,7 @@ export default function LanguageSwitcher() {
         <a
           key={loc}
           href={buildHref(loc)}
+          onClick={() => setPreferredLocale(loc)}
           className={`text-xs font-semibold px-2 py-1 rounded transition-colors ${
             locale === loc
               ? 'bg-pink-600 text-white'

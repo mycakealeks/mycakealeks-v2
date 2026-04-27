@@ -3,8 +3,46 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
+import { usePathname } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
+
+const LOCALES = ['tr', 'ru', 'en'] as const
+
+function setPreferredLocale(loc: string) {
+  document.cookie = `preferred-locale=${loc}; path=/; max-age=31536000; samesite=lax`
+}
+
+function MobileLangSwitcher() {
+  const locale = useLocale()
+  const pathname = usePathname()
+
+  return (
+    <div className="md:hidden flex items-center gap-0">
+      {LOCALES.map((loc, i) => (
+        <span key={loc} className="flex items-center">
+          <a
+            href={`/${loc}${pathname === '/' ? '' : pathname}`}
+            onClick={() => setPreferredLocale(loc)}
+            style={{
+              fontSize: 12,
+              fontWeight: locale === loc ? 700 : 400,
+              color: locale === loc ? '#d4537e' : '#9ca3af',
+              textDecoration: 'none',
+              padding: '2px 4px',
+            }}
+          >
+            {loc.toUpperCase()}
+          </a>
+          {i < LOCALES.length - 1 && (
+            <span style={{ color: '#d1d5db', fontSize: 11, userSelect: 'none' }}>·</span>
+          )}
+        </span>
+      ))}
+    </div>
+  )
+}
 
 export default function MobileMenu() {
   const t = useTranslations()
@@ -157,6 +195,7 @@ export default function MobileMenu() {
 
   return (
     <>
+      <MobileLangSwitcher />
       {/* Hamburger button — stays in the nav */}
       <button
         className="md:hidden flex items-center justify-center w-11 h-11 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
