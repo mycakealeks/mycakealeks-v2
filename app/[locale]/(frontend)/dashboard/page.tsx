@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Sidebar from '@/app/[locale]/components/Sidebar'
 import AiChat from '@/app/[locale]/components/AiChat'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
 import BottomNav from '@/app/[locale]/components/BottomNav'
+import RecommendedCourses from '@/app/[locale]/components/RecommendedCourses'
 
 interface CourseProgress {
   courseId: string
@@ -20,9 +21,11 @@ interface CourseProgress {
 
 function DashboardContent({ user }: { user: any }) {
   const t = useTranslations()
+  const locale = useLocale()
   const [progresses, setProgresses] = useState<CourseProgress[]>([])
   const [loading, setLoading] = useState(true)
   const [pointsBalance, setPointsBalance] = useState<number | null>(null)
+  const [smartDiscounts, setSmartDiscounts] = useState<any[]>([])
 
   const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
 
@@ -69,6 +72,13 @@ function DashboardContent({ user }: { user: any }) {
       .then((r) => r.json())
       .then((d) => setPointsBalance(d.balance ?? 0))
       .catch(() => setPointsBalance(0))
+
+    if (user.id) {
+      fetch(`/api/smart-discounts?userId=${user.id}`)
+        .then((r) => r.json())
+        .then((d) => setSmartDiscounts(d.discounts ?? []))
+        .catch(() => {})
+    }
   }, [user])
 
   const totalCompleted = progresses.reduce((s, c) => s + c.completedLessons, 0)
@@ -201,6 +211,46 @@ function DashboardContent({ user }: { user: any }) {
                 })}
               </div>
             )}
+          </div>
+
+          {/* Smart Discounts */}
+          {smartDiscounts.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-xl font-bold text-gray-900 mb-5">
+                🏷️ {locale === 'ru' ? 'Персональные скидки' : locale === 'en' ? 'Your Discounts' : 'Özel İndirimler'}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                {smartDiscounts.map((d) => (
+                  <div
+                    key={d.courseId}
+                    className="rounded-2xl p-5 flex items-center justify-between gap-4"
+                    style={{ background: '#fbeaf0', border: '1.5px solid #f0d0dc' }}
+                  >
+                    <div>
+                      <span
+                        className="inline-block text-xs font-bold px-2 py-0.5 rounded-full mb-1"
+                        style={{ background: '#d4537e', color: '#fff' }}
+                      >
+                        -{d.percent}%
+                      </span>
+                      <p className="font-bold text-gray-900 text-sm">{d.courseTitle}</p>
+                    </div>
+                    <a
+                      href={`/${locale}/checkout?courseId=${d.courseId}&discount=${d.percent}`}
+                      className="whitespace-nowrap text-sm font-bold px-4 py-2 rounded-xl"
+                      style={{ background: '#d4537e', color: '#fff', textDecoration: 'none' }}
+                    >
+                      {locale === 'ru' ? 'Купить' : locale === 'en' ? 'Buy' : 'Satın Al'}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AI Recommendations */}
+          <div className="mb-10">
+            <RecommendedCourses />
           </div>
 
           {/* Points card */}

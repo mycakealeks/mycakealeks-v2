@@ -7,6 +7,9 @@ import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import CourseReviews from '@/app/[locale]/components/CourseReviews'
+import TrackEvent from '@/app/[locale]/components/TrackEvent'
+import RecommendedCourses from '@/app/[locale]/components/RecommendedCourses'
+import SmartOfferPopup from '@/app/[locale]/components/SmartOfferPopup'
 import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -108,6 +111,12 @@ export default async function CourseDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <TrackEvent event="course_view" entityId={String(course.id)} entityType="course" />
+      <SmartOfferPopup
+        courseId={String(course.id)}
+        courseSlug={slug}
+        courseTitle={course.title}
+      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BreadcrumbJsonLd items={breadcrumbs} />
       {/* Nav */}
@@ -281,6 +290,11 @@ export default async function CourseDetailPage({ params }: Props) {
           ) : (
             <LessonList lessons={lessons} courseSlug={slug} hasAccess={false} />
           )}
+        </div>
+
+        {/* AI Recommendations */}
+        <div className="mt-8">
+          <RecommendedCourses courseId={String(course.id)} />
         </div>
 
         {/* Reviews */}

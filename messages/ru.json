@@ -448,5 +448,18 @@
     "browseBtn": "Смотреть курсы",
     "lessonsCount": "{completed}/{total} уроков",
     "certificate": "Получить сертификат"
+  },
+  "recommendations": {
+    "title": "Для вас",
+    "aiLabel": "AI рекомендует"
+  },
+  "smartDiscount": {
+    "bundleOffer": "Купи все курсы и сэкономь 30%!",
+    "continueWatching": "Продолжи с того места"
+  },
+  "popup": {
+    "specialOffer": "Персональное предложение",
+    "timer": "Предложение истекает:",
+    "buyNow": "Купить сейчас"
   }
 }

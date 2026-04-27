@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
+import RecommendedCourses from './components/RecommendedCourses'
 import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -313,6 +314,11 @@ export default async function HomePage({
             {t('home.ctaBtn')} →
           </Link>
         </div>
+      </section>
+
+      {/* AI Recommendations */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 pb-10">
+        <RecommendedCourses />
       </section>
 
       {/* ── FOOTER ── */}

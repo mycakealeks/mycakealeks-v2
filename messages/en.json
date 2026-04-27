@@ -448,5 +448,18 @@
     "browseBtn": "Browse Courses",
     "lessonsCount": "{completed}/{total} lessons",
     "certificate": "Get Certificate"
+  },
+  "recommendations": {
+    "title": "Recommended for you",
+    "aiLabel": "AI Pick"
+  },
+  "smartDiscount": {
+    "bundleOffer": "Buy all courses, save 30%!",
+    "continueWatching": "Continue where you left off"
+  },
+  "popup": {
+    "specialOffer": "Special offer for you",
+    "timer": "Offer expires in:",
+    "buyNow": "Buy Now"
   }
 }

@@ -448,5 +448,18 @@
     "browseBtn": "Kurslara Bak",
     "lessonsCount": "{completed}/{total} ders",
     "certificate": "Sertifika Al"
+  },
+  "recommendations": {
+    "title": "Sizin için seçtik",
+    "aiLabel": "AI Öneri"
+  },
+  "smartDiscount": {
+    "bundleOffer": "Tüm kursları al, %30 tasarruf et!",
+    "continueWatching": "Kaldığın yerden devam et"
+  },
+  "popup": {
+    "specialOffer": "Size özel teklif",
+    "timer": "Teklifin süresi:",
+    "buyNow": "Şimdi Al"
   }
 }

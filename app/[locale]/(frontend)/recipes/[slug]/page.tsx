@@ -5,6 +5,7 @@ import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
+import TrackEvent from '@/app/[locale]/components/TrackEvent'
 import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -68,6 +69,7 @@ export default async function RecipeDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <TrackEvent event="recipe_view" entityId={String(recipe.id)} entityType="recipe" />
       <BreadcrumbJsonLd items={breadcrumbs} />
 
       {/* Nav */}

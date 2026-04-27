@@ -5,6 +5,7 @@ import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import VideoPlayer from '@/app/[locale]/components/VideoPlayer'
 import LessonList from '@/app/[locale]/components/LessonList'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
+import TrackEvent from '@/app/[locale]/components/TrackEvent'
 
 interface Props {
   params: Promise<{ locale: string; slug: string; lessonId: string }>
@@ -59,6 +60,7 @@ export default async function LessonPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-white">
+      <TrackEvent event="lesson_view" entityId={lessonId} entityType="lesson" />
       <BreadcrumbJsonLd items={breadcrumbs} />
       {/* NAV */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
