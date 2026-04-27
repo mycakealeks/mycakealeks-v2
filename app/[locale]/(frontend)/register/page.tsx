@@ -22,6 +22,12 @@ const AppleIcon = () => (
   </svg>
 )
 
+const YandexIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+    <text x="3" y="18" fontFamily="Arial, sans-serif" fontSize="18" fontWeight="bold">Я</text>
+  </svg>
+)
+
 function RegisterAppleButton({ locale, label }: { locale: string; label: string }) {
   const [show, setShow] = useState(false)
   useEffect(() => {
@@ -265,6 +271,17 @@ export default function RegisterPage() {
             <GoogleIcon />
             <span className="flex-1 text-center">{t('auth.continueWithGoogle')}</span>
           </button>
+          {locale === 'ru' && (
+            <button
+              type="button"
+              onClick={() => signIn('yandex', { callbackUrl: `/api/auth/sync-payload?redirect=/${locale}/dashboard` })}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+              style={{ background: '#FF0000' }}
+            >
+              <YandexIcon />
+              <span className="flex-1 text-center">Яндекс ID ile войти</span>
+            </button>
+          )}
           <RegisterAppleButton locale={locale} label={t('auth.continueWithApple')} />
         </div>
 
