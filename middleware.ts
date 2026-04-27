@@ -109,5 +109,6 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|admin|.*\\..*).*)',],
+  // admin(?:/|$) excludes /admin and /admin/... but NOT /admin-analytics
+  matcher: ['/((?!api|_next|_vercel|admin(?:/|$)|.*\\..*).*)',],
 }

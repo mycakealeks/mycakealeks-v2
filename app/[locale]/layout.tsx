@@ -60,7 +60,9 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const messages = (await import(`../../messages/${locale}.json`)).default
+  const validLocales = ['tr', 'ru', 'en']
+  const safeLocale = validLocales.includes(locale) ? locale : 'tr'
+  const messages = (await import(`../../messages/${safeLocale}.json`)).default
 
   return (
     <html lang={locale}>
