@@ -56,6 +56,16 @@ export default function MobileMenu() {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
+  useEffect(() => {
+    const handleOrientationChange = () => setOpen(false)
+    window.addEventListener('orientationchange', handleOrientationChange)
+    window.addEventListener('resize', handleOrientationChange)
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientationChange)
+      window.removeEventListener('resize', handleOrientationChange)
+    }
+  }, [])
+
   const close = useCallback(() => setOpen(false), [])
 
   const portal = mounted ? createPortal(
@@ -91,6 +101,8 @@ export default function MobileMenu() {
           borderRadius: '24px 24px 0 0',
           boxShadow: '0 -4px 40px rgba(0,0,0,0.15)',
           paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          maxHeight: '100dvh',
+          overflowY: 'auto',
           transform: open ? 'translateY(0)' : 'translateY(100%)',
           pointerEvents: open ? 'auto' : 'none',
           transition: 'transform 0.3s ease',

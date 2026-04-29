@@ -131,8 +131,7 @@ export default async function CourseDetailPage({ params }: Props) {
             <Link href="/register" className="btn-primary text-sm px-5 py-2">{t('nav.start')}</Link>
             <LanguageSwitcher />
           </div>
-          <div className="md:hidden flex items-center gap-3">
-            <LanguageSwitcher />
+          <div className="md:hidden flex items-center gap-2">
             <MobileMenu />
           </div>
         </div>

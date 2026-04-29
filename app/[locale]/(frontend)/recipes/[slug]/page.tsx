@@ -80,8 +80,7 @@ export default async function RecipeDetailPage({ params }: Props) {
             <Link href="/recipes" className="nav-link text-sm">{t('nav.recipes')}</Link>
             <LanguageSwitcher />
           </div>
-          <div className="md:hidden flex items-center gap-3">
-            <LanguageSwitcher />
+          <div className="md:hidden flex items-center gap-2">
             <MobileMenu />
           </div>
         </div>
