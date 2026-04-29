@@ -10,6 +10,31 @@ const VERIFY_SKIP = ['/verify-email', '/verify-email-notice', '/logout', '/profi
 
 const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 365 days
 
+// ── Admin rate limiting ────────────────────────────────────────────────────
+const RATE_LIMIT_MAX = 5
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000 // 15 minutes
+const adminLoginAttempts = new Map<string, { count: number; firstAt: number }>()
+
+function isAdminLoginRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const record = adminLoginAttempts.get(ip)
+  if (!record || now - record.firstAt > RATE_LIMIT_WINDOW_MS) {
+    adminLoginAttempts.set(ip, { count: 1, firstAt: now })
+    return false
+  }
+  if (record.count >= RATE_LIMIT_MAX) return true
+  record.count++
+  return false
+}
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    '127.0.0.1'
+  )
+}
+
 function extractLocaleAndPath(pathname: string): { locale: string; path: string } {
   for (const locale of routing.locales as string[]) {
     if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
@@ -45,6 +70,41 @@ function detectLocaleFromHeader(acceptLanguage: string): string {
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
+
+  // ── /admin routes — handled separately from intl middleware ───────────────
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const isLoginPage = pathname === '/admin/login' || pathname.startsWith('/admin/login')
+
+    // Rate limit: block IPs that hammer /admin/login
+    if (isLoginPage) {
+      const ip = getClientIp(req)
+      if (isAdminLoginRateLimited(ip)) {
+        return new NextResponse(
+          'Too many login attempts. Please try again in 15 minutes.',
+          {
+            status: 429,
+            headers: {
+              'Content-Type': 'text/plain; charset=utf-8',
+              'Retry-After': '900',
+            },
+          },
+        )
+      }
+      return NextResponse.next()
+    }
+
+    // All other /admin/* — require valid payload-token with role=admin
+    const token = req.cookies.get('payload-token')?.value
+    if (token) {
+      const jwtPayload = getTokenPayload(token)
+      if (jwtPayload && jwtPayload.role === 'admin') {
+        return NextResponse.next()
+      }
+    }
+    // No token or not admin → Payload's own login page
+    return NextResponse.redirect(new URL('/admin/login', req.url))
+  }
+
   const { locale, path } = extractLocaleAndPath(pathname)
 
   // Auth check
@@ -109,6 +169,7 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // admin(?:/|$) excludes /admin and /admin/... but NOT /admin-analytics
-  matcher: ['/((?!api|_next|_vercel|admin(?:/|$)|.*\\..*).*)',],
+  // /admin is now handled by this middleware (rate limit + role check)
+  // api, _next, _vercel and static files (.*\\..*) are still excluded
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)',],
 }
