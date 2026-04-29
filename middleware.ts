@@ -11,8 +11,8 @@ const VERIFY_SKIP = ['/verify-email', '/verify-email-notice', '/logout', '/profi
 const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 365 days
 
 // ── Admin rate limiting ────────────────────────────────────────────────────
-const RATE_LIMIT_MAX = 5
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000 // 15 minutes
+const RATE_LIMIT_MAX = 20
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000 // 5 minutes
 const adminLoginAttempts = new Map<string, { count: number; firstAt: number }>()
 
 function isAdminLoginRateLimited(ip: string): boolean {
