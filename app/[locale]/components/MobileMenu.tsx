@@ -126,7 +126,7 @@ export default function MobileMenu() {
 
         {/* Nav links */}
         <nav style={{ padding: '8px 16px' }}>
-          {[
+          {([
             { href: '/courses', emoji: '📚', label: t('nav.courses') },
             { href: '/news', emoji: '📰', label: t('nav.news') },
             { href: '/recipes', emoji: '🍰', label: t('nav.recipes') },
@@ -135,8 +135,8 @@ export default function MobileMenu() {
             { href: '/search', emoji: '🔍', label: t('nav.search') },
             { href: '/faq', emoji: '❓', label: t('nav.faq') },
             { href: '/dashboard', emoji: '📊', label: t('nav.dashboard') },
-          ].map((item, idx, arr) => (
-            <a
+          ] as const).map((item, idx, arr) => (
+            <Link
               key={item.href}
               href={item.href}
               onClick={close}
@@ -152,13 +152,13 @@ export default function MobileMenu() {
             >
               <span style={{ fontSize: 20, width: 32, display: 'inline-block' }}>{item.emoji}</span>
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         {/* Auth buttons */}
         <div style={{ display: 'flex', gap: 12, padding: '12px 16px 8px' }}>
-          <a
+          <Link
             href="/login"
             onClick={close}
             style={{
@@ -169,8 +169,8 @@ export default function MobileMenu() {
             }}
           >
             {t('nav.login')}
-          </a>
-          <a
+          </Link>
+          <Link
             href="/register"
             onClick={close}
             style={{
@@ -181,7 +181,7 @@ export default function MobileMenu() {
             }}
           >
             {t('nav.start')}
-          </a>
+          </Link>
         </div>
 
         {/* Language switcher */}

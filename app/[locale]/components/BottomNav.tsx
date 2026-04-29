@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 
 const navItems = [
@@ -48,6 +49,7 @@ const navItems = [
 
 export default function BottomNav() {
   const t = useTranslations()
+  const locale = useLocale()
   const pathname = usePathname()
 
   const labels: Record<string, string> = {
@@ -61,7 +63,7 @@ export default function BottomNav() {
     try {
       await fetch('/api/users/logout', { method: 'POST', credentials: 'include' })
     } finally {
-      window.location.href = '/'
+      window.location.href = locale === 'tr' ? '/' : `/${locale}`
     }
   }
 

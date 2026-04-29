@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 
 interface SidebarProps {
@@ -67,6 +68,7 @@ const navItems = [
 
 export default function Sidebar({ userName, userEmail }: SidebarProps) {
   const t = useTranslations()
+  const locale = useLocale()
   const pathname = usePathname()
 
   const initials = userName
@@ -86,7 +88,7 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
     try {
       await fetch('/api/users/logout', { method: 'POST', credentials: 'include' })
     } finally {
-      window.location.href = '/'
+      window.location.href = locale === 'tr' ? '/' : `/${locale}`
     }
   }
 

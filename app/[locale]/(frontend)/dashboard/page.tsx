@@ -235,13 +235,13 @@ function DashboardContent({ user }: { user: any }) {
                       </span>
                       <p className="font-bold text-gray-900 text-sm">{d.courseTitle}</p>
                     </div>
-                    <a
-                      href={`/${locale}/checkout?courseId=${d.courseId}&discount=${d.percent}`}
+                    <Link
+                      href={`/checkout?courseId=${d.courseId}&discount=${d.percent}` as any}
                       className="whitespace-nowrap text-sm font-bold px-4 py-2 rounded-xl"
                       style={{ background: '#d4537e', color: '#fff', textDecoration: 'none' }}
                     >
                       {locale === 'ru' ? 'Купить' : locale === 'en' ? 'Buy' : 'Satın Al'}
-                    </a>
+                    </Link>
                   </div>
                 ))}
               </div>
