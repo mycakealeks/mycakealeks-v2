@@ -96,10 +96,10 @@ const OFFERS: Record<string, { title: string; desc: string; icon: string }[]> = 
   ],
 }
 
-const SOCIAL_LABELS: Record<string, { title: string; instagram: string; telegram: string }> = {
-  tr: { title: 'Kaçırma, takip et', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Kanalı' },
-  ru: { title: 'Подпишись, чтобы не пропустить', instagram: 'Instagram @mycakealeks', telegram: 'Telegram канал' },
-  en: { title: 'Follow along', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Channel' },
+const SOCIAL_LABELS: Record<string, { title: string; instagram: string; telegram: string; telegramChat: string }> = {
+  tr: { title: 'Kaçırma, takip et', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Kanalı', telegramChat: 'Telegram Sohbeti' },
+  ru: { title: 'Подпишись, чтобы не пропустить', instagram: 'Instagram @mycakealeks', telegram: 'Telegram канал', telegramChat: 'Telegram чат' },
+  en: { title: 'Follow along', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Channel', telegramChat: 'Telegram Chat' },
 }
 
 const FOR_WHOM_TITLE: Record<string, string> = {
@@ -153,11 +153,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       {/* HERO */}
       <section className="py-14 md:py-20 px-4" style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff5f8 100%)' }}>
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
+          {/* TODO: заменить на реальное фото */}
           <div
-            className="w-48 h-48 md:w-64 md:h-64 rounded-3xl flex-shrink-0 flex items-center justify-center text-8xl shadow-lg"
-            style={{ background: 'linear-gradient(135deg,#f9c8d8 0%,#fbeaf0 100%)' }}
+            className="w-48 h-48 md:w-64 md:h-64 rounded-full flex-shrink-0 flex items-center justify-center shadow-lg flex-shrink-0"
+            style={{ background: '#d4537e' }}
           >
-            👩‍🍳
+            <span className="text-white font-extrabold select-none" style={{ fontSize: '5rem', lineHeight: 1 }}>АГ</span>
           </div>
           <div>
             <p className="text-sm font-semibold uppercase tracking-widest mb-2" style={{ color: '#d4537e' }}>
@@ -177,15 +178,26 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 📸 {social.instagram}
               </a>
             </div>
-            <a
-              href="https://t.me/+A5Kjio0mbFYyNTMy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
-              style={{ background: '#e8f4fd', color: '#0088cc' }}
-            >
-              ✈️ {social.telegram}
-            </a>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="https://t.me/+A5Kjio0mbFYyNTMy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                style={{ background: '#e8f4fd', color: '#0088cc' }}
+              >
+                ✈️ {social.telegram}
+              </a>
+              <a
+                href="https://t.me/tortodelnya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+                style={{ background: '#e8f4fd', color: '#0088cc' }}
+              >
+                💬 {social.telegramChat}
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -272,7 +284,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <section className="py-10 px-4" style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff5f8 100%)' }}>
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-xl font-bold text-gray-900 mb-6">{social.title}</h2>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
             <a
               href="https://instagram.com/mycakealeks"
               target="_blank"
@@ -290,6 +302,15 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               style={{ background: '#0088cc', color: '#fff' }}
             >
               ✈️ {social.telegram}
+            </a>
+            <a
+              href="https://t.me/tortodelnya"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+              style={{ background: '#229ed9', color: '#fff' }}
+            >
+              💬 {social.telegramChat}
             </a>
           </div>
         </div>

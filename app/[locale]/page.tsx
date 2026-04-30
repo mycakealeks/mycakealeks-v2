@@ -134,10 +134,10 @@ export default async function HomePage({
         {/* Stats — 2×2 on mobile, 4 cols on md */}
         <div className="mt-12 md:mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-2xl">
           {[
-            { val: statsData.users > 0 ? `${statsData.users}+` : t('home.stat1Value'), label: t('home.stat1Label') },
-            { val: statsData.lessons > 0 ? `${statsData.lessons}+` : t('home.stat2Value'), label: t('home.stat2Label') },
-            { val: statsData.courses > 0 ? `${statsData.courses}` : t('home.stat3Value'), label: t('home.stat3Label') },
-            { val: t('home.stat4Value'), label: t('home.stat4Label') },
+            { val: '4000+', label: t('home.stat1Label') },
+            { val: '30+', label: t('home.stat2Label') },
+            { val: '100+', label: t('home.stat3Label') },
+            { val: '3', label: t('home.stat4Label') },
           ].map((s) => (
             <div key={s.label} className="text-center">
               <p className="text-3xl font-extrabold" style={{ color: '#d4537e' }}>{s.val}</p>
