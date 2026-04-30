@@ -7,9 +7,9 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 const SITE = 'https://mycakealeks.com.tr'
 
 const ABOUT_META: Record<string, { title: string; description: string }> = {
-  tr: { title: 'Aleksandra Hakkında | MyCakeAleks', description: 'Profesyonel konditer ve eğitmen Aleksandra\'nın hikayesi. 10+ yıl deneyim, 2400+ öğrenci.' },
-  ru: { title: 'Об Александре | MyCakeAleks', description: 'История профессионального кондитера и преподавателя Александры. 10+ лет опыта, 2400+ студентов.' },
-  en: { title: 'About Aleksandra | MyCakeAleks', description: 'The story of professional pastry chef and instructor Aleksandra. 10+ years experience, 2400+ students.' },
+  tr: { title: 'Aleksandra Hakkında | MyCakeAleks', description: 'Profesyonel konditer ve eğitmen Aleksandra Goloborodko\'nun hikayesi. 4000+ öğrenci, 100+ özgün tarif.' },
+  ru: { title: 'Об Александре | MyCakeAleks', description: 'Онлайн-школа профессионального кондитера Александры Голобородько. 4000+ учеников, 100+ авторских рецептов.' },
+  en: { title: 'About Aleksandra | MyCakeAleks', description: 'Professional pastry chef and instructor Aleksandra Goloborodko\'s online school. 4000+ students, 100+ original recipes.' },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -24,57 +24,110 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 const STORY: Record<string, { heading: string; text: string[] }> = {
   tr: {
-    heading: 'Benim Hikayem',
+    heading: 'Hikayem',
     text: [
-      'Mutfak tutkum çocukluğumda büyükannemin yanında başladı. Onun ellerinden çıkan her tatlı, bende hem sanatsal bir hayranlık hem de derin bir merak uyandırıyordu.',
-      '2012 yılında İstanbul\'da profesyonel konditerlik eğitimi aldım. Sonrasında Paris\'te Fransız patisserie tekniklerini, Tokyo\'da Japon tatlı sanatını öğrendim.',
-      'Bugün 10 yılı aşkın deneyimimle 2400\'den fazla öğrenciye pasta ve tatlı sanatını öğretiyorum. Her öğrencimin kendi tarzını bulmasına yardımcı olmak benim en büyük motivasyonum.',
+      'Online konditerlik okuluma hoş geldiniz! Adım Aleksandra Goloborodko, profesyonel bir konditerim!',
+      'İşime bayılıyorum, tatlılardan ilham alıyorum ve size de ilham vermek istiyorum! Tariflerim ve derslerim sayesinde hem kendiniz hem de sevdikleriniz için özel anlar yaratabileceksiniz.',
+      'Müşterilerinizi eşsiz lezzetler ve mükemmel kombinasyonlarla hayrete düşürün! 4000\'den fazla öğrencim kurslarımı tamamlayarak kendi konditerlik işlerini başarıyla geliştirdi.',
     ],
   },
   ru: {
     heading: 'Моя история',
     text: [
-      'Любовь к кондитерскому делу началась в детстве на кухне у бабушки. Каждый её десерт пробуждал во мне восхищение и желание создавать что-то своё.',
-      'В 2012 году я прошла профессиональное обучение кондитерскому делу в Стамбуле. Затем изучала французскую патиссерию в Париже и японское кондитерское искусство в Токио.',
-      'Сегодня, имея более 10 лет опыта, я преподаю кондитерское мастерство более чем 2400 студентам. Помогать каждому найти свой стиль — моя главная мотивация.',
+      'Приветствую Вас в моей онлайн-школе для кондитеров! Меня зовут Александра Голобородько, я профессиональный кондитер!',
+      'Безумно люблю своё дело, вдохновляюсь десертами, и хочу вдохновлять Вас! Благодаря моим рецептам и урокам, Вы сможете радовать себя и своих близких, быть в центре внимания на любом празднике.',
+      'Удивляйте своих заказчиков необычными вкусами и идеальными сочетаниями! Уже более 4000 учеников прошли мои курсы и успешно развивают своё кондитерское дело.',
     ],
   },
   en: {
     heading: 'My Story',
     text: [
-      'My passion for pastry began in childhood in my grandmother\'s kitchen. Every dessert she made sparked both artistic admiration and deep curiosity in me.',
-      'In 2012, I completed professional pastry training in Istanbul. I then studied French patisserie techniques in Paris and Japanese confectionery arts in Tokyo.',
-      'Today, with over 10 years of experience, I teach pastry arts to more than 2,400 students. Helping each student find their own style is my greatest motivation.',
+      'Welcome to my online pastry school! My name is Aleksandra Goloborodko, and I\'m a professional pastry chef!',
+      'I\'m incredibly passionate about my craft, inspired by desserts, and I want to inspire you! Through my recipes and lessons, you\'ll be able to create special moments for yourself and your loved ones.',
+      'Amaze your customers with unique flavors and perfect combinations! Over 4,000 students have completed my courses and are successfully growing their own pastry businesses.',
     ],
   },
 }
 
 const MISSION: Record<string, string> = {
-  tr: '"Her pasta bir hikaye anlatır. Benim misyonum, o hikayeyi sizinle paylaşmak ve sizi kendi hikayenizi yaratmaya ilham vermek."',
-  ru: '"Каждый торт рассказывает историю. Моя миссия — поделиться этой историей с вами и вдохновить вас на создание своей собственной."',
-  en: '"Every cake tells a story. My mission is to share that story with you and inspire you to create your own."',
+  tr: '"Her pasta sevgi ve ilhamla yapılır. Misyonum sizi kendi ellerinizle güzellik yaratmaya ve bu mutluluğu sevdiklerinizle paylaşmaya ilham vermektir."',
+  ru: '"Каждый торт — это любовь и вдохновение. Моя миссия — вдохновить Вас создавать красоту своими руками и делиться радостью с близкими."',
+  en: '"Every cake is made with love and inspiration. My mission is to inspire you to create beauty with your own hands and share that joy with your loved ones."',
+}
+
+const FOR_WHOM: Record<string, string[]> = {
+  tr: [
+    'Kendiniz ve sevdikleriniz için lezzetli ve güzel pastalar yapmayı öğrenmek isteyenler',
+    'Başlamak isteyip başarabileceğinden şüphe edenler',
+    'Deneyimli konditerler ve ürün yelpazelerini genişletmek isteyenler',
+    'Yeni bir kariyer edinmek ve bu alanda para kazanmak isteyenler',
+  ],
+  ru: [
+    'Хотите научиться готовить вкусные и красивые торты для себя и близких',
+    'Очень хотите начать, но сомневаетесь, что сможете так же, как другие кондитеры',
+    'Вы уже опытный кондитер и хотите расширить свой ассортимент',
+    'Хотите освоить новый вид деятельности и начать на этом зарабатывать',
+  ],
+  en: [
+    'Want to learn to make delicious and beautiful cakes for yourself and loved ones',
+    'Want to start but doubt you can do it as well as other pastry chefs',
+    'Already an experienced pastry chef looking to expand your repertoire',
+    'Want to master a new skill and start earning from it',
+  ],
+}
+
+const FOR_WHOM_ICONS = ['🎂', '💪', '🌟', '💰']
+
+const OFFERS: Record<string, { title: string; desc: string; icon: string }[]> = {
+  tr: [
+    { icon: '🎬', title: 'Video Dersler ve Teknoloji Kartları', desc: '30\'dan fazla özgün tarif, adım adım talimatlar ve ayrıntılı teknoloji kartları' },
+    { icon: '🏆', title: 'MyCakeAleks Özel Kursu', desc: '5 haftada konditerlik mesleğini öğren. Temelden ustalığa eksiksiz program' },
+    { icon: '🇹🇷', title: 'Türk Ürünleri Rehberi', desc: 'Türkiye\'de tatlı malzemeleri için kapsamlı rehber: nereden alınır, ne ile değiştirilir' },
+  ],
+  ru: [
+    { icon: '🎬', title: 'Видео-уроки и технологические карты', desc: 'Более 30 авторских рецептов с подробными пошаговыми инструкциями и технологическими картами' },
+    { icon: '🏆', title: 'Авторский курс MyCakeAleks', desc: 'Освой профессию кондитера за 5 недель. Полная программа от основ до уверенного мастерства' },
+    { icon: '🇹🇷', title: 'Гайд по турецким продуктам', desc: 'Полный список продуктов для десертов в Турции: где купить, чем заменить, что выбрать' },
+  ],
+  en: [
+    { icon: '🎬', title: 'Video Lessons & Recipe Cards', desc: 'Over 30 original recipes with step-by-step instructions and detailed recipe cards' },
+    { icon: '🏆', title: 'MyCakeAleks Signature Course', desc: 'Master the pastry profession in 5 weeks. A complete program from basics to confident mastery' },
+    { icon: '🇹🇷', title: 'Turkish Products Guide', desc: 'Complete guide to dessert ingredients in Turkey: where to buy, what to substitute, what to choose' },
+  ],
+}
+
+const SOCIAL_LABELS: Record<string, { title: string; instagram: string; telegram: string }> = {
+  tr: { title: 'Kaçırma, takip et', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Kanalı' },
+  ru: { title: 'Подпишись, чтобы не пропустить', instagram: 'Instagram @mycakealeks', telegram: 'Telegram канал' },
+  en: { title: 'Follow along', instagram: 'Instagram @mycakealeks', telegram: 'Telegram Channel' },
+}
+
+const FOR_WHOM_TITLE: Record<string, string> = {
+  tr: 'Kimler için uygun?',
+  ru: 'Для кого подходит обучение?',
+  en: 'Who is this for?',
+}
+
+const OFFERS_TITLE: Record<string, string> = {
+  tr: 'Ne sunuyoruz?',
+  ru: 'Что предлагает школа',
+  en: 'What we offer',
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const t = await getTranslations()
-  const story = STORY[locale] ?? STORY.tr
-  const mission = MISSION[locale] ?? MISSION.tr
-
-  let statsData = { users: 0, lessons: 0, courses: 0 }
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/stats`,
-      { cache: 'no-store' },
-    )
-    if (res.ok) statsData = await res.json()
-  } catch { /* use defaults */ }
+  const story = STORY[locale] ?? STORY.ru
+  const mission = MISSION[locale] ?? MISSION.ru
+  const forWhom = FOR_WHOM[locale] ?? FOR_WHOM.ru
+  const offers = OFFERS[locale] ?? OFFERS.ru
+  const social = SOCIAL_LABELS[locale] ?? SOCIAL_LABELS.ru
 
   const stats = [
-    { value: '10+', label: t('about.yearsExp'), icon: '⭐' },
-    { value: statsData.users > 0 ? `${statsData.users}+` : '—', label: t('about.students'), icon: '👩‍🍳' },
-    { value: statsData.lessons > 0 ? `${statsData.lessons}+` : '—', label: t('about.courses'), icon: '📚' },
-    { value: '3', label: t('about.countries'), icon: '🌍' },
+    { value: '4000+', label: t('about.stat1Label'), icon: '👩‍🍳' },
+    { value: '100+', label: t('about.stat2Label'), icon: '📋' },
+    { value: '30+', label: t('about.stat3Label'), icon: '🎬' },
+    { value: '3', label: t('about.stat4Label'), icon: '🌍' },
   ]
 
   return (
@@ -100,7 +153,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       {/* HERO */}
       <section className="py-14 md:py-20 px-4" style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff5f8 100%)' }}>
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
-          {/* Avatar */}
           <div
             className="w-48 h-48 md:w-64 md:h-64 rounded-3xl flex-shrink-0 flex items-center justify-center text-8xl shadow-lg"
             style={{ background: 'linear-gradient(135deg,#f9c8d8 0%,#fbeaf0 100%)' }}
@@ -111,12 +163,29 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <p className="text-sm font-semibold uppercase tracking-widest mb-2" style={{ color: '#d4537e' }}>
               {t('about.role')}
             </p>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Aleksandra</h1>
-            <p className="text-gray-500 text-lg leading-relaxed">{t('about.tagline')}</p>
-            <div className="mt-6 flex gap-3 flex-wrap">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-1">Aleksandra</h1>
+            <p className="text-lg text-gray-500 mb-3">Goloborodko</p>
+            <p className="text-gray-600 leading-relaxed mb-5">{t('about.tagline')}</p>
+            <div className="flex gap-3 flex-wrap mb-5">
               <Link href="/courses" className="btn-primary px-6 py-3 text-sm">{t('about.ctaCourses')}</Link>
-              <Link href="/faq" className="btn-outline px-6 py-3 text-sm">{t('nav.faq')}</Link>
+              <a
+                href="https://instagram.com/mycakealeks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline px-5 py-3 text-sm flex items-center gap-2"
+              >
+                📸 {social.instagram}
+              </a>
             </div>
+            <a
+              href="https://t.me/+A5Kjio0mbFYyNTMy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+              style={{ background: '#e8f4fd', color: '#0088cc' }}
+            >
+              ✈️ {social.telegram}
+            </a>
           </div>
         </div>
       </section>
@@ -149,10 +218,80 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div className="max-w-2xl mx-auto">
           <blockquote
             className="rounded-2xl p-8 text-center italic text-lg font-medium text-gray-700 leading-relaxed"
-            style={{ background: '#fbeaf0', borderLeft: `4px solid #d4537e` }}
+            style={{ background: '#fbeaf0', borderLeft: '4px solid #d4537e' }}
           >
             {mission}
           </blockquote>
+        </div>
+      </section>
+
+      {/* FOR WHOM */}
+      <section className="py-12 px-4" style={{ background: '#fafafa' }}>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">{FOR_WHOM_TITLE[locale] ?? FOR_WHOM_TITLE.ru}</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {forWhom.map((text, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-5 flex items-start gap-4 border border-gray-100 shadow-sm"
+              >
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                  style={{ background: '#fbeaf0' }}
+                >
+                  {FOR_WHOM_ICONS[i]}
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed pt-1">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OFFERS */}
+      <section className="py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">{OFFERS_TITLE[locale] ?? OFFERS_TITLE.ru}</h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            {offers.map((offer, i) => (
+              <div
+                key={i}
+                className="rounded-2xl p-6 text-center border"
+                style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff 100%)', borderColor: '#f0d0dc' }}
+              >
+                <p className="text-4xl mb-4">{offer.icon}</p>
+                <h3 className="font-bold text-gray-900 mb-2 text-sm">{offer.title}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{offer.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SOCIAL */}
+      <section className="py-10 px-4" style={{ background: 'linear-gradient(135deg,#fbeaf0 0%,#fff5f8 100%)' }}>
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">{social.title}</h2>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href="https://instagram.com/mycakealeks"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+              style={{ background: 'linear-gradient(135deg,#f9c8d8,#d4537e)', color: '#fff' }}
+            >
+              📸 {social.instagram}
+            </a>
+            <a
+              href="https://t.me/+A5Kjio0mbFYyNTMy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-colors"
+              style={{ background: '#0088cc', color: '#fff' }}
+            >
+              ✈️ {social.telegram}
+            </a>
+          </div>
         </div>
       </section>
 

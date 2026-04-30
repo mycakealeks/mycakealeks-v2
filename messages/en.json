@@ -36,9 +36,9 @@
     "subtitle": "Learn from expert pastry chefs. Courses for every skill level, with AI-powered assistant.",
     "ctaCourses": "Browse Courses",
     "ctaStart": "Start for Free",
-    "stat1Value": "2400+",
+    "stat1Value": "4000+",
     "stat1Label": "Students",
-    "stat2Value": "50+",
+    "stat2Value": "30+",
     "stat2Label": "Lessons",
     "stat3Value": "—",
     "stat3Label": "Courses",
@@ -294,14 +294,18 @@
   },
   "about": {
     "role": "Professional Pastry Chef & Instructor",
-    "tagline": "Over 10 years of inspiring and teaching the art of cake making.",
+    "tagline": "Welcome to my online pastry school! Inspiring and teaching through a passion for desserts.",
     "yearsExp": "Years Experience",
     "students": "Students",
     "courses": "Courses",
     "countries": "Countries",
     "ctaCourses": "Browse Courses",
     "ctaTitle": "Ready to Learn With You",
-    "ctaSubtitle": "Now is the perfect time to create your dream cake."
+    "ctaSubtitle": "Join 4000+ students and start creating your dream cakes today!",
+    "stat1Label": "students",
+    "stat2Label": "original recipes",
+    "stat3Label": "video lessons",
+    "stat4Label": "teaching languages"
   },
   "search": {
     "title": "Search",
