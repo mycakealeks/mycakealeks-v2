@@ -147,6 +147,40 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* ── VIDEO + PHOTO ── */}
+      <section className="py-14 md:py-20 px-4 md:px-6">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+
+          {/* Left — video placeholder */}
+          {/* TODO: заменить на реальное видео Bunny.net */}
+          <div
+            className="rounded-2xl flex flex-col items-center justify-center gap-4 w-full"
+            style={{ background: '#fbeaf0', aspectRatio: '16/9' }}
+          >
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center shadow-md"
+              style={{ background: '#d4537e' }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <p className="text-sm font-semibold" style={{ color: '#d4537e' }}>
+              {locale === 'tr' ? 'Tanıtım Videosu' : locale === 'en' ? 'Welcome Video' : 'Видео приветствие'}
+            </p>
+          </div>
+
+          {/* Right — photo placeholder (TODO: заменить на реальное фото) */}
+          <div
+            className="rounded-2xl w-full flex items-center justify-center"
+            style={{ background: '#d4537e', aspectRatio: '16/9' }}
+          >
+            <span className="text-white font-extrabold select-none" style={{ fontSize: '5rem', lineHeight: 1 }}>АГ</span>
+          </div>
+
+        </div>
+      </section>
+
       {/* ── COURSES ── */}
       <section style={{ background: '#fbeaf0' }} className="py-14 md:py-20 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
