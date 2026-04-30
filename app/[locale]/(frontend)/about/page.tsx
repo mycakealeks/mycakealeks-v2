@@ -7,9 +7,9 @@ import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 const SITE = 'https://mycakealeks.com.tr'
 
 const ABOUT_META: Record<string, { title: string; description: string }> = {
-  tr: { title: 'Aleksandra Hakkında | MyCakeAleks', description: 'Profesyonel konditer ve eğitmen Aleksandra Goloborodko\'nun hikayesi. 4000+ öğrenci, 100+ özgün tarif.' },
-  ru: { title: 'Об Александре | MyCakeAleks', description: 'Онлайн-школа профессионального кондитера Александры Голобородько. 4000+ учеников, 100+ авторских рецептов.' },
-  en: { title: 'About Aleksandra | MyCakeAleks', description: 'Professional pastry chef and instructor Aleksandra Goloborodko\'s online school. 4000+ students, 100+ original recipes.' },
+  tr: { title: 'Aleksandra Hakkında | MyCakeAleks', description: 'Profesyonel konditer ve eğitmen Aleksandra\'nın online okulu. 4000+ öğrenci, 100+ özgün tarif.' },
+  ru: { title: 'Об Александре | MyCakeAleks', description: 'Онлайн-школа профессионального кондитера Александры. 4000+ учеников, 100+ авторских рецептов.' },
+  en: { title: 'About Aleksandra | MyCakeAleks', description: 'Professional pastry chef and instructor Aleksandra\'s online school. 4000+ students, 100+ original recipes.' },
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -26,7 +26,7 @@ const STORY: Record<string, { heading: string; text: string[] }> = {
   tr: {
     heading: 'Hikayem',
     text: [
-      'Online konditerlik okuluma hoş geldiniz! Adım Aleksandra Goloborodko, profesyonel bir konditerim!',
+      'Online konditerlik okuluma hoş geldiniz! Adım Aleksandra, profesyonel bir konditerim!',
       'İşime bayılıyorum, tatlılardan ilham alıyorum ve size de ilham vermek istiyorum! Tariflerim ve derslerim sayesinde hem kendiniz hem de sevdikleriniz için özel anlar yaratabileceksiniz.',
       'Müşterilerinizi eşsiz lezzetler ve mükemmel kombinasyonlarla hayrete düşürün! 4000\'den fazla öğrencim kurslarımı tamamlayarak kendi konditerlik işlerini başarıyla geliştirdi.',
     ],
@@ -34,7 +34,7 @@ const STORY: Record<string, { heading: string; text: string[] }> = {
   ru: {
     heading: 'Моя история',
     text: [
-      'Приветствую Вас в моей онлайн-школе для кондитеров! Меня зовут Александра Голобородько, я профессиональный кондитер!',
+      'Приветствую Вас в моей онлайн-школе для кондитеров! Меня зовут Александра, я профессиональный кондитер!',
       'Безумно люблю своё дело, вдохновляюсь десертами, и хочу вдохновлять Вас! Благодаря моим рецептам и урокам, Вы сможете радовать себя и своих близких, быть в центре внимания на любом празднике.',
       'Удивляйте своих заказчиков необычными вкусами и идеальными сочетаниями! Уже более 4000 учеников прошли мои курсы и успешно развивают своё кондитерское дело.',
     ],
@@ -42,7 +42,7 @@ const STORY: Record<string, { heading: string; text: string[] }> = {
   en: {
     heading: 'My Story',
     text: [
-      'Welcome to my online pastry school! My name is Aleksandra Goloborodko, and I\'m a professional pastry chef!',
+      'Welcome to my online pastry school! My name is Aleksandra, and I\'m a professional pastry chef!',
       'I\'m incredibly passionate about my craft, inspired by desserts, and I want to inspire you! Through my recipes and lessons, you\'ll be able to create special moments for yourself and your loved ones.',
       'Amaze your customers with unique flavors and perfect combinations! Over 4,000 students have completed my courses and are successfully growing their own pastry businesses.',
     ],
@@ -165,7 +165,6 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               {t('about.role')}
             </p>
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-1">Aleksandra</h1>
-            <p className="text-lg text-gray-500 mb-3">Goloborodko</p>
             <p className="text-gray-600 leading-relaxed mb-5">{t('about.tagline')}</p>
             <div className="flex gap-3 flex-wrap mb-5">
               <Link href="/courses" className="btn-primary px-6 py-3 text-sm">{t('about.ctaCourses')}</Link>
