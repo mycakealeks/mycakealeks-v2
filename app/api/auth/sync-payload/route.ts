@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { SignJWT } from 'jose'
 
-const TOKEN_EXPIRATION = 7200 // 2 hours — matches Payload default
+const TOKEN_EXPIRATION = 60 * 60 * 24 * 30 // 30 days
 
 export async function GET(req: NextRequest) {
   const session = await auth()

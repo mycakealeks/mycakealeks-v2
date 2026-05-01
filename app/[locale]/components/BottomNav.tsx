@@ -90,15 +90,21 @@ export default function BottomNav() {
         )
       })}
 
-      {/* Logout tab */}
+      {/* Logout tab — separated by left border to prevent accidental taps */}
       <button
         onClick={handleLogout}
-        className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors text-gray-400 hover:text-gray-600"
+        className="flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors"
+        style={{
+          width: 52,
+          flexShrink: 0,
+          borderLeft: '1px solid #f0e0e8',
+          color: '#d1a0b0',
+        }}
       >
-        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
         </svg>
-        <span className="text-[10px] font-semibold leading-none">{t('nav.logout')}</span>
+        <span className="text-[9px] font-medium leading-none">{t('nav.logout')}</span>
       </button>
     </nav>
   )

@@ -114,20 +114,26 @@ export default function middleware(req: NextRequest) {
 
   if (needsAuth) {
     const token = req.cookies.get('payload-token')?.value
+    const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
+
     if (!token) {
-      const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
+      const loginUrl = new URL(`${prefix}/login`, req.url)
+      loginUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    const jwtPayload = getTokenPayload(token)
+
+    // Redirect to login if token is expired
+    if (!jwtPayload || (jwtPayload.exp && Date.now() / 1000 > (jwtPayload.exp as number))) {
       const loginUrl = new URL(`${prefix}/login`, req.url)
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
     }
 
     const shouldCheckVerification = !VERIFY_SKIP.some((p) => path === p || path.startsWith(p + '/'))
-    if (shouldCheckVerification) {
-      const payload = getTokenPayload(token)
-      if (payload && payload.isEmailVerified === false) {
-        const prefix = locale === routing.defaultLocale ? '' : `/${locale}`
-        return NextResponse.redirect(new URL(`${prefix}/verify-email-notice`, req.url))
-      }
+    if (shouldCheckVerification && jwtPayload.isEmailVerified === false) {
+      return NextResponse.redirect(new URL(`${prefix}/verify-email-notice`, req.url))
     }
   }
 
