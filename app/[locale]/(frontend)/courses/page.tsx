@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
+import NavUserWidget from '@/app/[locale]/components/NavUserWidget'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import { formatPrice } from '@/app/lib/currency'
 
@@ -63,7 +64,7 @@ export default async function CoursesPage({ params }: { params: Promise<{ locale
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <div className="hidden md:block"><LanguageSwitcher /></div>
-            <Link href="/login" className="hidden md:inline-flex btn-outline text-sm py-2 px-4">{t('nav.login')}</Link>
+            <NavUserWidget />
             <MobileMenu />
           </div>
         </div>

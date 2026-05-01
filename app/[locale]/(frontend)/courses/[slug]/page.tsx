@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import NavUserWidget from '@/app/[locale]/components/NavUserWidget'
 import LessonList from '@/app/[locale]/components/LessonList'
 import PaymentButton from '@/app/[locale]/components/PaymentButton'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
@@ -127,8 +128,7 @@ export default async function CourseDetailPage({ params }: Props) {
           </Link>
           <div className="hidden md:flex items-center gap-6">
             <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
-            <Link href="/login" className="btn-outline text-sm px-5 py-2">{t('nav.login')}</Link>
-            <Link href="/register" className="btn-primary text-sm px-5 py-2">{t('nav.start')}</Link>
+            <NavUserWidget />
             <LanguageSwitcher />
           </div>
           <div className="md:hidden flex items-center gap-2">

@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
+import NavUserWidget from './components/NavUserWidget'
 import RecommendedCourses from './components/RecommendedCourses'
 import { formatPrice } from '@/app/lib/currency'
 
@@ -101,8 +102,7 @@ export default async function HomePage({
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <Link href="/login" className="hidden md:inline-flex btn-outline text-sm py-2 px-4">{t('nav.login')}</Link>
-            <Link href="/register" className="hidden md:inline-flex btn-primary text-sm py-2 px-4">{t('nav.start')}</Link>
+            <NavUserWidget />
             {/* Mobile hamburger */}
             <MobileMenu />
           </div>

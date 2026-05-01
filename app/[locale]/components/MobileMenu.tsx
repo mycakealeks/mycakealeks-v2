@@ -8,6 +8,11 @@ import { usePathname } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from './LanguageSwitcher'
 
+interface AuthUser {
+  firstName?: string
+  email?: string
+}
+
 const LOCALES = ['tr', 'ru', 'en'] as const
 
 function setPreferredLocale(loc: string) {
@@ -46,10 +51,19 @@ function MobileLangSwitcher() {
 
 export default function MobileMenu() {
   const t = useTranslations()
+  const locale = useLocale()
   const [open, setOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [user, setUser] = useState<AuthUser | null>(null)
 
   useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    fetch('/api/users/me', { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => setUser(data?.user ?? null))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -67,6 +81,15 @@ export default function MobileMenu() {
   }, [])
 
   const close = useCallback(() => setOpen(false), [])
+
+  const handleLogout = async () => {
+    close()
+    try {
+      await fetch('/api/users/logout', { method: 'POST', credentials: 'include' })
+    } finally {
+      window.location.href = locale === 'tr' ? '/' : `/${locale}`
+    }
+  }
 
   const portal = mounted ? createPortal(
     <>
@@ -168,33 +191,80 @@ export default function MobileMenu() {
           ))}
         </nav>
 
-        {/* Auth buttons */}
-        <div style={{ display: 'flex', gap: 12, padding: '12px 16px 8px' }}>
-          <Link
-            href="/login"
-            onClick={close}
-            style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              height: 48, borderRadius: 10, border: '1.5px solid #d4537e',
-              color: '#d4537e', fontWeight: 600, fontSize: 15,
-              textDecoration: 'none', cursor: 'pointer', pointerEvents: 'auto',
-            }}
-          >
-            {t('nav.login')}
-          </Link>
-          <Link
-            href="/register"
-            onClick={close}
-            style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              height: 48, borderRadius: 10, border: 'none',
-              background: '#d4537e', color: '#fff', fontWeight: 600, fontSize: 15,
-              textDecoration: 'none', cursor: 'pointer', pointerEvents: 'auto',
-            }}
-          >
-            {t('nav.start')}
-          </Link>
-        </div>
+        {/* Auth section */}
+        {user ? (
+          <div style={{ padding: '12px 16px 8px' }}>
+            {/* User info */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 0 14px', borderBottom: '1px solid #f3f4f6' }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: '50%', background: '#d4537e',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#fff', fontWeight: 700, fontSize: 17, flexShrink: 0,
+              }}>
+                {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: '#111827' }}>
+                  {user.firstName || user.email?.split('@')[0]}
+                </div>
+                {user.email && <div style={{ fontSize: 12, color: '#9ca3af' }}>{user.email}</div>}
+              </div>
+            </div>
+            {/* User actions */}
+            <div style={{ display: 'flex', gap: 10, paddingTop: 12 }}>
+              <Link
+                href="/dashboard"
+                onClick={close}
+                style={{
+                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  height: 44, borderRadius: 10, border: 'none',
+                  background: '#d4537e', color: '#fff', fontWeight: 600, fontSize: 14,
+                  textDecoration: 'none', cursor: 'pointer', pointerEvents: 'auto', gap: 6,
+                }}
+              >
+                🏠 {t('nav.dashboard')}
+              </Link>
+              <button
+                onClick={handleLogout}
+                style={{
+                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  height: 44, borderRadius: 10, border: '1.5px solid #f3f4f6',
+                  color: '#d4537e', fontWeight: 600, fontSize: 14,
+                  background: 'transparent', cursor: 'pointer', pointerEvents: 'auto', gap: 6,
+                }}
+              >
+                🚪 {t('nav.logout')}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', gap: 12, padding: '12px 16px 8px' }}>
+            <Link
+              href="/login"
+              onClick={close}
+              style={{
+                flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                height: 48, borderRadius: 10, border: '1.5px solid #d4537e',
+                color: '#d4537e', fontWeight: 600, fontSize: 15,
+                textDecoration: 'none', cursor: 'pointer', pointerEvents: 'auto',
+              }}
+            >
+              {t('nav.login')}
+            </Link>
+            <Link
+              href="/register"
+              onClick={close}
+              style={{
+                flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                height: 48, borderRadius: 10, border: 'none',
+                background: '#d4537e', color: '#fff', fontWeight: 600, fontSize: 15,
+                textDecoration: 'none', cursor: 'pointer', pointerEvents: 'auto',
+              }}
+            >
+              {t('nav.start')}
+            </Link>
+          </div>
+        )}
 
         {/* Language switcher */}
         <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 16px 4px' }}>

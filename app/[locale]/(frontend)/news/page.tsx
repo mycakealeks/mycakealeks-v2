@@ -3,6 +3,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
+import NavUserWidget from '@/app/[locale]/components/NavUserWidget'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -80,7 +81,7 @@ export default async function NewsPage({ searchParams }: Props) {
           </div>
           <div className="flex items-center gap-2 md:gap-3">
             <div className="hidden md:block"><LanguageSwitcher /></div>
-            <Link href="/login" className="hidden md:inline-flex btn-outline text-sm py-2 px-4">{t('nav.login')}</Link>
+            <NavUserWidget />
             <MobileMenu />
           </div>
         </div>
