@@ -465,5 +465,14 @@
     "specialOffer": "Special offer for you",
     "timer": "Offer expires in:",
     "buyNow": "Buy Now"
+  },
+  "lesson": {
+    "lessonCount": "Lesson {current} of {total}",
+    "progressDone": "complete",
+    "complete": "Complete Lesson",
+    "completed": "Completed",
+    "congratulations": "Congratulations! 🎉",
+    "courseFinished": "You've completed the course!",
+    "getCertificate": "Download Certificate"
   }
 }

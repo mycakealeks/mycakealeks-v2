@@ -465,5 +465,14 @@
     "specialOffer": "Size özel teklif",
     "timer": "Teklifin süresi:",
     "buyNow": "Şimdi Al"
+  },
+  "lesson": {
+    "lessonCount": "Ders {current}/{total}",
+    "progressDone": "tamamlandı",
+    "complete": "Dersi Tamamla",
+    "completed": "Tamamlandı",
+    "congratulations": "Tebrikler! 🎉",
+    "courseFinished": "Kursu tamamladınız!",
+    "getCertificate": "Sertifika Al"
   }
 }

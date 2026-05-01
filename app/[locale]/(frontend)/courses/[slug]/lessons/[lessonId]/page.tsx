@@ -2,8 +2,8 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
-import VideoPlayer from '@/app/[locale]/components/VideoPlayer'
 import LessonList from '@/app/[locale]/components/LessonList'
+import LessonProgressClient from '@/app/[locale]/components/LessonProgressClient'
 import BreadcrumbJsonLd from '@/app/components/BreadcrumbJsonLd'
 import TrackEvent from '@/app/[locale]/components/TrackEvent'
 
@@ -51,6 +51,11 @@ export default async function LessonPage({ params }: Props) {
     )
   }
 
+  const courseId = typeof lesson.course === 'object' ? lesson.course?.id : lesson.course
+  const sorted = [...lessons].sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+  const lessonNumber = sorted.findIndex((l: any) => l.id === lessonId) + 1 || 1
+  const totalLessons = sorted.length
+
   const breadcrumbs = [
     { name: 'MyCakeAleks', url: base },
     { name: t('nav.courses'), url: `${base}/courses` },
@@ -62,6 +67,7 @@ export default async function LessonPage({ params }: Props) {
     <main className="min-h-screen bg-white">
       <TrackEvent event="lesson_view" entityId={lessonId} entityType="lesson" />
       <BreadcrumbJsonLd items={breadcrumbs} />
+
       {/* NAV */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
@@ -90,44 +96,21 @@ export default async function LessonPage({ params }: Props) {
         {/* Mobile: stacked. Desktop: 2/3 + 1/3 grid */}
         <div className="flex flex-col md:grid md:grid-cols-3 gap-6 md:gap-8">
 
-          {/* Video + info — full width mobile, 2/3 desktop */}
+          {/* Video + progress — full width mobile, 2/3 desktop */}
           <div className="md:col-span-2">
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">{lesson.title}</h1>
-
-            {lesson.videoId ? (
-              <VideoPlayer
-                videoId={lesson.videoId}
-                isFree={lesson.isFree}
-                courseId={typeof lesson.course === 'object' ? lesson.course?.id : lesson.course}
-              />
-            ) : (
-              <div className="w-full aspect-video bg-gray-100 rounded-xl flex items-center justify-center">
-                <p className="text-gray-400">{t('lessons.noVideo')}</p>
-              </div>
-            )}
-
-            {lesson.attachments?.length > 0 && (
-              <div className="mt-6">
-                <h2 className="font-semibold text-gray-800 mb-3">{t('lessons.materials')}</h2>
-                <ul className="space-y-2">
-                  {lesson.attachments.map((att: any) => (
-                    <li key={att.id}>
-                      {att.file?.url ? (
-                        <a href={att.file.url} target="_blank" rel="noopener noreferrer"
-                          className="text-sm hover:underline" style={{ color: '#d4537e' }}>
-                          📎 {att.title || att.file.filename}
-                        </a>
-                      ) : (
-                        <span className="text-gray-500 text-sm">📎 {att.title}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <LessonProgressClient
+              lessonId={lessonId}
+              lessonTitle={lesson.title}
+              lessonNumber={lessonNumber}
+              totalLessons={totalLessons}
+              courseId={courseId}
+              videoId={lesson.videoId}
+              isFree={lesson.isFree}
+              attachments={lesson.attachments}
+            />
           </div>
 
-          {/* Lesson list — under video on mobile, sidebar on desktop */}
+          {/* Lesson list sidebar */}
           <div className="md:col-span-1">
             <div className="border border-gray-100 rounded-xl overflow-hidden md:sticky md:top-24">
               <div className="bg-gray-50 px-4 py-3 border-b border-gray-100">
@@ -138,6 +121,7 @@ export default async function LessonPage({ params }: Props) {
                 courseSlug={slug}
                 hasAccess={false}
                 activeLessonId={lessonId}
+                courseId={courseId}
               />
             </div>
           </div>

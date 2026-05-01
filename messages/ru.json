@@ -465,5 +465,14 @@
     "specialOffer": "Персональное предложение",
     "timer": "Предложение истекает:",
     "buyNow": "Купить сейчас"
+  },
+  "lesson": {
+    "lessonCount": "Урок {current} из {total}",
+    "progressDone": "пройдено",
+    "complete": "Урок завершён",
+    "completed": "Завершено",
+    "congratulations": "Поздравляем! 🎉",
+    "courseFinished": "Вы прошли весь курс!",
+    "getCertificate": "Скачать сертификат"
   }
 }
