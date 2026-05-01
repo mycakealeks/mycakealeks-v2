@@ -49,7 +49,8 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const secret = new TextEncoder().encode(process.env.PAYLOAD_SECRET!)
+    // payload.secret is sha256(PAYLOAD_SECRET).hex().slice(0,32) — the actual signing key
+    const secret = new TextEncoder().encode(payload.secret)
     const token = await new SignJWT({
       id: userId,
       email,
