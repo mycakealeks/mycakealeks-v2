@@ -11,6 +11,7 @@ export const Users: CollectionConfig = {
   },
   auth: {
     tokenExpiration: 60 * 60 * 24 * 30, // 30 days
+    useSessions: false, // disable session tracking — allows stateless JWT auth (required for sync-payload OAuth tokens)
   },
   access: {
     create: () => true,          // allow public registration
