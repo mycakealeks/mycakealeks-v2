@@ -445,6 +445,17 @@ export default function RegisterPage() {
             {t('register.loginLink')}
           </Link>
         </p>
+
+        <p className="text-center text-xs text-gray-400 mt-4 leading-relaxed">
+          {t('register.termsConsent')}{' '}
+          <Link href="/terms" className="underline hover:text-pink-600 transition-colors">
+            {t('nav.terms')}
+          </Link>{' '}
+          {t('register.termsAnd')}{' '}
+          <Link href="/privacy" className="underline hover:text-pink-600 transition-colors">
+            {t('nav.privacy')}
+          </Link>
+        </p>
       </div>
     </main>
   )

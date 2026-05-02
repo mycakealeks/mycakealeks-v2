@@ -27,7 +27,9 @@
     "faq": "FAQ",
     "about": "About",
     "pricing": "Pricing",
-    "search": "Search"
+    "search": "Search",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   },
   "home": {
     "badge": "Professional Cake Education",
@@ -159,7 +161,9 @@
     "hasAccount": "Already have an account?",
     "loginLink": "Log In",
     "errorRegistration": "Registration failed",
-    "errorNetwork": "Network error"
+    "errorNetwork": "Network error",
+    "termsConsent": "By registering, you agree to our",
+    "termsAnd": "and"
   },
   "courses": {
     "title": "Courses",

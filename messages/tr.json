@@ -27,7 +27,9 @@
     "faq": "SSS",
     "about": "Hakkında",
     "pricing": "Fiyatlar",
-    "search": "Ara"
+    "search": "Ara",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Şartları"
   },
   "home": {
     "badge": "Profesyonel Pasta Eğitimi",
@@ -159,7 +161,9 @@
     "hasAccount": "Zaten hesabın var mı?",
     "loginLink": "Giriş Yap",
     "errorRegistration": "Kayıt hatası",
-    "errorNetwork": "Ağ hatası"
+    "errorNetwork": "Ağ hatası",
+    "termsConsent": "Kayıt olarak",
+    "termsAnd": "ve"
   },
   "courses": {
     "title": "Kurslar",

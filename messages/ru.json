@@ -27,7 +27,9 @@
     "faq": "FAQ",
     "about": "О нас",
     "pricing": "Тарифы",
-    "search": "Поиск"
+    "search": "Поиск",
+    "privacy": "Конфиденциальность",
+    "terms": "Условия"
   },
   "home": {
     "badge": "Профессиональное обучение",
@@ -159,7 +161,9 @@
     "hasAccount": "Уже есть аккаунт?",
     "loginLink": "Войти",
     "errorRegistration": "Ошибка регистрации",
-    "errorNetwork": "Ошибка сети"
+    "errorNetwork": "Ошибка сети",
+    "termsConsent": "Регистрируясь, вы соглашаетесь с",
+    "termsAnd": "и"
   },
   "courses": {
     "title": "Курсы",

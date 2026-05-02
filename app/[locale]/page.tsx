@@ -369,7 +369,13 @@ export default async function HomePage({
             <Link href="/faq" className="nav-link text-sm">{t('nav.faq')}</Link>
             <Link href="/login" className="nav-link text-sm">{t('nav.login')}</Link>
           </div>
-          <p className="text-xs text-gray-400">© 2025 MyCakeAleks</p>
+          <div className="flex flex-col items-center md:items-end gap-1">
+            <p className="text-xs text-gray-400">© 2026 MyCakeAleks</p>
+            <div className="flex gap-3">
+              <Link href="/privacy" className="text-xs text-gray-400 hover:text-pink-600 transition-colors">{t('nav.privacy')}</Link>
+              <Link href="/terms" className="text-xs text-gray-400 hover:text-pink-600 transition-colors">{t('nav.terms')}</Link>
+            </div>
+          </div>
         </div>
       </footer>
     </main>

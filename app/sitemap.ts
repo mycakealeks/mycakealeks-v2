@@ -31,6 +31,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.8,
     })
+    entries.push({
+      url: localeUrl('/privacy', locale),
+      lastModified: new Date('2026-05-01'),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
+    entries.push({
+      url: localeUrl('/terms', locale),
+      lastModified: new Date('2026-05-01'),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
   }
 
   // Dynamic course pages
