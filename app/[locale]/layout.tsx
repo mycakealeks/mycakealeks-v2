@@ -84,7 +84,7 @@ export default async function RootLayout({
         </NextIntlClientProvider>
         <YandexMetrika />
         <GoogleAnalytics />
-        <CrispChat />
+        <CrispChat locale={safeLocale} />
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {

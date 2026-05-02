@@ -2,14 +2,13 @@
 
 import Script from 'next/script'
 import { useEffect } from 'react'
-import { useLocale } from 'next-intl'
 
 interface Props {
+  locale?: string
   user?: { email?: string; firstName?: string; lastName?: string } | null
 }
 
-export default function CrispChat({ user }: Props) {
-  const locale = useLocale()
+export default function CrispChat({ locale = 'tr', user }: Props) {
   const websiteId = process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID
 
   useEffect(() => {
