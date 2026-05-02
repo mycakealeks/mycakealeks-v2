@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation'
 import MobileMenu from '@/app/[locale]/components/MobileMenu'
 import LanguageSwitcher from '@/app/[locale]/components/LanguageSwitcher'
 
-type ResultType = 'course' | 'news' | 'recipe'
+type ResultType = 'course' | 'news' | 'recipe' | 'lesson'
 
 interface SearchResult {
   type: ResultType
@@ -15,18 +15,30 @@ interface SearchResult {
   slug: string
   excerpt?: string
   emoji?: string
+  courseSlug?: string | null
+  courseTitle?: string | null
+  duration?: number | null
 }
 
 const TYPE_LABELS: Record<string, Record<ResultType, string>> = {
-  tr: { course: 'Kurs', news: 'Haber', recipe: 'Tarif' },
-  ru: { course: 'Курс', news: 'Новость', recipe: 'Рецепт' },
-  en: { course: 'Course', news: 'News', recipe: 'Recipe' },
+  tr: { course: 'Kurs', news: 'Haber', recipe: 'Tarif', lesson: 'Ders' },
+  ru: { course: 'Курс', news: 'Новость', recipe: 'Рецепт', lesson: 'Урок' },
+  en: { course: 'Course', news: 'News', recipe: 'Recipe', lesson: 'Lesson' },
 }
 
-function resultHref(item: SearchResult, locale: string): string {
+function resultHref(item: SearchResult): string {
   if (item.type === 'course') return `/courses/${item.slug}`
   if (item.type === 'news') return `/news/${item.slug}`
-  return `/recipes/${item.slug}`
+  if (item.type === 'recipe') return `/recipes/${item.slug}`
+  if (item.type === 'lesson' && item.courseSlug) {
+    return `/courses/${item.courseSlug}/lessons/${item.id}`
+  }
+  return '/courses'
+}
+
+function formatDuration(mins: number): string {
+  if (mins < 60) return `${mins} min`
+  return `${Math.floor(mins / 60)}h ${mins % 60}m`
 }
 
 export default function SearchPage() {
@@ -58,6 +70,7 @@ export default function SearchPage() {
   }, [query])
 
   const filtered = filter === 'all' ? results : results.filter((r) => r.type === filter)
+  const filterTypes: Array<ResultType | 'all'> = ['all', 'course', 'lesson', 'news', 'recipe']
 
   return (
     <main className="min-h-screen bg-white">
@@ -105,23 +118,27 @@ export default function SearchPage() {
         {/* Filters */}
         {results.length > 0 && (
           <div className="flex gap-2 mb-6 flex-wrap">
-            {(['all', 'course', 'news', 'recipe'] as const).map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className="text-sm px-3 py-1.5 rounded-full border font-semibold transition-colors"
-                style={filter === f
-                  ? { background: '#d4537e', color: 'white', borderColor: '#d4537e' }
-                  : { background: 'white', color: '#6b7280', borderColor: '#e5e7eb' }}
-              >
-                {f === 'all' ? t('search.filterAll') : typeLabels[f]}
-                {f !== 'all' && ` (${results.filter((r) => r.type === f).length})`}
-              </button>
-            ))}
+            {filterTypes.map((f) => {
+              const count = f === 'all' ? results.length : results.filter((r) => r.type === f).length
+              if (f !== 'all' && count === 0) return null
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className="text-sm px-3 py-1.5 rounded-full border font-semibold transition-colors"
+                  style={filter === f
+                    ? { background: '#d4537e', color: 'white', borderColor: '#d4537e' }
+                    : { background: 'white', color: '#6b7280', borderColor: '#e5e7eb' }}
+                >
+                  {f === 'all' ? t('search.filterAll') : typeLabels[f]}
+                  {` (${count})`}
+                </button>
+              )
+            })}
           </div>
         )}
 
-        {/* Results */}
+        {/* No results */}
         {query.length >= 2 && !loading && filtered.length === 0 && (
           <div className="text-center py-16">
             <p className="text-4xl mb-3">🔍</p>
@@ -129,27 +146,34 @@ export default function SearchPage() {
           </div>
         )}
 
+        {/* Results */}
         <div className="space-y-3">
           {filtered.map((item) => (
             <Link
               key={`${item.type}-${item.id}`}
-              href={resultHref(item, locale) as any}
+              href={resultHref(item) as any}
               className="flex items-start gap-4 p-4 border border-gray-100 rounded-2xl hover:border-pink-200 hover:bg-pink-50 transition-colors group"
             >
               <span className="text-3xl flex-shrink-0">{item.emoji}</span>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span
                     className="text-xs font-semibold px-2 py-0.5 rounded-full"
                     style={{ background: '#fbeaf0', color: '#d4537e' }}
                   >
                     {typeLabels[item.type]}
                   </span>
+                  {item.type === 'lesson' && item.courseTitle && (
+                    <span className="text-xs text-gray-400">{item.courseTitle}</span>
+                  )}
+                  {item.type === 'lesson' && item.duration && (
+                    <span className="text-xs text-gray-400">⏱ {formatDuration(item.duration)}</span>
+                  )}
                 </div>
                 <p className="font-semibold text-gray-900 group-hover:text-pink-600 transition-colors truncate">
                   {item.title}
                 </p>
-                {item.excerpt && (
+                {item.excerpt && item.type !== 'lesson' && (
                   <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">{item.excerpt}</p>
                 )}
               </div>

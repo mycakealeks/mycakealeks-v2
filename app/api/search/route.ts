@@ -9,16 +9,18 @@ export async function GET(req: NextRequest) {
   const enc = encodeURIComponent(q)
 
   try {
-    const [coursesRes, newsRes, recipesRes] = await Promise.all([
+    const [coursesRes, newsRes, recipesRes, lessonsRes] = await Promise.all([
       fetch(`${SERVER}/api/courses?where[status][equals]=published&where[title][like]=${enc}&limit=5`),
       fetch(`${SERVER}/api/news?where[status][equals]=published&where[title][like]=${enc}&limit=5`),
       fetch(`${SERVER}/api/recipes?where[title][like]=${enc}&limit=5`),
+      fetch(`${SERVER}/api/lessons?where[title][like]=${enc}&limit=5&depth=1`),
     ])
 
-    const [coursesData, newsData, recipesData] = await Promise.all([
+    const [coursesData, newsData, recipesData, lessonsData] = await Promise.all([
       coursesRes.json(),
       newsRes.json(),
       recipesRes.json(),
+      lessonsRes.json(),
     ])
 
     const results = [
@@ -34,6 +36,20 @@ export async function GET(req: NextRequest) {
         type: 'recipe', id: r.id, title: r.title, slug: r.slug,
         excerpt: r.description, emoji: r.emoji || '🍰',
       })),
+      ...(lessonsData.docs || []).map((l: any) => {
+        const course = typeof l.course === 'object' ? l.course : null
+        return {
+          type: 'lesson',
+          id: l.id,
+          title: l.title,
+          slug: l.id,
+          courseSlug: course?.slug ?? null,
+          courseTitle: course?.title ?? null,
+          duration: l.duration ?? null,
+          excerpt: course?.title ? `${course.title}` : undefined,
+          emoji: '🎬',
+        }
+      }),
     ]
 
     return NextResponse.json({ results, total: results.length })

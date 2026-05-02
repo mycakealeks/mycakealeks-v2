@@ -8,6 +8,7 @@ import AiChat from '@/app/[locale]/components/AiChat'
 import AuthGuard from '@/app/[locale]/components/AuthGuard'
 import BottomNav from '@/app/[locale]/components/BottomNav'
 import RecommendedCourses from '@/app/[locale]/components/RecommendedCourses'
+import PushNotificationButton from '@/app/[locale]/components/PushNotificationButton'
 
 interface CourseProgress {
   courseId: string
@@ -273,6 +274,47 @@ function DashboardContent({ user }: { user: any }) {
                 <p className="text-xs text-gray-400 mt-1">{t('points.spendDesc')}</p>
               </div>
               <span className="text-5xl">⭐</span>
+            </div>
+          </div>
+
+          {/* Push Notifications + Affiliate */}
+          <div className="mb-10 flex flex-wrap gap-4 items-center justify-between p-5 rounded-2xl" style={{ background: '#fbeaf0', border: '1.5px solid #f0d0dc' }}>
+            <div>
+              <p className="font-bold text-gray-900 text-sm mb-1">
+                {locale === 'ru' ? '🔔 Уведомления об уроках' : locale === 'en' ? '🔔 Lesson notifications' : '🔔 Ders bildirimleri'}
+              </p>
+              <p className="text-xs text-gray-500">
+                {locale === 'ru' ? 'Напоминания о продолжении обучения' : locale === 'en' ? 'Reminders to continue your learning' : 'Öğrenmeye devam etmek için hatırlatıcılar'}
+              </p>
+            </div>
+            <PushNotificationButton />
+          </div>
+
+          {/* Affiliate Program */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">
+                🤝 {locale === 'ru' ? 'Партнёрская программа' : locale === 'en' ? 'Affiliate Program' : 'Ortak Programı'}
+              </h2>
+              <Link href="/affiliate" className="text-sm font-semibold" style={{ color: '#d4537e' }}>
+                {locale === 'ru' ? 'Подробнее →' : locale === 'en' ? 'Learn more →' : 'Daha fazla →'}
+              </Link>
+            </div>
+            <div className="rounded-2xl p-5 border border-gray-100 bg-white">
+              <p className="text-sm text-gray-600 mb-3">
+                {locale === 'ru'
+                  ? 'Рекомендуйте курсы и получайте 20% с каждой продажи по вашей ссылке.'
+                  : locale === 'en'
+                  ? 'Refer friends and earn 20% commission on every sale through your link.'
+                  : 'Arkadaşlarınıza önerin ve her satıştan %20 komisyon kazanın.'}
+              </p>
+              <Link
+                href="/affiliate"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl text-white"
+                style={{ background: '#d4537e', textDecoration: 'none' }}
+              >
+                {locale === 'ru' ? 'Стать партнёром' : locale === 'en' ? 'Become an affiliate' : 'Ortak ol'} →
+              </Link>
             </div>
           </div>
 

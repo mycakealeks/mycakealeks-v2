@@ -64,6 +64,12 @@ export const Users: CollectionConfig = {
       label: 'Купленные рецепты',
     },
     {
+      name: 'telegramUsername',
+      type: 'text',
+      label: 'Telegram username',
+      admin: { position: 'sidebar' },
+    },
+    {
       name: 'isEmailVerified',
       type: 'checkbox',
       defaultValue: false,

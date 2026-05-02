@@ -24,6 +24,8 @@ import { Referrals } from "./collections/Referrals"
 import { GiftCertificates } from "./collections/GiftCertificates"
 import { Passkeys } from "./collections/Passkeys"
 import { UserEvents } from "./collections/UserEvents"
+import { PushSubscriptions } from "./collections/PushSubscriptions"
+import { Affiliates } from "./collections/Affiliates"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,7 +37,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Recipes, Orders, Categories, Subscriptions, Payments, Lessons, Progress, News, Coupons, Points, Achievements, Reviews, Referrals, GiftCertificates, Passkeys, UserEvents],
+  collections: [Users, Media, Courses, Recipes, Orders, Categories, Subscriptions, Payments, Lessons, Progress, News, Coupons, Points, Achievements, Reviews, Referrals, GiftCertificates, Passkeys, UserEvents, PushSubscriptions, Affiliates],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

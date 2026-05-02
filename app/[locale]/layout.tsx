@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { routing } from '@/i18n/routing'
 import YandexMetrika from '@/app/components/YandexMetrika'
 import GoogleAnalytics from '@/app/components/GoogleAnalytics'
+import CrispChat from './components/CrispChat'
 import './styles.css'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -72,6 +73,10 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="MyCakeAleks" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="preconnect" href="https://vz-92cbb18d-f79.b-cdn.net" />
+        <link rel="preconnect" href="https://mc.yandex.ru" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://client.crisp.chat" />
       </head>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
@@ -79,6 +84,7 @@ export default async function RootLayout({
         </NextIntlClientProvider>
         <YandexMetrika />
         <GoogleAnalytics />
+        <CrispChat />
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
