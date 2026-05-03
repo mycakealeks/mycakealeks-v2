@@ -266,7 +266,9 @@
     "updatePassword": "Обновить пароль",
     "passwordMismatch": "Пароли не совпадают",
     "passwordUpdated": "Пароль обновлён",
-    "memberSince": "Участник с"
+    "memberSince": "Участник с",
+    "firstName": "Имя",
+    "lastName": "Фамилия"
   },
   "course": {
     "freeLessons": "Бесплатные уроки",

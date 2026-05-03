@@ -50,9 +50,17 @@ function OrdersContent({ user }: { user: any }) {
     const courseName = order.items?.[0]?.course?.title
       ?? order.items?.[0]?.recipe?.title
       ?? '—'
-    const date = new Date(order.createdAt).toLocaleDateString('tr-TR')
+    const date = new Date(order.createdAt).toLocaleDateString()
+    const labels = {
+      orderNo:  locale === 'ru' ? 'Номер заказа' : locale === 'en' ? 'Order No' : 'Sipariş No',
+      product:  locale === 'ru' ? 'Товар' : locale === 'en' ? 'Product' : 'Ürün',
+      payment:  locale === 'ru' ? 'Оплата' : locale === 'en' ? 'Payment' : 'Ödeme',
+      status:   locale === 'ru' ? 'Статус' : locale === 'en' ? 'Status' : 'Durum',
+      total:    locale === 'ru' ? 'Итого' : locale === 'en' ? 'Total' : 'Toplam',
+      title:    locale === 'ru' ? 'Квитанция' : locale === 'en' ? 'Receipt' : 'Makbuz',
+    }
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/>
-<title>Sipariş ${order.id}</title>
+<title>${labels.title} ${order.id}</title>
 <style>body{font-family:sans-serif;max-width:400px;margin:40px auto;padding:20px;border:1px solid #e5e7eb;border-radius:12px;}
 h1{color:#d4537e;font-size:20px;}table{width:100%;border-collapse:collapse;margin-top:16px;}
 td{padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px;}.total{font-weight:700;font-size:18px;color:#d4537e;}
@@ -61,11 +69,11 @@ td{padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:14px;}.total{font-wei
 <h1>🎂 MyCakeAleks</h1>
 <p style="color:#6b7280;font-size:13px;">${date}</p>
 <table>
-<tr><td style="color:#9ca3af">Sipariş No</td><td><b>${order.id.slice(0, 8).toUpperCase()}</b></td></tr>
-<tr><td style="color:#9ca3af">Ürün</td><td>${courseName}</td></tr>
-<tr><td style="color:#9ca3af">Ödeme</td><td>${order.paymentMethod ?? '—'}</td></tr>
-<tr><td style="color:#9ca3af">Durum</td><td>${order.status}</td></tr>
-<tr><td style="color:#9ca3af">Toplam</td><td class="total">${order.total} ${order.currency || 'TRY'}</td></tr>
+<tr><td style="color:#9ca3af">${labels.orderNo}</td><td><b>${order.id.slice(0, 8).toUpperCase()}</b></td></tr>
+<tr><td style="color:#9ca3af">${labels.product}</td><td>${courseName}</td></tr>
+<tr><td style="color:#9ca3af">${labels.payment}</td><td>${order.paymentMethod ?? '—'}</td></tr>
+<tr><td style="color:#9ca3af">${labels.status}</td><td>${t(`orders.status_${order.status}`)}</td></tr>
+<tr><td style="color:#9ca3af">${labels.total}</td><td class="total">${order.total} ${order.currency || 'TRY'}</td></tr>
 </table>
 <div class="footer">mycakealeks.com.tr</div>
 </body></html>`

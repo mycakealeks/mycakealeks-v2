@@ -154,7 +154,7 @@ function ProfileContent({ user }: { user: any }) {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="input-field"
-                    placeholder="First name"
+                    placeholder={t('profile.firstName')}
                     autoComplete="given-name"
                   />
                 </div>
@@ -165,7 +165,7 @@ function ProfileContent({ user }: { user: any }) {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="input-field"
-                    placeholder="Last name"
+                    placeholder={t('profile.lastName')}
                     autoComplete="family-name"
                   />
                 </div>

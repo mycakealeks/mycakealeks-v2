@@ -266,7 +266,9 @@
     "updatePassword": "Update Password",
     "passwordMismatch": "Passwords don't match",
     "passwordUpdated": "Password updated",
-    "memberSince": "Member since"
+    "memberSince": "Member since",
+    "firstName": "First name",
+    "lastName": "Last name"
   },
   "course": {
     "freeLessons": "Free Lessons",

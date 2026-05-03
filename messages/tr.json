@@ -266,7 +266,9 @@
     "updatePassword": "Şifreyi Güncelle",
     "passwordMismatch": "Şifreler eşleşmiyor",
     "passwordUpdated": "Şifre güncellendi",
-    "memberSince": "Üyelik tarihi"
+    "memberSince": "Üyelik tarihi",
+    "firstName": "Ad",
+    "lastName": "Soyad"
   },
   "course": {
     "freeLessons": "Ücretsiz Dersler",
