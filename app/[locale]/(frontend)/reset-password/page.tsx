@@ -2,7 +2,50 @@
 
 import { useState, useEffect } from 'react'
 import { Link } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+
+const HINT: Record<string, string> = {
+  tr: 'Şifre en az 8 karakter, büyük harf ve rakam içermelidir',
+  ru: 'Пароль должен содержать минимум 8 символов, заглавную букву и цифру',
+  en: 'Password must contain at least 8 characters, uppercase letter and number',
+}
+
+const STRENGTH_LABEL: Record<string, [string, string, string]> = {
+  tr: ['Zayıf', 'Orta', 'Güçlü'],
+  ru: ['Слабый', 'Средний', 'Сильный'],
+  en: ['Weak', 'Medium', 'Strong'],
+}
+
+function getStrength(pw: string): 0 | 1 | 2 {
+  if (pw.length < 6) return 0
+  if (pw.length >= 8 && /[A-Z]/.test(pw) && /[0-9]/.test(pw)) return 2
+  return 1
+}
+
+const STRENGTH_COLOR = ['#ef4444', '#f59e0b', '#16a34a']
+const STRENGTH_BG    = ['#fee2e2', '#fef9c3', '#dcfce7']
+
+function StrengthBar({ password, locale }: { password: string; locale: string }) {
+  if (!password) return null
+  const level = getStrength(password)
+  const labels = STRENGTH_LABEL[locale] ?? STRENGTH_LABEL.en
+  return (
+    <div className="mt-2">
+      <div className="flex gap-1 mb-1">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="h-1.5 flex-1 rounded-full transition-all duration-300"
+            style={{ background: i <= level ? STRENGTH_COLOR[level] : '#e5e7eb' }}
+          />
+        ))}
+      </div>
+      <p className="text-xs font-medium" style={{ color: STRENGTH_COLOR[level] }}>
+        {labels[level]}
+      </p>
+    </div>
+  )
+}
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -17,8 +60,59 @@ function EyeIcon({ open }: { open: boolean }) {
   )
 }
 
+function PasswordField({
+  label,
+  value,
+  onChange,
+  show,
+  onToggle,
+  showStrength,
+  locale,
+}: {
+  label: string
+  value: string
+  onChange: (v: string) => void
+  show: boolean
+  onToggle: () => void
+  showStrength?: boolean
+  locale: string
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-gray-700 mb-1.5">{label}</label>
+      <div className="relative">
+        <input
+          type={show ? 'text' : 'password'}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="input-field pr-10"
+          placeholder="••••••••"
+          minLength={8}
+          required
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+          style={{ color: '#9ca3af' }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#d4537e')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
+          tabIndex={-1}
+        >
+          <EyeIcon open={show} />
+        </button>
+      </div>
+      {showStrength && <StrengthBar password={value} locale={locale} />}
+      {showStrength && (
+        <p className="text-xs text-gray-400 mt-1.5">{HINT[locale] ?? HINT.en}</p>
+      )}
+    </div>
+  )
+}
+
 export default function ResetPasswordPage() {
   const t = useTranslations()
+  const locale = useLocale()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [token, setToken] = useState('')
@@ -48,12 +142,14 @@ export default function ResetPasswordPage() {
         body: JSON.stringify({ token, password }),
       })
       const data = await res.json()
+      console.log('[reset-password] response:', res.status, data)
       if (res.ok) {
         setDone(true)
       } else {
         setError(data.error || t('auth.resetTokenInvalid'))
       }
-    } catch {
+    } catch (err) {
+      console.error('[reset-password] fetch error:', err)
       setError(t('login.errorConnection'))
     } finally {
       setLoading(false)
@@ -89,60 +185,23 @@ export default function ResetPasswordPage() {
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  {t('profile.newPassword')}
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="input-field pr-10"
-                    placeholder="••••••••"
-                    minLength={8}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                    style={{ color: '#9ca3af' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#d4537e')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-                    tabIndex={-1}
-                  >
-                    <EyeIcon open={showPassword} />
-                  </button>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  {t('profile.confirmPassword')}
-                </label>
-                <div className="relative">
-                  <input
-                    type={showConfirm ? 'text' : 'password'}
-                    value={confirm}
-                    onChange={(e) => setConfirm(e.target.value)}
-                    className="input-field pr-10"
-                    placeholder="••••••••"
-                    minLength={8}
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                    style={{ color: '#9ca3af' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#d4537e')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
-                    tabIndex={-1}
-                  >
-                    <EyeIcon open={showConfirm} />
-                  </button>
-                </div>
-              </div>
+              <PasswordField
+                label={t('profile.newPassword')}
+                value={password}
+                onChange={setPassword}
+                show={showPassword}
+                onToggle={() => setShowPassword((v) => !v)}
+                showStrength
+                locale={locale}
+              />
+              <PasswordField
+                label={t('profile.confirmPassword')}
+                value={confirm}
+                onChange={setConfirm}
+                show={showConfirm}
+                onToggle={() => setShowConfirm((v) => !v)}
+                locale={locale}
+              />
               <button
                 type="submit"
                 disabled={loading || !token}
