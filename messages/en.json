@@ -478,5 +478,15 @@
     "congratulations": "Congratulations! 🎉",
     "courseFinished": "You've completed the course!",
     "getCertificate": "Download Certificate"
+  },
+  "support": {
+    "title": "Support",
+    "chat": "Start Live Chat",
+    "faq": "FAQ"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "send": "Send Message",
+    "success": "Message sent!"
   }
 }

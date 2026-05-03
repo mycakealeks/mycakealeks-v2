@@ -5,6 +5,7 @@ import LanguageSwitcher from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
 import NavUserWidget from './components/NavUserWidget'
 import RecommendedCourses from './components/RecommendedCourses'
+import ContactForm from './components/ContactForm'
 import { formatPrice } from '@/app/lib/currency'
 
 const SITE = 'https://mycakealeks.com.tr'
@@ -354,6 +355,11 @@ export default async function HomePage({
       <section className="max-w-6xl mx-auto px-4 md:px-6 pb-10">
         <RecommendedCourses />
       </section>
+
+      {/* ── CONTACT FORM ── */}
+      <div className="border-t border-gray-100">
+        <ContactForm />
+      </div>
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-gray-100 py-8 px-4 md:px-6">

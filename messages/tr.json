@@ -478,5 +478,15 @@
     "congratulations": "Tebrikler! 🎉",
     "courseFinished": "Kursu tamamladınız!",
     "getCertificate": "Sertifika Al"
+  },
+  "support": {
+    "title": "Destek",
+    "chat": "Canlı Destek Başlat",
+    "faq": "Sık Sorulan Sorular"
+  },
+  "contact": {
+    "title": "Bizimle İletişime Geçin",
+    "send": "Gönder",
+    "success": "Mesajınız iletildi!"
   }
 }
