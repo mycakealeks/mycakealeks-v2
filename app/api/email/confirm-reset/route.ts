@@ -4,33 +4,34 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 export async function POST(req: NextRequest) {
+  const { token, password } = await req.json().catch(() => ({}))
+
+  if (!token || !password || typeof password !== 'string' || password.length < 8) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+  }
+
+  const tokenData = verifyToken<{ email: string }>(token)
+  if (!tokenData?.email) {
+    return NextResponse.json({ error: 'Token expired or invalid' }, { status: 400 })
+  }
+
   try {
-    const { token, password } = await req.json()
-
-    if (!token || !password || typeof password !== 'string' || password.length < 8) {
-      return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
-    }
-
-    const data = verifyToken<{ email: string }>(token)
-    if (!data?.email) {
-      return NextResponse.json({ error: 'Token expired or invalid' }, { status: 400 })
-    }
-
     const payload = await getPayload({ config })
-    const result = await payload.find({
+
+    const { docs } = await payload.find({
       collection: 'users',
-      where: { email: { equals: data.email } },
+      where: { email: { equals: tokenData.email.toLowerCase().trim() } },
       overrideAccess: true,
       limit: 1,
     })
 
-    if (!result.docs.length) {
+    if (!docs.length) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
     await payload.update({
       collection: 'users',
-      id: result.docs[0].id,
+      id: docs[0].id,
       data: { password },
       overrideAccess: true,
     })
