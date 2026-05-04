@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
       const user = result.docs[0] as any
       // Use stored user locale, fall back to request locale
       const userLocale = user.locale || locale
+      console.log('[reset-password] user locale:', userLocale, '| email:', user.email)
       const token = signToken({ email: user.email, exp: Date.now() + 3_600_000 })
       const resetLink = `${SITE}/${userLocale}/reset-password?token=${token}`
       await sendPasswordReset(user.email, user.firstName || '', resetLink, userLocale)
