@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/app/lib/token'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { sendPasswordChanged } from '@/app/lib/email'
 
 export async function POST(req: NextRequest) {
   const { token, password } = await req.json().catch(() => ({}))
@@ -29,12 +30,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
+    const user = docs[0] as any
+
     await payload.update({
       collection: 'users',
-      id: docs[0].id,
+      id: user.id,
       data: { password },
       overrideAccess: true,
     })
+
+    // Send password-changed confirmation in user's language
+    sendPasswordChanged(user.email, user.firstName || '', user.locale || 'tr').catch(() => {})
 
     return NextResponse.json({ ok: true })
   } catch (err) {

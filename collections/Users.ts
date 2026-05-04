@@ -64,6 +64,18 @@ export const Users: CollectionConfig = {
       label: 'Купленные рецепты',
     },
     {
+      name: 'locale',
+      type: 'select',
+      label: 'Язык',
+      defaultValue: 'tr',
+      options: [
+        { label: 'Türkçe', value: 'tr' },
+        { label: 'Русский', value: 'ru' },
+        { label: 'English', value: 'en' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
       name: 'telegramUsername',
       type: 'text',
       label: 'Telegram username',

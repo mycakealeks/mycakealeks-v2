@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    await sendVerificationEmail(email, (user.firstName as string) || '', token)
+    await sendVerificationEmail(email, user.firstName || '', token, user.locale || 'tr')
 
     return NextResponse.json({ ok: true })
   } catch (err) {

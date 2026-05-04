@@ -11,9 +11,13 @@ export async function POST(req: NextRequest) {
 
     const { courseName } = await req.json()
     const user = me.user as any
-    const firstName = user.firstName || user.email
 
-    await sendCourseCompletionEmail(user.email, firstName, courseName)
+    await sendCourseCompletionEmail(
+      user.email,
+      user.firstName || user.email,
+      courseName,
+      user.locale || 'tr',
+    )
     return NextResponse.json({ ok: true })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })

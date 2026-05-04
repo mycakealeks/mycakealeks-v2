@@ -14,11 +14,12 @@ async function notifyPurchase(userId: string, courseId: string, amount = 0) {
     const course = await courseRes.json()
     const email: string = user.email
     const firstName: string = user.firstName || ''
+    const locale: string = user.locale || 'tr'
     const courseName: string = course.title || ''
     const courseSlug: string = course.slug || courseId
     await Promise.all([
-      sendPurchaseConfirmation(email, firstName, courseName, amount),
-      sendCourseAccess(email, firstName, courseName, courseSlug),
+      sendPurchaseConfirmation(email, firstName, courseName, amount, locale),
+      sendCourseAccess(email, firstName, courseName, courseSlug, locale),
     ])
   } catch (err) {
     console.error('notifyPurchase error:', err)

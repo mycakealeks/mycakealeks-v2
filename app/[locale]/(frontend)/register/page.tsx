@@ -177,7 +177,7 @@ export default function RegisterPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ firstName: firstName.trim(), email: email.trim(), password }),
+        body: JSON.stringify({ firstName: firstName.trim(), email: email.trim(), password, locale }),
       })
       const data = await res.json()
       if (!res.ok) {
