@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
 import { usePathname } from '@/i18n/navigation'
 import { Link } from '@/i18n/navigation'
-import LanguageSwitcher from './LanguageSwitcher'
+import LanguageSwitcher, { MobileLanguageSwitcher } from './LanguageSwitcher'
 
 interface AuthUser {
   firstName?: string
@@ -28,7 +28,7 @@ function MobileLangSwitcher() {
       {LOCALES.map((loc, i) => (
         <span key={loc} className="flex items-center">
           <a
-            href={`/${loc}${pathname === '/' ? '' : pathname}`}
+            href={loc === 'tr' ? pathname : `/${loc}${pathname === '/' ? '' : pathname}`}
             onClick={() => setPreferredLocale(loc)}
             style={{
               fontSize: 12,
@@ -163,6 +163,7 @@ export default function MobileMenu() {
         <nav style={{ padding: '8px 16px' }}>
           {([
             { href: '/courses', emoji: '📚', label: t('nav.courses') },
+            { href: '/shop', emoji: '🛍️', label: t('nav.shop') },
             { href: '/news', emoji: '📰', label: t('nav.news') },
             { href: '/recipes', emoji: '🍰', label: t('nav.recipes') },
             { href: '/pricing', emoji: '💎', label: t('nav.pricing') },
@@ -268,7 +269,7 @@ export default function MobileMenu() {
 
         {/* Language switcher */}
         <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 16px 4px' }}>
-          <LanguageSwitcher />
+          <MobileLanguageSwitcher />
         </div>
       </div>
     </>,
