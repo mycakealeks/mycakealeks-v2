@@ -7,44 +7,31 @@ export async function GET(req: NextRequest) {
     const userId = searchParams.get('userId')
     const courseId = searchParams.get('courseId')
 
-    if (!userId || !courseId) {
-      return NextResponse.json({ error: 'userId and courseId are required' }, { status: 400 })
+    if (!userId) {
+      return NextResponse.json({ hasAccess: false, reason: 'no_user' } satisfies CheckAccessResult)
     }
 
-    // TODO: replace with real Payload queries
-    // 1. Check if user has purchased the course directly (Orders collection)
-    // const order = await payload.find({
-    //   collection: 'orders',
-    //   where: {
-    //     and: [
-    //       { 'user': { equals: userId } },
-    //       { 'items.course': { equals: courseId } },
-    //       { 'status': { equals: 'paid' } },
-    //     ]
-    //   }
-    // })
-    // if (order.docs.length > 0) return { hasAccess: true, reason: 'purchased' }
-
-    // 2. Check if user has an active subscription
-    // const subscription = await payload.find({
-    //   collection: 'subscriptions',
-    //   where: {
-    //     and: [
-    //       { 'user': { equals: userId } },
-    //       { 'status': { equals: 'active' } },
-    //       { 'endDate': { greater_than: new Date().toISOString() } },
-    //     ]
-    //   }
-    // })
-    // if (subscription.docs.length > 0) return { hasAccess: true, reason: 'subscription' }
-
-    // Mock: no access by default until real logic is wired
-    const result: CheckAccessResult = {
-      hasAccess: false,
-      reason: 'no_access',
+    const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+    const userRes = await fetch(`${base}/api/users/${userId}`, { cache: 'no-store' })
+    if (!userRes.ok) {
+      return NextResponse.json({ hasAccess: false, reason: 'no_user' } satisfies CheckAccessResult)
     }
 
-    return NextResponse.json(result)
+    const user = await userRes.json()
+    const purchased: string[] = (user.purchasedCourses ?? []).map((c: any) =>
+      typeof c === 'object' ? String(c.id) : String(c)
+    )
+
+    // If no courseId provided, just check if user is logged in (general access)
+    if (!courseId) {
+      return NextResponse.json({ hasAccess: true, reason: 'authenticated' } satisfies CheckAccessResult)
+    }
+
+    if (purchased.includes(String(courseId))) {
+      return NextResponse.json({ hasAccess: true, reason: 'purchased' } satisfies CheckAccessResult)
+    }
+
+    return NextResponse.json({ hasAccess: false, reason: 'no_access' } satisfies CheckAccessResult)
   } catch (error) {
     console.error('Check access error:', error)
     return NextResponse.json({ error: 'Failed to check access' }, { status: 500 })

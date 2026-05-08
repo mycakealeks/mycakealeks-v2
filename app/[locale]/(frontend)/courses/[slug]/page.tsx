@@ -188,32 +188,6 @@ export default async function CourseDetailPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Free lessons preview */}
-            {freeLessons > 0 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h2 className="font-bold text-gray-900 text-lg mb-4">{t('course.freeLessons')}</h2>
-                <div className="space-y-3">
-                  {lessons.filter((l) => l.isFree).map((lesson, i) => (
-                    <Link
-                      key={lesson.id}
-                      href={`/courses/${slug}/lessons/${lesson.id}` as any}
-                      className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-pink-200 hover:bg-pink-50 transition-colors"
-                    >
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                        style={{ background: '#fbeaf0', color: '#d4537e' }}
-                      >
-                        {i + 1}
-                      </div>
-                      <span className="text-sm font-medium text-gray-700">{lesson.title}</span>
-                      <span className="ml-auto text-xs font-semibold" style={{ color: '#16a34a' }}>
-                        {t('course.free')}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Sidebar — hidden on mobile (shown as sticky bottom bar instead) */}

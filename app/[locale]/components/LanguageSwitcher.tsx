@@ -39,6 +39,12 @@ export default function LanguageSwitcher() {
   )
 }
 
+const LOCALE_LABELS: Record<string, string> = {
+  tr: 'Türkçe',
+  ru: 'Русский',
+  en: 'English',
+}
+
 export function MobileLanguageSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
@@ -68,18 +74,18 @@ export function MobileLanguageSwitcher() {
       </button>
       {open && (
         <div
-          className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50"
-          style={{ minWidth: 72 }}
+          className="absolute left-0 top-full mt-1 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50"
+          style={{ minWidth: 110 }}
         >
           {locales.map((loc) => (
             <a
               key={loc}
               href={buildHref(loc, pathname)}
               onClick={() => { setPreferredLocale(loc); setOpen(false) }}
-              className="block px-4 py-2 text-xs font-semibold transition-colors"
+              className="block px-4 py-2.5 text-sm font-medium transition-colors"
               style={locale === loc ? { color: '#d4537e', background: '#fbeaf0' } : { color: '#374151' }}
             >
-              {loc.toUpperCase()}
+              {LOCALE_LABELS[loc]}
             </a>
           ))}
         </div>

@@ -1,13 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendPurchaseConfirmation, sendCourseAccess } from '@/app/lib/email'
 
-// TODO: npm install stripe
-// import Stripe from 'stripe'
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' })
+async function grantCourseAccess(base: string, userId: string, courseId: string, amount: number, paymentId: string) {
+  // 1. Create Order record
+  await fetch(`${base}/api/orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user: userId,
+      items: [{ itemType: 'course', course: courseId, price: amount }],
+      total: amount,
+      status: 'paid',
+      currency: 'TRY',
+      paymentMethod: 'stripe',
+      paymentId,
+    }),
+  })
 
-async function notifyPurchase(userId: string, courseId: string, amount = 0) {
+  // 2. Add course to user's purchasedCourses
+  const userRes = await fetch(`${base}/api/users/${userId}`)
+  if (userRes.ok) {
+    const user = await userRes.json()
+    const existing: string[] = (user.purchasedCourses ?? []).map((c: any) =>
+      typeof c === 'object' ? c.id : c
+    )
+    if (!existing.includes(courseId)) {
+      await fetch(`${base}/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ purchasedCourses: [...existing, courseId] }),
+      })
+    }
+  }
+}
+
+async function notifyPurchase(base: string, userId: string, courseId: string, amount = 0) {
   try {
-    const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
     const [userRes, courseRes] = await Promise.all([
       fetch(`${base}/api/users/${userId}`),
       fetch(`${base}/api/courses/${courseId}`),
@@ -31,20 +59,22 @@ async function notifyPurchase(userId: string, courseId: string, amount = 0) {
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
-  const signature = req.headers.get('stripe-signature') || ''
 
   try {
-    // TODO: verify webhook signature
-    // const event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!)
     const event = JSON.parse(body)
+    const base = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data?.object
         const { userId, courseId } = session?.metadata || {}
         const amount = (session?.amount_total ?? 0) / 100
-        console.log('Payment completed:', { userId, courseId })
-        if (userId && courseId) await notifyPurchase(userId, courseId, amount)
+        const paymentId: string = session?.payment_intent ?? session?.id ?? ''
+        console.log('Payment completed:', { userId, courseId, amount })
+        if (userId && courseId) {
+          await grantCourseAccess(base, userId, courseId, amount, paymentId)
+          await notifyPurchase(base, userId, courseId, amount)
+        }
         break
       }
       case 'customer.subscription.created':
