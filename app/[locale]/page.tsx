@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import LanguageSwitcher from './components/LanguageSwitcher'
+import LanguageSwitcher, { MobileLanguageSwitcher } from './components/LanguageSwitcher'
 import MobileMenu from './components/MobileMenu'
 import NavUserWidget from './components/NavUserWidget'
 import RecommendedCourses from './components/RecommendedCourses'
@@ -104,6 +104,7 @@ export default async function HomePage({
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
+            <MobileLanguageSwitcher />
             <NavUserWidget />
             {/* Mobile hamburger */}
             <MobileMenu />
