@@ -7,6 +7,7 @@ import NavUserWidget from './components/NavUserWidget'
 import RecommendedCourses from './components/RecommendedCourses'
 import ContactForm from './components/ContactForm'
 import { formatPrice } from '@/app/lib/currency'
+import HomeMiniChat from './components/HomeMiniChat'
 
 const SITE = 'https://mycakealeks.com.tr'
 
@@ -269,19 +270,9 @@ export default async function HomePage({
                 {t('home.aiBtn')} →
               </Link>
             </div>
-            <div className="px-8 pb-8 md:p-10 flex items-end justify-center">
-              <div className="w-full max-w-xs space-y-3">
-                <div className="flex justify-end">
-                  <div className="text-sm text-white px-4 py-2.5 rounded-2xl rounded-br-sm max-w-[85%]"
-                    style={{ background: '#d4537e' }}>
-                    {t('home.aiChatYou')}
-                  </div>
-                </div>
-                <div className="flex justify-start">
-                  <div className="text-sm text-gray-700 bg-white px-4 py-2.5 rounded-2xl rounded-bl-sm shadow-sm max-w-[85%]">
-                    {t('home.aiChatBot')}
-                  </div>
-                </div>
+            <div className="px-8 pb-8 md:p-10 flex items-center justify-center">
+              <div className="w-full max-w-sm">
+                <HomeMiniChat />
               </div>
             </div>
           </div>
