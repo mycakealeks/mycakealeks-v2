@@ -18,7 +18,8 @@ export default function HomeMiniChat() {
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = bottomRef.current?.parentElement
+    if (container) container.scrollTop = container.scrollHeight
   }, [messages])
 
   async function send() {
