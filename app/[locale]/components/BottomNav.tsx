@@ -37,6 +37,16 @@ const navItems = [
     ),
   },
   {
+    key: 'shop',
+    href: '/shop' as const,
+    label: 'Shop',
+    icon: (active: boolean) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+    ),
+  },
+  {
     key: 'profile',
     href: '/profile' as const,
     label: 'Profile',
@@ -59,6 +69,7 @@ export default function BottomNav() {
     home: 'MyCakeAleks',
     dashboard: t('dashboard.title'),
     myCourses: t('dashboard.myCourses'),
+    shop: t('nav.shop'),
     profile: t('profile.title'),
   }
 
