@@ -26,7 +26,7 @@ export default async function CheckoutPage({ params, searchParams }: CheckoutPag
       {courseId && <TrackEvent event="add_to_cart" entityId={courseId} entityType="course" />}
       <nav className="flex justify-between items-center px-8 py-4 border-b bg-white">
         <Link href="/" className="text-2xl font-bold" style={{ color: '#d4537e' }}>MyCakeAleks</Link>
-        <LanguageSwitcher />
+        <div className="hidden md:block"><LanguageSwitcher /></div>
       </nav>
 
       <div className="max-w-lg mx-auto px-4 py-12">

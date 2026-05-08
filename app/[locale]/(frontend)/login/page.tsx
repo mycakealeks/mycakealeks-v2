@@ -78,6 +78,7 @@ function SocialButtons({ locale, t }: { locale: string; t: any }) {
       })
       const result = await verifyRes.json()
       if (result.ok) {
+        document.cookie = `preferred-locale=${locale};path=/;max-age=${365*24*60*60};SameSite=Lax`
         window.location.href = `/${locale}/dashboard`
       } else {
         setPasskeyError(result.error || 'Passkey failed')
@@ -229,7 +230,11 @@ export default function LoginPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const cb = params.get('callbackUrl')
-    if (cb) setCallbackUrl(cb)
+    if (cb) {
+      // Ensure callbackUrl carries the correct locale prefix
+      const hasLocale = cb.startsWith('/ru') || cb.startsWith('/en') || cb.startsWith('/tr')
+      setCallbackUrl(hasLocale ? cb : `/${locale}${cb.startsWith('/') ? cb : `/${cb}`}`)
+    }
     if (params.get('verified') === '1') setError('')
   }, [])
 
@@ -253,7 +258,9 @@ export default function LoginPage() {
       })
       const data = await res.json()
       if (res.ok) {
-        window.location.href = callbackUrl
+        document.cookie = `preferred-locale=${locale};path=/;max-age=${365*24*60*60};SameSite=Lax`
+        const hasLocale = callbackUrl.startsWith('/ru') || callbackUrl.startsWith('/en') || callbackUrl.startsWith('/tr') || callbackUrl === '/'
+        window.location.href = hasLocale ? callbackUrl : `/${locale}${callbackUrl.startsWith('/') ? callbackUrl : `/${callbackUrl}`}`
       } else {
         setError(data.errors?.[0]?.message || data.message || t('login.errorLogin'))
       }
@@ -288,7 +295,7 @@ export default function LoginPage() {
       className="min-h-screen flex items-center justify-center px-4 py-12 relative"
       style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 60%)' }}
     >
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 hidden md:block">
         <LanguageSwitcher />
       </div>
 

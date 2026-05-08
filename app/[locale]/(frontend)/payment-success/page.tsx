@@ -9,7 +9,7 @@ export default async function PaymentSuccessPage() {
     <main className="min-h-screen bg-gray-50">
       <nav className="flex justify-between items-center px-8 py-4 border-b bg-white">
         <Link href="/" className="text-2xl font-bold text-pink-600">MyCakeAleks</Link>
-        <LanguageSwitcher />
+        <div className="hidden md:block"><LanguageSwitcher /></div>
       </nav>
 
       <div className="max-w-md mx-auto px-4 py-20 text-center">

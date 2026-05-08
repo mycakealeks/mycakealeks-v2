@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { Link, useRouter } from '@/i18n/navigation'
 import { useTranslations, useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
@@ -73,11 +73,19 @@ const EyeClosed = () => (
   </svg>
 )
 
-export default function RegisterPage() {
+function ReferralCapture() {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) localStorage.setItem('referral_code', ref)
+  }, [searchParams])
+  return null
+}
+
+function RegisterPage() {
   const t = useTranslations()
   const router = useRouter()
   const locale = useLocale()
-  const searchParams = useSearchParams()
 
   const [firstName, setFirstName] = useState('')
   const [nameTouched, setNameTouched] = useState(false)
@@ -97,12 +105,6 @@ export default function RegisterPage() {
   const [resendDone, setResendDone] = useState(false)
 
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Save referral code from URL
-  useEffect(() => {
-    const ref = searchParams.get('ref')
-    if (ref) localStorage.setItem('referral_code', ref)
-  }, [searchParams])
 
   // Email uniqueness check (debounced)
   const checkEmailUniqueness = useCallback(async (val: string) => {
@@ -191,6 +193,7 @@ export default function RegisterPage() {
         body: JSON.stringify({ email: email.trim() }),
       }).catch(() => {})
 
+      document.cookie = `preferred-locale=${locale};path=/;max-age=${365*24*60*60};SameSite=Lax`
       setEmailSent(true)
     } catch {
       setSubmitError(t('register.errorNetwork'))
@@ -243,7 +246,8 @@ export default function RegisterPage() {
       className="min-h-screen flex items-center justify-center px-4 py-12 relative"
       style={{ background: 'linear-gradient(135deg, #fbeaf0 0%, #fff 60%)' }}
     >
-      <div className="absolute top-4 right-4">
+      <Suspense fallback={null}><ReferralCapture /></Suspense>
+      <div className="absolute top-4 right-4 hidden md:block">
         <LanguageSwitcher />
       </div>
 
@@ -460,3 +464,5 @@ export default function RegisterPage() {
     </main>
   )
 }
+
+export default RegisterPage
