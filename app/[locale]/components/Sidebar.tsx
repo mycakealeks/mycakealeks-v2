@@ -66,6 +66,15 @@ const navItems = [
     ),
   },
   {
+    key: 'shop',
+    href: '/shop',
+    icon: (
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+    ),
+  },
+  {
     key: 'support',
     href: '/dashboard/support',
     icon: (
@@ -95,6 +104,7 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
     profile: t('profile.title'),
     aiAssistant: t('dashboard.aiAssistant'),
     support: t('support.title'),
+    shop: t('nav.shop'),
   }
 
   const handleLogout = async () => {
