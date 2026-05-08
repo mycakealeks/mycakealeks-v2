@@ -93,6 +93,7 @@ export default async function HomePage({
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-6">
             <Link href="/courses" className="nav-link">{t('nav.courses')}</Link>
+            <Link href="/shop" className="nav-link">{t('nav.shop')}</Link>
             <Link href="/news" className="nav-link">{t('nav.news')}</Link>
             <Link href="/pricing" className="nav-link">{t('nav.pricing')}</Link>
             <Link href="/about" className="nav-link">{t('nav.about')}</Link>
