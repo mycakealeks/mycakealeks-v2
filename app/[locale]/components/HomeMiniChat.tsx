@@ -42,8 +42,8 @@ export default function HomeMiniChat() {
   }
 
   return (
-    <div className="w-full flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden" style={{ maxHeight: 340 }}>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ minHeight: 0 }}>
+    <div className="w-full flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="overflow-y-auto p-4 space-y-3" style={{ height: 220 }}>
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
