@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
+import NextLink from 'next/link'
 
 interface SidebarProps {
   userName?: string
@@ -80,6 +81,8 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
   const locale = useLocale()
   const pathname = usePathname()
 
+  console.log('[Sidebar] locale:', locale, 'homeHref:', locale === 'tr' ? '/' : `/${locale}`)
+
   const initials = userName
     ? userName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : '?'
@@ -109,9 +112,9 @@ export default function Sidebar({ userName, userEmail }: SidebarProps) {
     >
       {/* Logo */}
       <div className="px-6 py-5 border-b" style={{ borderColor: '#f0e0e8' }}>
-        <Link href="/" className="text-xl font-extrabold tracking-tight">
+        <NextLink href={locale === 'tr' ? '/' : `/${locale}`} className="text-xl font-extrabold tracking-tight">
           My<span style={{ color: '#d4537e' }}>Cake</span>Aleks
-        </Link>
+        </NextLink>
       </div>
 
       {/* Nav */}

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
+import NextLink from 'next/link'
 
 const navItems = [
   {
@@ -52,6 +53,8 @@ export default function BottomNav() {
   const locale = useLocale()
   const pathname = usePathname()
 
+  console.log('[BottomNav] locale:', locale, 'homeHref:', locale === 'tr' ? '/' : `/${locale}`)
+
   const labels: Record<string, string> = {
     home: 'MyCakeAleks',
     dashboard: t('dashboard.title'),
@@ -80,17 +83,16 @@ export default function BottomNav() {
           item.href === '/'
             ? pathname === '/'
             : pathname === item.href || pathname.startsWith(item.href + '/')
-        return (
-          <Link
-            key={item.key}
-            href={item.href}
-            className="flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors"
-            style={{ color: isActive ? '#d4537e' : '#9ca3af' }}
-          >
-            {item.icon(isActive)}
-            <span className="text-[10px] font-semibold leading-none">{labels[item.key]}</span>
-          </Link>
-        )
+        const homeHref = locale === 'tr' ? '/' : `/${locale}`
+        const linkProps = {
+          key: item.key,
+          className: 'flex-1 flex flex-col items-center justify-center py-2 gap-0.5 min-h-[56px] transition-colors',
+          style: { color: isActive ? '#d4537e' : '#9ca3af' },
+        }
+        const inner = (<>{item.icon(isActive)}<span className="text-[10px] font-semibold leading-none">{labels[item.key]}</span></>)
+        return item.key === 'home'
+          ? <NextLink {...linkProps} href={homeHref}>{inner}</NextLink>
+          : <Link {...linkProps} href={item.href}>{inner}</Link>
       })}
 
       {/* Logout tab — separated by left border to prevent accidental taps */}
