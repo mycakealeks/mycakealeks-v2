@@ -104,8 +104,10 @@ export default async function HomePage({
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
+            <div className="hidden md:block">
+              <NavUserWidget />
+            </div>
             <MobileLanguageSwitcher />
-            <NavUserWidget />
             {/* Mobile hamburger */}
             <MobileMenu />
           </div>
