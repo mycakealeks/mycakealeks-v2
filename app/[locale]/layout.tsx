@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
 import { routing } from '@/i18n/routing'
 import YandexMetrika from '@/app/components/YandexMetrika'
 import GoogleAnalytics from '@/app/components/GoogleAnalytics'
@@ -61,6 +62,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  setRequestLocale(locale)
   const validLocales = ['tr', 'ru', 'en']
   const safeLocale = validLocales.includes(locale) ? locale : 'tr'
   const messages = (await import(`../../messages/${safeLocale}.json`)).default

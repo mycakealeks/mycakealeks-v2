@@ -21,6 +21,7 @@ export default async function LessonPage({ params }: Props) {
   let lesson: any = null
   let course: any = null
   let lessons: any[] = []
+  let recommendedProducts: any[] = []
 
   try {
     const lessonRes = await fetch(
@@ -38,6 +39,16 @@ export default async function LessonPage({ params }: Props) {
       course = await courseRes.json()
       const lessonsData = await lessonsRes.json()
       lessons = lessonsData.docs ?? []
+
+      // Fetch products recommended for this course
+      try {
+        const prodRes = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/shop/products?relatedCourse=${courseId}&limit=3`,
+          { cache: 'no-store' }
+        )
+        const prodData = await prodRes.json()
+        recommendedProducts = prodData.docs ?? []
+      } catch { /* no products */ }
     }
   } catch {
     // keep null
@@ -110,8 +121,8 @@ export default async function LessonPage({ params }: Props) {
             />
           </div>
 
-          {/* Lesson list sidebar */}
-          <div className="md:col-span-1">
+          {/* Lesson list + recommended products sidebar */}
+          <div className="md:col-span-1 space-y-4">
             <div className="border border-gray-100 rounded-xl overflow-hidden md:sticky md:top-24">
               <div className="bg-gray-50 px-4 py-3 border-b border-gray-100">
                 <h2 className="font-semibold text-gray-800">{t('lessons.title')}</h2>
@@ -124,6 +135,49 @@ export default async function LessonPage({ params }: Props) {
                 courseId={courseId}
               />
             </div>
+
+            {/* Recommended products */}
+            {recommendedProducts.length > 0 && (
+              <div className="border border-gray-100 rounded-xl overflow-hidden">
+                <div className="bg-gray-50 px-4 py-3 border-b border-gray-100">
+                  <h2 className="font-semibold text-gray-800 text-sm">{t('shop.recommendedForLesson')}</h2>
+                </div>
+                <div className="divide-y divide-gray-50">
+                  {recommendedProducts.map((product: any) => {
+                    const thumb = product.images?.[0]?.image
+                    const thumbUrl = typeof thumb === 'object' ? thumb?.url : null
+                    return (
+                      <div key={product.id} className="flex items-center gap-3 px-4 py-3">
+                        <div className="w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden"
+                          style={{ background: '#fbeaf0' }}>
+                          {thumbUrl
+                            ? <img src={thumbUrl} alt={product.name} className="w-full h-full object-cover" />
+                            : <span className="text-xl">🛍️</span>}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 line-clamp-1">{product.name}</p>
+                          <p className="text-xs font-bold" style={{ color: '#d4537e' }}>
+                            {product.price} ₺
+                          </p>
+                        </div>
+                        <Link
+                          href={`/shop/${product.slug}`}
+                          className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg text-white"
+                          style={{ background: '#d4537e' }}
+                        >
+                          {t('shop.addToCart')}
+                        </Link>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className="px-4 py-3 border-t border-gray-50">
+                  <Link href="/shop" className="text-xs font-medium" style={{ color: '#d4537e' }}>
+                    {t('nav.shop')} →
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

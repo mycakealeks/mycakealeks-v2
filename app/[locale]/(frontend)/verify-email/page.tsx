@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useTranslations, useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 
-export default function VerifyEmailPage() {
+function VerifyEmailPage() {
   const t = useTranslations()
   const locale = useLocale()
   const searchParams = useSearchParams()
@@ -85,5 +85,13 @@ export default function VerifyEmailPage() {
         )}
       </div>
     </main>
+  )
+}
+
+export default function VerifyEmailPageWrapper() {
+  return (
+    <Suspense fallback={null}>
+      <VerifyEmailPage />
+    </Suspense>
   )
 }
