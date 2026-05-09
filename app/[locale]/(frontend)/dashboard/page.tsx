@@ -27,6 +27,7 @@ function DashboardContent({ user }: { user: any }) {
   const [loading, setLoading] = useState(true)
   const [pointsBalance, setPointsBalance] = useState<number | null>(null)
   const [smartDiscounts, setSmartDiscounts] = useState<any[]>([])
+  const [certificates, setCertificates] = useState<any[]>([])
 
   const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
 
@@ -81,6 +82,13 @@ function DashboardContent({ user }: { user: any }) {
         .catch(() => {})
     }
   }, [user])
+
+  useEffect(() => {
+    fetch('/api/achievements', { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setCertificates((d.achievements ?? []).filter((a: any) => a.type === 'certificate')))
+      .catch(() => {})
+  }, [])
 
   const totalCompleted = progresses.reduce((s, c) => s + c.completedLessons, 0)
   const totalHours = Math.round(totalCompleted * 0.25)
@@ -317,6 +325,38 @@ function DashboardContent({ user }: { user: any }) {
               </Link>
             </div>
           </div>
+
+          {/* Certificates */}
+          {certificates.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-xl font-bold text-gray-900 mb-5">
+                🏆 {locale === 'ru' ? 'Мои сертификаты' : locale === 'en' ? 'My Certificates' : 'Sertifikalarım'}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                {certificates.map((cert: any) => (
+                  <div key={cert.id} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="font-bold text-gray-900 text-sm">{cert.courseTitle || cert.title || '—'}</p>
+                      {cert.createdAt && (
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          {new Date(cert.createdAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : locale === 'en' ? 'en-US' : 'tr-TR')}
+                        </p>
+                      )}
+                    </div>
+                    <a
+                      href={`/api/certificate/${cert.courseId || cert.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="whitespace-nowrap text-xs font-bold px-3 py-2 rounded-xl"
+                      style={{ background: '#fbeaf0', color: '#d4537e', textDecoration: 'none' }}
+                    >
+                      {locale === 'ru' ? '⬇ PDF' : locale === 'en' ? '⬇ PDF' : '⬇ PDF'}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* AI Chat */}
           <div>
