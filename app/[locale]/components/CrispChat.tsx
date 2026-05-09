@@ -32,14 +32,8 @@ export default function CrispChat({ locale = 'tr' }: Props) {
     const crisp = (window as any).$crisp
     if (!crisp) return
 
-    // Locale
     crisp.push(['config', 'locale', locale])
 
-    // Raise above bottom nav on mobile
-    crisp.push(['config', 'container:index', [1000]])
-    crisp.push(['config', 'position:reverse', [false]])
-
-    // Show/hide based on route
     if (isDashboardPath(pathname)) {
       crisp.push(['do', 'chat:show'])
     } else {
@@ -47,12 +41,10 @@ export default function CrispChat({ locale = 'tr' }: Props) {
     }
   }, [pathname, locale])
 
-  // Also set user data when available — called from dashboard pages via window
   useEffect(() => {
     const crisp = (window as any).$crisp
     if (!crisp) return
 
-    // Try to read cached user from /api/users/me
     fetch('/api/users/me', { credentials: 'include' })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
@@ -75,12 +67,20 @@ export default function CrispChat({ locale = 'tr' }: Props) {
         __html: `
           window.$crisp=[];
           window.CRISP_WEBSITE_ID="${websiteId}";
+          window.CRISP_SETTINGS={position:"right"};
           window.$crisp.push(['config', 'container:index', [999]]);
-          window.$crisp.push(['on', 'session:loaded', function() {
-            var style = document.createElement('style');
-            style.innerHTML = '@media (max-width: 767px) { .cc-l4wzd, .crisp-client .cc-l4wzd { bottom: 70px !important; margin-bottom: 0 !important; } }';
-            document.head.appendChild(style);
-          }]);
+          (function(){
+            if(window.innerWidth<=767){
+              var observer=new MutationObserver(function(){
+                var bubble=document.querySelector('.cc-l4wzd');
+                if(bubble){
+                  bubble.style.setProperty('bottom','75px','important');
+                  observer.disconnect();
+                }
+              });
+              observer.observe(document.body,{childList:true,subtree:true});
+            }
+          })();
           (function(){
             var d=document;
             var s=d.createElement("script");
