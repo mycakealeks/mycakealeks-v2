@@ -78,7 +78,7 @@ export default function CrispChat({ locale = 'tr' }: Props) {
           window.$crisp.push(['config', 'container:index', [999]]);
           window.$crisp.push(['on', 'session:loaded', function() {
             var style = document.createElement('style');
-            style.innerHTML = '@media (max-width: 767px) { .cc-1xry { bottom: 80px !important; } .cc-kv6t { bottom: 80px !important; } }';
+            style.innerHTML = '@media (max-width: 767px) { .cc-1xry { bottom: 120px !important; } .cc-kv6t { bottom: 120px !important; } }';
             document.head.appendChild(style);
           }]);
           (function(){
