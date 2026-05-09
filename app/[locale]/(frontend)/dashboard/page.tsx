@@ -164,8 +164,15 @@ function DashboardContent({ user }: { user: any }) {
             </div>
 
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="w-7 h-7 border-4 border-pink-200 border-t-pink-600 rounded-full animate-spin" />
+              <div className="space-y-6 animate-pulse">
+                <div className="grid grid-cols-2 gap-4">
+                  {[1,2,3,4].map(i => (
+                    <div key={i} className="bg-gray-100 rounded-2xl h-24" />
+                  ))}
+                </div>
+                <div className="bg-gray-100 rounded-2xl h-8 w-48" />
+                <div className="bg-gray-100 rounded-2xl h-32" />
+                <div className="bg-gray-100 rounded-2xl h-32" />
               </div>
             ) : progresses.length === 0 ? (
               <div className="bg-white rounded-2xl p-10 text-center border border-gray-100">
