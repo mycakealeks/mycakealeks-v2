@@ -67,7 +67,7 @@ export default function CrispChat({ locale = 'tr' }: Props) {
         __html: `
           window.$crisp=[];
           window.CRISP_WEBSITE_ID="${websiteId}";
-          window.CRISP_SETTINGS={position:"right"};
+          window.CRISP_SETTINGS={position:"left"};
           window.$crisp.push(['config', 'container:index', [999]]);
           (function(){
             if(window.innerWidth<=767){
