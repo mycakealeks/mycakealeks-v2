@@ -143,11 +143,9 @@ body {
 }
 
 
-/* Raise Crisp chat above bottom nav on mobile */
 @media (max-width: 767px) {
-  .cc-l4wzd,
-  .crisp-client .cc-l4wzd {
-    bottom: 70px !important;
-    margin-bottom: 0 !important;
+  #crisp-chatbox,
+  .crisp-client {
+    display: none !important;
   }
 }
