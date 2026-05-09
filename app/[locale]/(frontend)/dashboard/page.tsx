@@ -114,15 +114,18 @@ function DashboardContent({ user }: { user: any }) {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {[
-              { value: progresses.length, label: t('dashboard.statCourses'), icon: '🎂' },
-              { value: totalCompleted, label: t('dashboard.statLessons'), icon: '✅' },
-              { value: totalHours, label: t('dashboard.statHours'), icon: '⏱' },
-              { value: certs, label: t('dashboard.statCerts'), icon: '🏆' },
+              { value: progresses.length, label: t('dashboard.statCourses'), icon: '🎂', hint: locale === 'ru' ? 'Купите первый курс' : locale === 'en' ? 'Buy your first course' : 'İlk kursunuzu alın' },
+              { value: totalCompleted, label: t('dashboard.statLessons'), icon: '✅', hint: locale === 'ru' ? 'Начните обучение' : locale === 'en' ? 'Start learning' : 'Öğrenmeye başlayın' },
+              { value: totalHours, label: t('dashboard.statHours'), icon: '⏱', hint: null },
+              { value: certs, label: t('dashboard.statCerts'), icon: '🏆', hint: locale === 'ru' ? 'Завершите курс' : locale === 'en' ? 'Complete a course' : 'Kurs tamamlayın' },
             ].map((s) => (
               <div key={s.label} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
                 <p className="text-2xl mb-2">{s.icon}</p>
                 <p className="text-3xl font-extrabold text-gray-900">{s.value}</p>
                 <p className="text-xs text-gray-400 mt-1">{s.label}</p>
+                {s.value === 0 && s.hint && (
+                  <p className="text-[10px] mt-1.5 font-medium" style={{ color: '#d4537e' }}>{s.hint}</p>
+                )}
               </div>
             ))}
           </div>

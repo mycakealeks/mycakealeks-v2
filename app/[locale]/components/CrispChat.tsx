@@ -35,6 +35,10 @@ export default function CrispChat({ locale = 'tr' }: Props) {
     // Locale
     crisp.push(['config', 'locale', locale])
 
+    // Raise above bottom nav on mobile
+    crisp.push(['config', 'container:index', [1000]])
+    crisp.push(['config', 'position:reverse', [false]])
+
     // Show/hide based on route
     if (isDashboardPath(pathname)) {
       crisp.push(['do', 'chat:show'])
